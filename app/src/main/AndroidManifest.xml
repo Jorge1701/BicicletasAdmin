@@ -16,8 +16,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ListadoUsuarios">
-        </activity>
+        <activity android:name=".ListadoUsuarios"></activity>
+        <activity android:name=".ListadoParadas"></activity>
     </application>
 
 </manifest>

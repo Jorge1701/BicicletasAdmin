@@ -1,0 +1,30 @@
+<LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:orientation="horizontal"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="36dp"
+        android:layout_height="wrap_content"
+        android:scaleType="fitXY"
+        android:adjustViewBounds="true"
+        android:layout_weight="1"
+        android:layout_margin="5dp"
+        app:srcCompat="@drawable/fondo_admin" />
+
+    <TextView
+        android:id="@+id/tvNombre"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        android:paddingHorizontal="25dp"
+        android:paddingVertical="5dp"
+        android:textColor="#000"
+        android:textSize="25sp" />
+
+
+
+</LinearLayout>
