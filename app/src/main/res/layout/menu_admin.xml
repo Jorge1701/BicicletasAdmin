@@ -12,9 +12,9 @@
         android:background="@color/colorPrimary" />
 
     <Button
+        android:onClick="ListaoUsuarios"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="ListaoUsuarios"
-        android:text="Listado Usuarios"/>
+        android:text="Listado Usuario"/>
 
 </LinearLayout>
