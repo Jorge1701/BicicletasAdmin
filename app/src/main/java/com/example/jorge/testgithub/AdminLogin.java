@@ -1,5 +1,6 @@
 package com.example.jorge.testgithub;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -79,10 +80,8 @@ public class AdminLogin extends AppCompatActivity {
     }
 
     private void cargarInicioAdmin () {
-        /* TODO: Ir a la pantalla de inicio del administrador
-        Intent i = new Intent (AdminLogin.this, OtraVentana.class);
+        Intent i = new Intent(AdminLogin.this, ListadoUsuarios.class);
         i.addFlags (Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity (i);
-        */
     }
 }
