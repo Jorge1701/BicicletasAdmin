@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:orientation="horizontal"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <TextView
+        android:id="@+id/tvNombre"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textColor="#000"
+        android:textSize="25sp"
+        android:layout_gravity="center"
+        android:paddingHorizontal="25dp"
+        android:paddingVertical="5dp" />
+
+    <Button
+        android:id="@+id/btnHabilitar"
+        android:background="@drawable/ic_habilitar"
+        android:layout_width="60dp"
+        android:layout_height="60dp" />
+
+    <Button
+        android:id="@+id/btnInhabilitar"
+        android:background="@drawable/ic_inhabilitar"
+        android:layout_width="60dp"
+        android:layout_height="60dp" />
+
+</LinearLayout>

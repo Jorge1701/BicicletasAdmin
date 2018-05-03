@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">TestGitHub</string>
+    <string name="iniciar_sesion">Iniciar Sesion</string>
+    <string name="recordarme">Recordarme</string>
+    <string name="usuario">Usuario</string>
+    <string name="contrase_a">Contraseña</string>
+    <string name="falta_usuario_contraseña">Ingrese usuario y contraseña</string>
+    <string name="login_incorrecto">Usuario o contraseña incorrectos</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="usuarios_sin_validar">Usuarios sin validar</string>
+    <string name="buscar">Buscar...</string>
+</resources>
