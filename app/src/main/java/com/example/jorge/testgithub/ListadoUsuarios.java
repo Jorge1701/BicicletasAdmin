@@ -73,7 +73,7 @@ public class ListadoUsuarios extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater ().inflate (R.menu.menu_item, menu);
+        getMenuInflater ().inflate (R.menu.search_item, menu);
         MenuItem item = menu.findItem (R.id.action_search);
         searchView.setMenuItem (item);
         return true;

@@ -7,6 +7,7 @@ public class Usuario {
 
 	public Usuario (String nombre, boolean validado) {
 		this.nombre = nombre;
+
 		this.validado = validado;
 	}
 
@@ -32,5 +33,10 @@ public class Usuario {
 
 	public void setValidado (boolean validado) {
 		this.validado = validado;
+	}
+
+	public static boolean verificarUsuario (String usuario, String password) {
+		// TODO: Verificar usuario con la base de datos
+		return true;
 	}
 }
