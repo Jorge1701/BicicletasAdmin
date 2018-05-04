@@ -9,15 +9,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".AdminLogin"></activity>
-        <activity android:name=".ListadoUsuarios"></activity>
-        <activity android:name=".MenuAdmin">
+        <activity
+            android:name=".MenuAdmin"
+            android:label="@string/title_activity_menu_admin"
+            android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".AdminLogin" />
+        <activity android:name=".ListadoUsuarios" />
+
     </application>
 
 </manifest>

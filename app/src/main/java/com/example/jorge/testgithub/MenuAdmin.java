@@ -1,9 +1,8 @@
 package com.example.jorge.testgithub;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -12,6 +11,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
+import butterknife.ButterKnife;
 
 public class MenuAdmin extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -22,15 +25,7 @@ public class MenuAdmin extends AppCompatActivity
         setContentView(R.layout.menu_admin);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        getSupportActionBar ().setTitle ("Menu Administrador");
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -40,7 +35,65 @@ public class MenuAdmin extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        //----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+        ButterKnife.bind (this);
+
+        // Se cargan los datos del usuario guardado
+        SharedPreferences sp = getSharedPreferences ("usuario_guardado", MODE_PRIVATE);
+        String usuario = sp.getString ("usuario", null);
+        String password = sp.getString ("password", null);
+
+        SharedPreferences sp_tmp = getSharedPreferences ("usuario_guardado_temp", MODE_PRIVATE);
+        String usuario_tmp = sp_tmp.getString ("usuario", null);
+        String password_tmp = sp_tmp.getString ("password", null);
+
+        String u = "";
+        String p = "";
+
+        if (usuario_tmp != null && password_tmp != null) {
+            Toast.makeText(this, "TEMP", Toast.LENGTH_SHORT).show();
+            u = usuario_tmp;
+            p = usuario_tmp;
+        } else if (usuario != null && password != null) {
+            Toast.makeText(this, "PERMA", Toast.LENGTH_SHORT).show();
+            u = usuario;
+            p = password;
+        }
+
+        // Si hay datos se verifica que sean validos
+        if (u.isEmpty () && p.isEmpty () || !Usuario.verificarUsuario (u, p)) {
+            // En caso de que el usuario fuera eliminado mientras tenia la aplicacion cerrada se borran los datos y se muestra un mensaje
+            cerrarSesion();
+        }
+
+
     }
+
+    private void cerrarSesion () {
+        SharedPreferences sp = getSharedPreferences ("usuario_guardado", MODE_PRIVATE);
+        SharedPreferences.Editor ed = sp.edit();
+        ed.clear();
+        ed.commit();
+
+        Intent i = new Intent(MenuAdmin.this, AdminLogin.class);
+        i.addFlags (Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        startActivity (i);
+    }
+    @Override
+    protected void onStop() {
+        SharedPreferences sp = getSharedPreferences ("usuario_guardado_temp", MODE_PRIVATE);
+        SharedPreferences.Editor ed = sp.edit();
+        ed.clear();
+        ed.commit();
+        super.onStop();
+    }
+
+    public void ListaoUsuarios (View v) {
+        startActivity (new Intent (MenuAdmin.this, ListadoUsuarios.class));
+    }
+
 
     @Override
     public void onBackPressed() {
@@ -55,7 +108,7 @@ public class MenuAdmin extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_admin, menu);
+        //getMenuInflater().inflate(R.menu.menu_admin, menu);
         return true;
     }
 
@@ -67,9 +120,9 @@ public class MenuAdmin extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+        //if (id == R.id.action_settings) {
+        //    return true;
+        //}
 
         return super.onOptionsItemSelected(item);
     }
@@ -80,18 +133,25 @@ public class MenuAdmin extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        switch (id) {
+            case R.id.nav_ver_mapa:
 
-        } else if (id == R.id.nav_slideshow) {
+                break;
+            case R.id.nav_usuarios:
 
-        } else if (id == R.id.nav_manage) {
+                break;
+            case R.id.nav_paradas:
 
-        } else if (id == R.id.nav_share) {
+                break;
+            case R.id.nav_bicicletas:
 
-        } else if (id == R.id.nav_send) {
+                break;
+            case R.id.nav_incidencias:
 
+                break;
+            case R.id.nav_cerrar_sesion:
+                cerrarSesion();
+                break;
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
