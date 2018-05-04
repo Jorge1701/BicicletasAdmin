@@ -9,9 +9,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".AdminLogin"></activity>
-        <activity android:name=".ListadoUsuarios"></activity>
+        <activity android:name=".AdminLogin" />
+        <activity android:name=".ListadoUsuarios" />
         <activity android:name=".MenuAdmin">
+        </activity>
+        <activity android:name=".ListadoIncidencias">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
