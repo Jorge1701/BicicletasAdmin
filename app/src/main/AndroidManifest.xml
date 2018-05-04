@@ -12,13 +12,13 @@
         <activity android:name=".AdminLogin" />
         <activity android:name=".ListadoUsuarios" />
         <activity android:name=".MenuAdmin">
-        </activity>
-        <activity android:name=".ListadoIncidencias">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".ListadoIncidencias">
         </activity>
     </application>
 
