@@ -25,26 +25,6 @@ public class AdminLogin extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.admin_login);
-
-        // Se cargan los datos del usuario guardado
-        SharedPreferences sp = getSharedPreferences ("usuario_guardado", MODE_PRIVATE);
-        String usuario = sp.getString ("usuario", null);
-        String password = sp.getString ("password", null);
-
-        // Si hay datos se verifica que sean validos
-        if (usuario != null && password != null) {
-            if (verificarUsuario (usuario, password))
-                // Si son validos se va a la pantalla inicial
-                cargarInicioAdmin ();
-            else {
-                // En caso de que el usuario fuera eliminado mientras tenia la aplicacion cerrada se borran los datos y se muestra un mensaje
-                SharedPreferences.Editor ed = sp.edit();
-                ed.clear();
-                ed.commit();
-                Toast.makeText(this, getResources().getString(R.string.login_incorrecto), Toast.LENGTH_LONG).show();
-            }
-        }
-
         ButterKnife.bind (this);
     }
 
@@ -57,18 +37,13 @@ public class AdminLogin extends AppCompatActivity {
             return;
         }
 
-        if (verificarUsuario (usuario, password)) {
+        if (Usuario.verificarUsuario (usuario, password)) {
             if (cbRecordar.isChecked())
                 recordarUsuario(usuario, password);
 
-            cargarInicioAdmin ();
+            cargarInicioAdmin (usuario, password);
         } else
             Toast.makeText(this, getResources ().getString (R.string.login_incorrecto), Toast.LENGTH_SHORT).show();
-    }
-
-    private boolean verificarUsuario (String usuario, String password) {
-        // TODO: Verificar usuario con la base de datos
-        return true;
     }
 
     private void recordarUsuario (String usuario, String password) {
@@ -79,10 +54,15 @@ public class AdminLogin extends AppCompatActivity {
         et.commit ();
     }
 
-    private void cargarInicioAdmin () {
-        Intent i = new Intent (AdminLogin.this, ListadoUsuarios.class);
+    private void cargarInicioAdmin (String usuario, String password) {
+		SharedPreferences sp = getSharedPreferences ("usuario_guardado_temp", MODE_PRIVATE);
+		SharedPreferences.Editor et = sp.edit ();
+		et.putString ("usuario", usuario);
+		et.putString ("password", password);
+		et.commit ();
+
+        Intent i = new Intent(AdminLogin.this, MenuAdmin.class);
         i.addFlags (Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity (i);
-
     }
 }
