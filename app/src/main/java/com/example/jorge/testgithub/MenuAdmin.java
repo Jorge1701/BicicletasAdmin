@@ -19,7 +19,7 @@ import android.widget.Toast;
 import butterknife.ButterKnife;
 
 public class MenuAdmin extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, UsuariosListado.OnFragmentInteractionListener {
+        implements NavigationView.OnNavigationItemSelectedListener, UsuariosListado.OnFragmentInteractionListener, ParadasListado.OnFragmentInteractionListener, BicisListado.OnFragmentInteractionListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,11 +55,9 @@ public class MenuAdmin extends AppCompatActivity
         String p = "";
 
         if (usuario_tmp != null && password_tmp != null) {
-            Toast.makeText(this, "TEMP", Toast.LENGTH_SHORT).show();
             u = usuario_tmp;
             p = usuario_tmp;
         } else if (usuario != null && password != null) {
-            Toast.makeText(this, "PERMA", Toast.LENGTH_SHORT).show();
             u = usuario;
             p = password;
         }
@@ -91,11 +89,6 @@ public class MenuAdmin extends AppCompatActivity
         ed.commit();
         super.onStop();
     }
-
-    public void ListaoUsuarios (View v) {
-        startActivity (new Intent (MenuAdmin.this, ListadoUsuarios.class));
-    }
-
 
     @Override
     public void onBackPressed() {
@@ -147,10 +140,12 @@ public class MenuAdmin extends AppCompatActivity
                 fragmentTransaction = true;
                 break;
             case R.id.nav_paradas:
-
+                fragment = new ParadasListado();
+                fragmentTransaction = true;
                 break;
             case R.id.nav_bicicletas:
-
+                fragment = new BicisListado();
+                fragmentTransaction = true;
                 break;
             case R.id.nav_incidencias:
 

@@ -50,8 +50,6 @@ public class UsuariosListado extends Fragment{
         View v = inflater.inflate(R.layout.fragment_usuarios_listado, container, false);
         ButterKnife.bind(this,v);
 
-
-        cargarUsuarios ();
         filtrarUsuarios ();
 
         searchView.setOnSearchViewListener (new MaterialSearchView.SearchViewListener () {
