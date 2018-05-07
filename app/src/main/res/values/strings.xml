@@ -9,4 +9,6 @@
     <string name="title_activity_main">MainActivity</string>
     <string name="usuarios_sin_validar">Usuarios sin validar</string>
     <string name="buscar">Buscar...</string>
+    <string name="title_activity_agregar_parada">Agregar</string>
+    <string name="title_activity_editar_parada">Editar</string>
 </resources>
