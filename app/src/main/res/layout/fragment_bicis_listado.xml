@@ -9,6 +9,9 @@
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/lista_bicis"/>
+        android:id="@+id/lista_bicis"
+        android:background="#CCC"
+        android:divider="#CCC"
+        android:paddingBottom="3dp"/>
 
 </FrameLayout>
