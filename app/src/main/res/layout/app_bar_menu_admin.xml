@@ -20,6 +20,6 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_menu_admin" /> <!-- Esto se puede cambiar para cargar el mapa -->
+    <include layout="@layout/content_menu_admin" />
 
 </android.support.design.widget.CoordinatorLayout>
