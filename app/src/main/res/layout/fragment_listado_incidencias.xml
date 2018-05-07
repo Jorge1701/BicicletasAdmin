@@ -5,14 +5,6 @@
     android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/colorPrimary">
-
-    </android.support.v7.widget.Toolbar>
-
     <ListView
         android:id="@+id/lvIncidencias"
         android:layout_width="match_parent"

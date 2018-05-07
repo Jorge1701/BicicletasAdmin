@@ -1,5 +1,8 @@
 package com.example.jorge.testgithub;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Usuario {
 
 	private String nombre;
@@ -38,5 +41,30 @@ public class Usuario {
 	public static boolean verificarUsuario (String usuario, String password) {
 		// TODO: Verificar usuario con la base de datos
 		return true;
+	}
+
+	public static List<Usuario> cargarUsuarios () {
+		List<Usuario> usuarios = new ArrayList<>();
+
+		// TODO: Cargar usuarios de la bd
+
+		usuarios.add (new Usuario ("Jorgea", true));
+		usuarios.add (new Usuario ("Brian", false));
+		usuarios.add (new Usuario ("Ale", true));
+		usuarios.add (new Usuario ("Luisa", false));
+		usuarios.add (new Usuario ("Jorgea", true));
+		usuarios.add (new Usuario ("Brian", false));
+		usuarios.add (new Usuario ("Ale", true));
+		usuarios.add (new Usuario ("Luisa", false));
+		usuarios.add (new Usuario ("Jorgea", true));
+		usuarios.add (new Usuario ("Brian", false));
+		usuarios.add (new Usuario ("Ale", true));
+		usuarios.add (new Usuario ("Luisa", false));
+		usuarios.add (new Usuario ("Jorgea", true));
+		usuarios.add (new Usuario ("Brian", false));
+		usuarios.add (new Usuario ("Ale", true));
+		usuarios.add (new Usuario ("Luisa", false));
+
+		return usuarios;
 	}
 }

@@ -148,7 +148,8 @@ public class MenuAdmin extends AppCompatActivity
                 fragmentTransaction = true;
                 break;
             case R.id.nav_incidencias:
-
+                fragment = new IncidenciaListado ();
+                fragmentTransaction = true;
                 break;
             case R.id.nav_cerrar_sesion:
                 cerrarSesion();

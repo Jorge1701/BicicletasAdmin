@@ -4,11 +4,17 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ListView;
 
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
@@ -21,7 +27,7 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 
-public class UsuariosListado extends Fragment{
+public class UsuariosListado extends Fragment {
 
     @BindView (R.id.search)
     MaterialSearchView searchView;
@@ -32,7 +38,6 @@ public class UsuariosListado extends Fragment{
 
     private String filtro;
 
-
     private OnFragmentInteractionListener mListener;
 
     public UsuariosListado() {
@@ -42,19 +47,27 @@ public class UsuariosListado extends Fragment{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+		setHasOptionsMenu(true);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_usuarios_listado, container, false);
         ButterKnife.bind(this,v);
+
+        cbSinValidar.setOnCheckedChangeListener (new CompoundButton.OnCheckedChangeListener () {
+            @Override
+            public void onCheckedChanged (CompoundButton buttonView, boolean isChecked) {
+                filtrarUsuarios ();
+            }
+        });
 
         filtrarUsuarios ();
 
         searchView.setOnSearchViewListener (new MaterialSearchView.SearchViewListener () {
             @Override
             public void onSearchViewShown () {
+            	searchView.setVisibility (View.VISIBLE);
             }
 
             @Override
@@ -79,9 +92,15 @@ public class UsuariosListado extends Fragment{
         });
 
         return v;
+	}
 
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		inflater.inflate(R.menu.search_item, menu);
+		MenuItem item = menu.findItem (R.id.action_search);
+		searchView.setMenuItem (item);
 
-    }
+	}
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
@@ -108,16 +127,11 @@ public class UsuariosListado extends Fragment{
     }
 
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
 
-    public void FiltrarSinValidar (View v) {
-        filtrarUsuarios ();
-    }
-
     private void filtrarUsuarios () {
-        List<Usuario> usuarios = cargarUsuarios ();
+        List<Usuario> usuarios = Usuario.cargarUsuarios ();
 
         if (filtro != null && !filtro.isEmpty ())
             for (int i = usuarios.size() - 1; i >= 0; i--)
@@ -130,18 +144,5 @@ public class UsuariosListado extends Fragment{
                     usuarios.remove (i);
 
         lvLista.setAdapter (new AdaptadorListaUsuarios(this.requireContext(), usuarios));
-    }
-
-    private List<Usuario> cargarUsuarios () {
-        List<Usuario> usuarios = new ArrayList<>();
-
-        // TODO: Cargar usuarios de la bd
-
-        usuarios.add (new Usuario ("Jorgea", true));
-        usuarios.add (new Usuario ("Brian", false));
-        usuarios.add (new Usuario ("Ale", true));
-        usuarios.add (new Usuario ("Luisa", false));
-
-        return usuarios;
     }
 }

@@ -19,7 +19,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".AdminLogin" />
-        <activity android:name=".ListadoUsuarios" />
 
     </application>
 
