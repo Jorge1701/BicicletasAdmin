@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TestGitHub</string>
+    <string name="app_name">Bicicletas</string>
     <string name="iniciar_sesion">Iniciar Sesion</string>
     <string name="recordarme">Recordarme</string>
     <string name="usuario">Usuario</string>

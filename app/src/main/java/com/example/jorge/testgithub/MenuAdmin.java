@@ -13,9 +13,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
 import butterknife.ButterKnife;
 
 public class MenuAdmin extends AppCompatActivity
@@ -148,7 +145,8 @@ public class MenuAdmin extends AppCompatActivity
                 fragmentTransaction = true;
                 break;
             case R.id.nav_incidencias:
-
+                fragment = new IncidenciaListado ();
+                fragmentTransaction = true;
                 break;
             case R.id.nav_cerrar_sesion:
                 cerrarSesion();
