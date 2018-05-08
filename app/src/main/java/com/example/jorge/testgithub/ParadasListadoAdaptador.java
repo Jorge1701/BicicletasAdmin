@@ -40,14 +40,7 @@ public class ParadasListadoAdaptador extends ArrayAdapter<Parada> {
             Parada paradaActual = paradas.get(position);
 
                 TextView nombreParada = (TextView) listItem.findViewById(R.id.nombreParada);
-                nombreParada.setText("#" + paradaActual.getNumero() + " " + paradaActual.getNombre());
-                TextView estadoParada = (TextView) listItem.findViewById(R.id.estadoParada);
-                estadoParada.setText(paradaActual.getEstado());
-                if(paradaActual.getEstado().equals("Libre")){
-                    estadoParada.setTextColor(ContextCompat.getColor(getContext(),R.color.green));
-                }else{
-                    estadoParada.setTextColor(ContextCompat.getColor(getContext(),R.color.red));
-                }
+                nombreParada.setText(paradaActual.getNumero() + " " + paradaActual.getNombre());
 
                 TextView cantBicisLibres = (TextView) listItem.findViewById(R.id.cantBicisLibres);
                 cantBicisLibres.setText("" + paradaActual.getCantBicisLibres());

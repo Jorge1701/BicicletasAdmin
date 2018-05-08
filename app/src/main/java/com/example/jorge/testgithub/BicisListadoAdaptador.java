@@ -35,7 +35,7 @@ public class BicisListadoAdaptador extends ArrayAdapter<Bici>{
         Bici biciActual = bicis.get(position);
 
         TextView idBici = (TextView) listItem.findViewById(R.id.idBici);
-        idBici.setText("#" + biciActual.getId());
+        idBici.setText("" + biciActual.getId());
 
         TextView estadoBici = (TextView) listItem.findViewById(R.id.estadoBici);
         estadoBici.setText(biciActual.getEstado());
@@ -47,7 +47,7 @@ public class BicisListadoAdaptador extends ArrayAdapter<Bici>{
         }
 
         TextView paradaBici = (TextView) listItem.findViewById(R.id.paradaBici);
-        paradaBici.setText("#" + biciActual.getParada().getNumero());
+        paradaBici.setText("" + biciActual.getParada().getNumero());
 
         return listItem;
     }
