@@ -14,15 +14,16 @@
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Nombre"
+            android:text="@string/nombre"
             android:layout_weight="1"
             android:id="@+id/nombreParada"
             android:layout_gravity="center"
             android:paddingHorizontal="10dp"
             android:textSize="25sp"
-            android:textColor="#000"/>
+            android:textColor="#000"
+            tools:targetApi="o" />
 
         <LinearLayout
             android:layout_width="70dp"
@@ -32,7 +33,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Numero"
+                android:text="@string/numero"
                 android:textAlignment="center"
                 android:layout_marginBottom="2dp"/>
             <TextView
@@ -42,21 +43,22 @@
                 android:padding="5dp"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                android:text="1"
                 android:textAlignment="center"
                 android:id="@+id/numeroParada"
-                android:background="@drawable/borde_listado"/>
+                android:background="@drawable/borde_listado"
+                tools:targetApi="o" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="73dp"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginVertical="10dp">
+            android:layout_marginVertical="10dp"
+            tools:targetApi="o">
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Disponibles"
+                android:text="@string/disponibles"
                 android:textAlignment="center"
                 android:layout_marginBottom="2dp"/>
             <TextView
@@ -67,7 +69,6 @@
                 android:padding="5dp"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                android:text="20"
                 android:textAlignment="center"
                 android:id="@+id/cantBicisLibres"
                 android:background="@drawable/borde_listado"/>
@@ -81,7 +82,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Ocupadas"
+                android:text="@string/ocupadas"
                 android:textAlignment="center"
                 android:layout_marginBottom="2dp"/>
             <TextView
@@ -92,10 +93,10 @@
                 android:padding="5dp"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                android:text="10"
                 android:textAlignment="center"
                 android:id="@+id/cantBicisOcupadas"
-                android:background="@drawable/borde_listado"/>
+                android:background="@drawable/borde_listado"
+                tools:targetApi="o" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>
