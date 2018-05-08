@@ -18,28 +18,30 @@
             android:layout_width="match_parent"
             android:layout_height="60dp">
 
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/ivImagenUsuario"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_margin="5dp"
-                android:background="@drawable/fondo_admin"/>
+                android:src="@drawable/usuario_default"/>
 
             <LinearLayout
                 android:layout_weight="1"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginVertical="5dp"
-                android:orientation="vertical"
-                android:layout_marginHorizontal="15dp">
+                android:orientation="horizontal"
+                android:layout_marginHorizontal="5dp">
 
                 <LinearLayout
                     android:layout_weight="1"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/tvNombreUsuario"
+                        android:layout_weight="1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Jorge Rosas"
@@ -47,40 +49,53 @@
                         android:textColor="#000"
                         android:layout_gravity="center"/>
 
+                    <LinearLayout
+                        android:layout_weight="1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="15sp"
+                            android:textColor="#444"
+                            android:text="@string/parada"/>
+
+                        <TextView
+                            android:id="@+id/tvParadaIncidencia"
+                            android:layout_weight="1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:textSize="15sp"
+                            android:layout_marginHorizontal="15dp"
+                            android:text="---"/>
+
+                    </LinearLayout>
+
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_weight="1"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:orientation="horizontal">
+                    android:orientation="vertical">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:textSize="15sp"
-                        android:textColor="#444"
-                        android:text="@string/parada"/>
-
-                    <TextView
-                        android:id="@+id/tvParadaIncidencia"
+                    <Button
+                        android:id="@+id/btnEstado"
                         android:layout_weight="1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:textSize="15sp"
-                        android:layout_marginHorizontal="15dp"
-                        android:text="---"/>
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/boton_alert"
+                        android:text="Test"/>
 
                     <TextView
-                        android:id="@+id/tvEstadoIncidencia"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:textSize="15sp"
-                        android:layout_marginHorizontal="15dp"
-                        android:text="Abierta" />
+                        android:id="@+id/tvNombreAsignado"
+                        android:layout_weight="1"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:textAlignment="center"
+                        android:text="Asignado"/>
 
                 </LinearLayout>
 
@@ -140,7 +155,6 @@
                 android:layout_gravity="bottom|end"/>
 
         </android.support.design.widget.CoordinatorLayout>
-
 
     </LinearLayout>
 
