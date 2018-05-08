@@ -4,6 +4,8 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,9 +14,16 @@ import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 
 public class BicisListado extends Fragment {
     private OnFragmentInteractionListener mListener;
+
+    @BindView(R.id.lista_bicis)
+    RecyclerView mRecyclerView;
+    BicisListadoAdaptador adaptador;
 
     public BicisListado() {
         // Required empty public constructor
@@ -32,11 +41,13 @@ public class BicisListado extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_bicis_listado, container, false);
-        ListView listaBicis = view.findViewById(R.id.lista_bicis);
+        ButterKnife.bind(this, view);
 
         List<Bici> bicis = cargarBicis();
-        BicisListadoAdaptador bla = new BicisListadoAdaptador(getActivity(),R.layout.item_bicis_listado, bicis);
-        listaBicis.setAdapter(bla);
+        adaptador = new BicisListadoAdaptador(getActivity(), bicis);
+        mRecyclerView.setAdapter(adaptador);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mRecyclerView.setHasFixedSize(true);
 
         return view;
 
@@ -71,13 +82,13 @@ public class BicisListado extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
-    public List<Bici> cargarBicis(){
+    public List<Bici> cargarBicis() {
         List<Bici> bicis = new ArrayList<>();
 
-        bicis.add(new Bici(1,"Disponible",new Parada(1,"Centro","-232332223 324354524","18 de Julio  y Montevideo",20,20)));
-        bicis.add(new Bici(2,"Ocupada",new Parada(2,"Playa","-32424223 4465574524","Av salto",30,10)));
-        bicis.add(new Bici(3,"Disponible",new Parada(3,"Trebol","-234324354524 463154163","Ruta 90 km 2",10,5)));
-        bicis.add(new Bici(4,"Ocupada",new Parada(1,"Centro","-232332223 324354524","18 de Julio  y Montevideo",20,20)));
+        for (int i = 0; i < 50; i++) {
+            bicis.add(new Bici(i, "Disponible", new Parada(i, "Centro", "-232332223 324354524", "18 de Julio  y Montevideo", 20, 20)));
+            bicis.add(new Bici(i, "Ocupada", new Parada(i + 5, "Centro", "-232332223 324354524", "18 de Julio  y Montevideo", 20, 20)));
+        }
 
         return bicis;
     }

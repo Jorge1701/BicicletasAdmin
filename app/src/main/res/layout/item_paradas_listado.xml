@@ -24,7 +24,29 @@
             android:textSize="25sp"
             android:textColor="#000"/>
 
-
+        <LinearLayout
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_margin="10dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Numero"
+                android:textAlignment="center"
+                android:layout_marginBottom="2dp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="15dp"
+                android:padding="5dp"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:text="1"
+                android:textAlignment="center"
+                android:id="@+id/numeroParada"
+                android:background="@drawable/borde_listado"/>
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="73dp"
