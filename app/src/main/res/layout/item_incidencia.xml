@@ -60,6 +60,7 @@
                             android:layout_height="wrap_content"
                             android:textSize="15sp"
                             android:textColor="#444"
+                            android:layout_gravity="center"
                             android:text="@string/parada"/>
 
                         <TextView

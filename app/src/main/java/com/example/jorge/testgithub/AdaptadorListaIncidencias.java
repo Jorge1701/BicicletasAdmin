@@ -77,6 +77,9 @@ public class AdaptadorListaIncidencias extends ArrayAdapter<Incidencia> {
 		v.findViewById (R.id.ivSendComentar).setOnClickListener (new View.OnClickListener () {
 			@Override
 			public void onClick(View v2) {
+				if (etComentar.getText ().toString ().equals (""))
+					return;
+
 				// TODO: Mandar nombre del admin logueado (En vez de "Jorge")
 				getItem (position).comentar (new ComentarioDeAdmin ("Jorge", etComentar.getText ().toString ()));
 				cargarComentarios (v.getContext (), tvTituloComentarios, ll, getItem (position).getComentarios ());
