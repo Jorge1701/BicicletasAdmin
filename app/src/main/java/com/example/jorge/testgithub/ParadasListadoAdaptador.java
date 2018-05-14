@@ -12,7 +12,6 @@ import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -20,8 +19,7 @@ import butterknife.ButterKnife;
 
 public class ParadasListadoAdaptador extends RecyclerView.Adapter<ParadasListadoAdaptador.ParadaViewHolder> {
     private Context mContext;
-    private List<Parada> mParadas = new ArrayList<>();
-
+    private List<Parada> mParadas;
 
     public ParadasListadoAdaptador(Context context, List<Parada> paradas) {
         mContext = context;

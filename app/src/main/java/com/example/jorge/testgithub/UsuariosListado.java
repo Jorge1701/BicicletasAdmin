@@ -94,10 +94,8 @@ public class UsuariosListado extends Fragment {
 		inflater.inflate(R.menu.search_item, menu);
 		MenuItem item = menu.findItem (R.id.action_search);
 		searchView.setMenuItem (item);
-
 	}
 
-    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
