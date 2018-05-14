@@ -1,6 +1,9 @@
 package com.example.jorge.testgithub;
 
-public class Parada {
+import android.support.v7.widget.RecyclerView;
+import android.view.View;
+
+public class Parada{
 
     int numero = 0;
     String nombre = "";
@@ -12,9 +15,10 @@ public class Parada {
     int cantBicisLibres = 0;
     String estado = "";
 
-    public Parada (){}
+    public Parada (){
+    }
 
-    public Parada(int numero,String nombre, String ubicacion, String direccion, int cantBicis, int cantBicisOcupadas) {
+    public Parada(int numero, String nombre, String ubicacion, String direccion, int cantBicis, int cantBicisOcupadas) {
         this.numero = numero;
         this.nombre = nombre;
         this.ubicacion = ubicacion;
@@ -27,6 +31,8 @@ public class Parada {
         }else{
             this.estado = "Vacía";
         }
+
+
 
     }
 

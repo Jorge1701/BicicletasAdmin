@@ -18,7 +18,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".AdminLogin" />
-
     </application>
 
 </manifest>

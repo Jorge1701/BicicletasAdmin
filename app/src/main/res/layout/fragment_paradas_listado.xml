@@ -6,10 +6,11 @@
     tools:context=".ParadasListado">
 
 
-
-    <ListView
+    <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/lista_paradas"/>
-
+        android:id="@+id/lista_paradas"
+        android:background="#CCC"
+        android:divider="#CCC"
+        android:paddingBottom="3dp"/>
 </FrameLayout>
