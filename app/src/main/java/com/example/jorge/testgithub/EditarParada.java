@@ -1,8 +1,11 @@
 package com.example.jorge.testgithub;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -75,7 +78,6 @@ public class EditarParada extends FragmentActivity implements OnMapReadyCallback
         mMap.moveCamera(CameraUpdateFactory.newLatLng(paysandu));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(15.0f));
 
-        //mMap.setOnMarkerClickListener((GoogleMap.OnMarkerClickListener) this);
 
         googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                                                @Override

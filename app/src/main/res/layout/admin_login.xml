@@ -4,7 +4,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@drawable/fondo_admin"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -16,6 +17,15 @@
         android:layout_marginVertical="40dp"
         android:background="@drawable/fondo_cajas_texto_iniciar_sesion">
 
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/etUsuarioError"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:errorEnabled="true"
+            app:counterEnabled="true"
+            app:counterMaxLength="40">
+
+
         <EditText
             android:id="@+id/etUsuario"
             android:layout_width="match_parent"
@@ -24,6 +34,15 @@
             android:inputType="text"
             android:hint="@string/usuario" />
 
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/etPasswordError"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:errorEnabled="true"
+            app:passwordToggleEnabled="true">
+
         <EditText
             android:id="@+id/etPassword"
             android:layout_width="match_parent"
@@ -31,6 +50,8 @@
             android:textAlignment="center"
             android:inputType="textPassword"
             android:hint="@string/contrase_a" />
+
+        </android.support.design.widget.TextInputLayout>
 
         <CheckBox
             android:id="@+id/cbRecordar"

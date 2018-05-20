@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -16,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import butterknife.ButterKnife;
 
 public class MenuAdmin extends AppCompatActivity
@@ -27,7 +29,7 @@ public class MenuAdmin extends AppCompatActivity
         setContentView(R.layout.menu_admin);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar ().setTitle ("Menu Administrador");
+        getSupportActionBar().setTitle("Menu Administrador");
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -40,16 +42,16 @@ public class MenuAdmin extends AppCompatActivity
 
         //----------------------------------------------------------------------------------------------------------------------------------------------------------
 
-        ButterKnife.bind (this);
+        ButterKnife.bind(this);
 
         // Se cargan los datos del usuario guardado
-        SharedPreferences sp = getSharedPreferences ("usuario_guardado", MODE_PRIVATE);
-        String usuario = sp.getString ("usuario", null);
-        String password = sp.getString ("password", null);
+        SharedPreferences sp = getSharedPreferences("usuario_guardado", MODE_PRIVATE);
+        String usuario = sp.getString("usuario", null);
+        String password = sp.getString("password", null);
 
-        SharedPreferences sp_tmp = getSharedPreferences ("usuario_guardado_temp", MODE_PRIVATE);
-        String usuario_tmp = sp_tmp.getString ("usuario", null);
-        String password_tmp = sp_tmp.getString ("password", null);
+        SharedPreferences sp_tmp = getSharedPreferences("usuario_guardado_temp", MODE_PRIVATE);
+        String usuario_tmp = sp_tmp.getString("usuario", null);
+        String password_tmp = sp_tmp.getString("password", null);
 
         String u = "";
         String p = "";
@@ -63,7 +65,7 @@ public class MenuAdmin extends AppCompatActivity
         }
 
         // Si hay datos se verifica que sean validos
-        if (u.isEmpty () && p.isEmpty () || !Usuario.verificarUsuario (u, p)) {
+        if (u.isEmpty() && p.isEmpty() || !Usuario.verificarUsuario(u, p)) {
             // En caso de que el usuario fuera eliminado mientras tenia la aplicacion cerrada se borran los datos y se muestra un mensaje
             cerrarSesion();
         }
@@ -71,19 +73,20 @@ public class MenuAdmin extends AppCompatActivity
 
     }
 
-    private void cerrarSesion () {
-        SharedPreferences sp = getSharedPreferences ("usuario_guardado", MODE_PRIVATE);
+    private void cerrarSesion() {
+        SharedPreferences sp = getSharedPreferences("usuario_guardado", MODE_PRIVATE);
         SharedPreferences.Editor ed = sp.edit();
         ed.clear();
         ed.commit();
 
         Intent i = new Intent(MenuAdmin.this, AdminLogin.class);
-        i.addFlags (Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        startActivity (i);
+        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        startActivity(i);
     }
+
     @Override
     protected void onStop() {
-        SharedPreferences sp = getSharedPreferences ("usuario_guardado_temp", MODE_PRIVATE);
+        SharedPreferences sp = getSharedPreferences("usuario_guardado_temp", MODE_PRIVATE);
         SharedPreferences.Editor ed = sp.edit();
         ed.clear();
         ed.commit();
@@ -133,7 +136,12 @@ public class MenuAdmin extends AppCompatActivity
 
         switch (id) {
             case R.id.nav_ver_mapa:
-
+                Intent i = new Intent(this, AgregarParada.class);
+                startActivity(i);
+                break;
+            case R.id.nav_editar_mapa:
+                Intent is = new Intent(this, EditarParada.class);
+                startActivity(is);
                 break;
             case R.id.nav_usuarios:
                 fragment = new UsuariosListado();
@@ -155,9 +163,9 @@ public class MenuAdmin extends AppCompatActivity
                 break;
         }
 
-        if(fragmentTransaction){
+        if (fragmentTransaction) {
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.contenido_seleccionado,fragment)
+                    .replace(R.id.contenido_seleccionado, fragment)
                     .commit();
             item.setChecked(true);
             getSupportActionBar().setTitle(item.getTitle());

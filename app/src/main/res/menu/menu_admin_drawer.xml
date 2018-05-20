@@ -9,7 +9,11 @@
         <item
             android:id="@+id/nav_ver_mapa"
             android:icon="@drawable/ic_menu_map"
-            android:title="Ver mapa" />
+            android:title="Agregar Parada" />
+        <item
+            android:id="@+id/nav_editar_mapa"
+            android:icon="@drawable/ic_menu_map"
+            android:title="Editar Parada" />
         <item
             android:id="@+id/nav_usuarios"
             android:icon="@drawable/ic_menu_user"

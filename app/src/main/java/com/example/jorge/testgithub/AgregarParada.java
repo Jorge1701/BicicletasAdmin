@@ -5,14 +5,18 @@ import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -36,7 +40,12 @@ public class AgregarParada extends FragmentActivity implements OnMapReadyCallbac
     EditText nombre;
     @BindView(R.id.cantBicis)
     EditText cantBicis;
-
+    @BindView(R.id.agregarParada)
+    Button agregarParada;
+    @BindView(R.id.nombreError)
+    TextInputLayout nombreError;
+    @BindView(R.id.cantBicisError)
+    TextInputLayout cantBicisError;
 
 
     @Override
@@ -66,10 +75,20 @@ public class AgregarParada extends FragmentActivity implements OnMapReadyCallbac
         marcador = null;
 
         //obtener la posicion de todas las paradas y hacer los marcadores
-        LatLng paysandu = new LatLng(-32.316465,-58.088980);
+        LatLng paysandu = new LatLng(-32.316465, -58.088980);
+        mMap.addMarker(new MarkerOptions().position(new LatLng(-32.317921, -58.089010)).title("Parada1").draggable(true));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(paysandu));
-        mMap.animateCamera(CameraUpdateFactory.zoomTo( 15.0f ));
-        //mMap.addMarker(new MarkerOptions().position(new LatLng(-32.314887,-58.091662)).title("Parada1"));
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(15.0f));
+
+        googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                marker.showInfoWindow();
+                cantBicisError.setError(null);
+                nombreError.setError(null);
+                return true;
+            }
+        });
 
         googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
 
@@ -77,16 +96,18 @@ public class AgregarParada extends FragmentActivity implements OnMapReadyCallbac
             public void onMapClick(LatLng arg0) {
                 // TODO Auto-generated method stub
 
+                cantBicisError.setError(null);
+                nombreError.setError(null);
 
-                if(marcador == null){
-                    Toast.makeText(AgregarParada.this,"Direccion:"+getDireccion(arg0),Toast.LENGTH_LONG).show();
+                if (marcador == null) {
+                    Toast.makeText(AgregarParada.this, "Direccion:" + getDireccion(arg0), Toast.LENGTH_LONG).show();
                     Log.d("Direccion:", getDireccion(arg0));
                     marcador = mMap.addMarker(new MarkerOptions().position(arg0).title(getDireccion(arg0)));
                     mMap.moveCamera(CameraUpdateFactory.newLatLng(arg0));
 
-                }else{
+                } else {
                     marcador.remove();
-                    Toast.makeText(AgregarParada.this,"Direccion:"+getDireccion(arg0),Toast.LENGTH_LONG).show();
+                    Toast.makeText(AgregarParada.this, "Direccion:" + getDireccion(arg0), Toast.LENGTH_LONG).show();
                     Log.d("Direccion", getDireccion(arg0));
                     marcador = mMap.addMarker(new MarkerOptions().position(arg0).title(getDireccion(arg0)));
                     mMap.moveCamera(CameraUpdateFactory.newLatLng(arg0));
@@ -97,7 +118,7 @@ public class AgregarParada extends FragmentActivity implements OnMapReadyCallbac
 
     }
 
-    public String getDireccion(LatLng posicion){
+    public String getDireccion(LatLng posicion) {
         Geocoder gc = new Geocoder(AgregarParada.this);
         List<Address> list = null;
         try {
@@ -107,33 +128,35 @@ public class AgregarParada extends FragmentActivity implements OnMapReadyCallbac
             return "";
         }
         Address add = list.get(0);
-        Log.d("MAXADDRESS:", String.valueOf(add.getMaxAddressLineIndex()));
-       return add.getAddressLine(0);
+        return add.getAddressLine(0);
     }
 
 
-    public void AgregarParada(View v){
+    public void AgregarParada(View v) {
         /*Agregar Parada: Seleccionar Ubicación en el mapa, dirección, nombre y cantidad de
         bicis.*/
 
-        String parada = nombre.getText ().toString ().trim ();
-
-        String bi = cantBicis.getText().toString().trim();
+        nombreError.setError(null);
+        cantBicisError.setError(null);
 
         //chequeo que no deje nada vacio o incorrecto
-        if(parada.equals("") || bi.equals(0) || bi.equals("") || marcador == null){
-            Toast.makeText(this,"Error al procesar la informacion, verifique e intente nuevamente",Toast.LENGTH_LONG).show();
+        if (nombre.getText().toString().trim().equals("")) {
+            nombreError.setError("Nombre Invalido");
             return;
+        } else if (cantBicis.getText().toString().trim().equals("") || Integer.valueOf(cantBicis.getText().toString().trim()) < 1) {
+            cantBicisError.setError("Cantidad Invalida");
+            return;
+
         }
 
         //chequeo que no exista una parada con ese nombre
 
         //llamo al ingresar parada
 
-        Toast.makeText(this,"Nombre:"+parada,Toast.LENGTH_LONG).show();
-        Toast.makeText(this,"Ubicacion:"+marcador.getPosition().latitude+"|"+marcador.getPosition().longitude,Toast.LENGTH_LONG).show();
-        Toast.makeText(this,"Direccion:"+marcador.getTitle(),Toast.LENGTH_LONG).show();
-        Toast.makeText(this,"CantBicis:"+bi,Toast.LENGTH_LONG).show();
+        //Toast.makeText(this, "Nombre:" + parada, Toast.LENGTH_LONG).show();
+        //Toast.makeText(this, "Ubicacion:" + marcador.getPosition().latitude + "|" + marcador.getPosition().longitude, Toast.LENGTH_LONG).show();
+        //Toast.makeText(this, "Direccion:" + marcador.getTitle(), Toast.LENGTH_LONG).show();
+        //Toast.makeText(this, "CantBicis:" + bi, Toast.LENGTH_LONG).show();
 
     }
 }

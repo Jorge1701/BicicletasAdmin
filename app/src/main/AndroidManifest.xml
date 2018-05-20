@@ -17,15 +17,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".AdminLogin"></activity>
-        <activity android:name=".ListadoUsuarios" />
-        <!--
-             The API key for Google Maps-based APIs is defined as a string resource.
-             (See the file "res/values/google_maps_api.xml").
-             Note that the API key is linked to the encryption key used to sign the APK.
-             You need a different API key for each encryption key, including the release key that is used to
-             sign the APK for publishing.
-             You can define the keys for the debug and release targets in src/debug/ and src/release/.
-        -->
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
@@ -37,17 +29,18 @@
         <activity
             android:name=".EditarParada"
             android:label="@string/title_activity_editar_parada">
+        </activity>
         <activity
             android:name=".MenuAdmin"
             android:label="@string/title_activity_menu_admin"
-            android:theme="@style/AppTheme">
+            android:theme="@style/launchScreen">
+            <!-- android:theme="@style/AppTheme"> -->
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity android:name=".ListadoUsuarios">
         </activity>
     </application>
 
