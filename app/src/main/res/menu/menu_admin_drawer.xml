@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group
+        android:checkableBehavior="single"
+        android:id="@+id/menu">
+        <item
+            android:id="@+id/nav_ver_mapa"
+            android:icon="@drawable/ic_menu_map"
+            android:title="Ver mapa" />
+        <item
+            android:id="@+id/nav_usuarios"
+            android:icon="@drawable/ic_menu_user"
+            android:title="Usuarios" />
+        <item
+            android:id="@+id/nav_paradas"
+            android:icon="@drawable/ic_menu_paradas"
+            android:title="Paradas" />
+        <item
+            android:id="@+id/nav_bicicletas"
+            android:icon="@drawable/ic_menu_bicycle"
+            android:title="Bicicletas" />
+        <item
+            android:id="@+id/nav_incidencias"
+            android:icon="@drawable/ic_menu_error"
+            android:title="Incidencias" />
+    </group>
+    <group
+        android:checkableBehavior="none"
+        android:id="@+id/menu_logout">
+
+        <item
+            android:id="@+id/nav_cerrar_sesion"
+            android:icon="@drawable/ic_menu_logout"
+            android:title="Cerrar sesión" />
+    </group>
+
+
+
+</menu>

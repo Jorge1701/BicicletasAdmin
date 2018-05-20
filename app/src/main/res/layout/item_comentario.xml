@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <TextView
+        android:id="@+id/tvComentario"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#000"
+        android:layout_marginHorizontal="5dp"
+        android:layout_marginVertical="1dp"
+        android:padding="5dp"
+        android:background="@drawable/fondo_bordes_horizontales"
+        android:text="test"/>
+
+</LinearLayout>

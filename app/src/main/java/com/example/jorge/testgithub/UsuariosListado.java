@@ -1,12 +1,13 @@
 package com.example.jorge.testgithub;
 
-import android.graphics.Color;
-import android.support.v7.app.AppCompatActivity;
+import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ListView;
 
@@ -17,31 +18,38 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
-public class ListadoUsuarios extends AppCompatActivity {
 
-	@BindView (R.id.toolbar)
-    Toolbar toolbar;
-	@BindView (R.id.search)
+public class UsuariosListado extends Fragment{
+
+    @BindView (R.id.search)
     MaterialSearchView searchView;
-	@BindView (R.id.lvLista)
+    @BindView (R.id.lvLista)
     ListView lvLista;
-	@BindView (R.id.cbSinValidar)
+    @BindView (R.id.cbSinValidar)
     CheckBox cbSinValidar;
 
     private String filtro;
 
+
+    private OnFragmentInteractionListener mListener;
+
+    public UsuariosListado() {
+        // Required empty public constructor
+    }
+
     @Override
-    protected void onCreate (Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.listado_usuarios);
-		ButterKnife.bind (this);
+    }
 
-        setSupportActionBar (toolbar);
-        getSupportActionBar ().setTitle ("Lista de Usuarios");
-        toolbar.setTitleTextColor (Color.parseColor ("#FFFFFF"));
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.fragment_usuarios_listado, container, false);
+        ButterKnife.bind(this,v);
 
-        cargarUsuarios ();
         filtrarUsuarios ();
 
         searchView.setOnSearchViewListener (new MaterialSearchView.SearchViewListener () {
@@ -69,14 +77,39 @@ public class ListadoUsuarios extends AppCompatActivity {
                 return true;
             }
         });
+
+        return v;
+
+
+    }
+
+    // TODO: Rename method, update argument and hook method into UI event
+    public void onButtonPressed(Uri uri) {
+        if (mListener != null) {
+            mListener.onFragmentInteraction(uri);
+        }
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater ().inflate (R.menu.menu_item, menu);
-        MenuItem item = menu.findItem (R.id.action_search);
-        searchView.setMenuItem (item);
-        return true;
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnFragmentInteractionListener) {
+            mListener = (OnFragmentInteractionListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+
+    public interface OnFragmentInteractionListener {
+        // TODO: Update argument type and name
+        void onFragmentInteraction(Uri uri);
     }
 
     public void FiltrarSinValidar (View v) {
@@ -96,11 +129,11 @@ public class ListadoUsuarios extends AppCompatActivity {
                 if (usuarios.get (i).isValidado ())
                     usuarios.remove (i);
 
-        lvLista.setAdapter (new AdaptadorListaUsuarios (this, usuarios));
+        lvLista.setAdapter (new AdaptadorListaUsuarios(this.requireContext(), usuarios));
     }
 
     private List<Usuario> cargarUsuarios () {
-        List<Usuario> usuarios = new ArrayList<> ();
+        List<Usuario> usuarios = new ArrayList<>();
 
         // TODO: Cargar usuarios de la bd
 
