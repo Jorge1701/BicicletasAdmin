@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TestGitHub</string>
+    <string name="app_name">Bicicletas</string>
     <string name="iniciar_sesion">Iniciar Sesion</string>
     <string name="recordarme">Recordarme</string>
     <string name="usuario">Usuario</string>
@@ -21,6 +21,12 @@
     <string name="action_settings">Settings</string>
     <string name="estado">Estado: </string>
     <string name="parada">Parada: </string>
+    <string name="disponibles">Disponibles</string>
+    <string name="ocupadas">Ocupadas</string>
+    <string name="nombre">Nombre</string>
+    <string name="numero">Número</string>
+    <string name="nroParada">Nro. parada</string>
+    <string name="id">Id</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

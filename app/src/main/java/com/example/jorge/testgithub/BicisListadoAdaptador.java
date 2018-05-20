@@ -1,11 +1,17 @@
 package com.example.jorge.testgithub;
 
+import android.animation.Animator;
+import android.annotation.TargetApi;
 import android.content.Context;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
@@ -13,42 +19,81 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BicisListadoAdaptador extends ArrayAdapter<Bici>{
-    private Context context;
-    private List<Bici> bicis = new ArrayList<>();
-    private int resource;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
-    public BicisListadoAdaptador(@NonNull Context context,int resource, List<Bici> bicis) {
-        super(context, resource , bicis);
-        this.context = context;
-        this.bicis = bicis;
-        this.resource = resource;
+public class BicisListadoAdaptador extends RecyclerView.Adapter<BicisListadoAdaptador.BicisViewHolder>{
+    private Context mContext;
+    private List<Bici> mBicis = new ArrayList<>();
+
+    public BicisListadoAdaptador(Context context, List<Bici> bicis) {
+        mContext = context;
+        mBicis = bicis;
     }
 
-    @NonNull
     @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        View listItem = convertView;
-        if(listItem == null)
-            listItem = LayoutInflater.from(context).inflate(R.layout.item_bicis_listado,parent,false);
+    public BicisListadoAdaptador.BicisViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_bicis_listado, parent, false);
+        BicisListadoAdaptador.BicisViewHolder viewHolder = new BicisListadoAdaptador.BicisViewHolder(view);
+        return viewHolder;
+    }
 
-        Bici biciActual = bicis.get(position);
+    @Override
+    public void onBindViewHolder(BicisListadoAdaptador.BicisViewHolder holder, int position) {
+        holder.bindBici(mBicis.get(position));
+    }
 
-        TextView idBici = (TextView) listItem.findViewById(R.id.idBici);
-        idBici.setText("#" + biciActual.getId());
+    @Override
+    public int getItemCount() {
+        return mBicis.size();
+    }
 
-        TextView estadoBici = (TextView) listItem.findViewById(R.id.estadoBici);
-        estadoBici.setText(biciActual.getEstado());
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    @Override
+    public void onViewAttachedToWindow(BicisListadoAdaptador.BicisViewHolder bicisViewHolder){
+        super.onViewAttachedToWindow(bicisViewHolder);
+        animateCircularReveal(bicisViewHolder.itemView);
 
-        if(biciActual.getEstado().equals("Disponible")){
-            estadoBici.setTextColor(ContextCompat.getColor(getContext(),R.color.green));
-        }else{
-            estadoBici.setTextColor(ContextCompat.getColor(getContext(),R.color.red));
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    public void animateCircularReveal(View view){
+        int centerX = 0;
+        int centerY = 0;
+        int startRadius = 0;
+        int endRadius = Math.max(view.getWidth(),view.getHeight());
+        Animator animation = ViewAnimationUtils.createCircularReveal(view,centerX,centerY,startRadius,endRadius);
+        view.setVisibility(View.VISIBLE);
+        animation.start();
+    }
+
+    public class BicisViewHolder extends RecyclerView.ViewHolder{
+        @BindView(R.id.idBici)
+        TextView idBici;
+        @BindView(R.id.estadoBici)
+        TextView estadoBici;
+        @BindView(R.id.paradaBici)
+        TextView paradaBici;
+
+        private Context mContext;
+
+        public BicisViewHolder(View itemView){
+            super(itemView);
+            ButterKnife.bind(this,itemView);
+            mContext = itemView.getContext();
         }
 
-        TextView paradaBici = (TextView) listItem.findViewById(R.id.paradaBici);
-        paradaBici.setText("#" + biciActual.getParada().getNumero());
-
-        return listItem;
+        public void bindBici(Bici bici){
+            idBici.setText(""+bici.getId());
+            estadoBici.setText(bici.getEstado());
+            if(bici.getEstado().equals("Ocupada")){
+                estadoBici.setTextColor(mContext.getResources().getColor(R.color.red));
+            }else{
+                estadoBici.setTextColor(mContext.getResources().getColor(R.color.green));
+            }
+            paradaBici.setText(""+bici.getParada().getNumero());
+        }
     }
+
 }
