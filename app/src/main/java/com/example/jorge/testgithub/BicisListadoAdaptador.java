@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,9 @@ import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +44,7 @@ public class BicisListadoAdaptador extends RecyclerView.Adapter<BicisListadoAdap
 
     @Override
     public void onBindViewHolder(BicisListadoAdaptador.BicisViewHolder holder, int position) {
+        YoYo.with(Techniques.ZoomIn).duration(500).playOn(holder.cardView);
         holder.bindBici(mBicis.get(position));
     }
 
@@ -53,11 +58,11 @@ public class BicisListadoAdaptador extends RecyclerView.Adapter<BicisListadoAdap
     @Override
     public void onViewAttachedToWindow(BicisListadoAdaptador.BicisViewHolder bicisViewHolder){
         super.onViewAttachedToWindow(bicisViewHolder);
-        animateCircularReveal(bicisViewHolder.itemView);
+       // animateCircularReveal(bicisViewHolder.itemView);
 
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    /*@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public void animateCircularReveal(View view){
         int centerX = 0;
         int centerY = 0;
@@ -66,7 +71,7 @@ public class BicisListadoAdaptador extends RecyclerView.Adapter<BicisListadoAdap
         Animator animation = ViewAnimationUtils.createCircularReveal(view,centerX,centerY,startRadius,endRadius);
         view.setVisibility(View.VISIBLE);
         animation.start();
-    }
+    }*/
 
     public class BicisViewHolder extends RecyclerView.ViewHolder{
         @BindView(R.id.idBici)
@@ -75,6 +80,7 @@ public class BicisListadoAdaptador extends RecyclerView.Adapter<BicisListadoAdap
         TextView estadoBici;
         @BindView(R.id.paradaBici)
         TextView paradaBici;
+        CardView cardView;
 
         private Context mContext;
 
@@ -82,6 +88,7 @@ public class BicisListadoAdaptador extends RecyclerView.Adapter<BicisListadoAdap
             super(itemView);
             ButterKnife.bind(this,itemView);
             mContext = itemView.getContext();
+            cardView = itemView.findViewById(R.id.item_bicis_listado);
         }
 
         public void bindBici(Bici bici){
