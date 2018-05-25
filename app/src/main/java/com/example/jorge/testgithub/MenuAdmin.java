@@ -13,6 +13,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import butterknife.ButterKnife;
 
 public class MenuAdmin extends AppCompatActivity
@@ -130,7 +134,12 @@ public class MenuAdmin extends AppCompatActivity
 
         switch (id) {
             case R.id.nav_ver_mapa:
-
+                Intent i = new Intent(this, AgregarParada.class);
+                startActivity(i);
+                break;
+            case R.id.nav_editar_mapa:
+                Intent is = new Intent(this, EditarParada.class);
+                startActivity(is);
                 break;
             case R.id.nav_usuarios:
                 fragment = new UsuariosListado();

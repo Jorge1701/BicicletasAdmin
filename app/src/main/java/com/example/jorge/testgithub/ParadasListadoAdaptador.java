@@ -26,8 +26,7 @@ import butterknife.ButterKnife;
 
 public class ParadasListadoAdaptador extends RecyclerView.Adapter<ParadasListadoAdaptador.ParadaViewHolder> {
     private Context mContext;
-    private List<Parada> mParadas = new ArrayList<>();
-
+    private List<Parada> mParadas;
 
     public ParadasListadoAdaptador(Context context, List<Parada> paradas) {
         mContext = context;

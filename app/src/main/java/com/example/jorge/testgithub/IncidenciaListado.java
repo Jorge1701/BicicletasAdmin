@@ -4,6 +4,8 @@ import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +17,7 @@ import butterknife.ButterKnife;
 public class IncidenciaListado extends Fragment {
 
 	@BindView(R.id.lvIncidencias)
-	ListView lvIncidencias;
+	RecyclerView lvIncidencias;
 
 	private UsuariosListado.OnFragmentInteractionListener mListener;
 
@@ -31,7 +33,9 @@ public class IncidenciaListado extends Fragment {
 		View v = inflater.inflate(R.layout.fragment_listado_incidencias, container, false);
 		ButterKnife.bind (this, v);
 
-		lvIncidencias.setAdapter (new AdaptadorListaIncidencias(inflater.getContext (), Incidencia.cargarIncidencias ()));
+		lvIncidencias.setAdapter (new AdaptadorListaIncidencias (getActivity (), Incidencia.cargarIncidencias ()));
+		lvIncidencias.setLayoutManager (new LinearLayoutManager (getActivity ()));
+		lvIncidencias.setHasFixedSize (true);
 
 		return v;
 	}

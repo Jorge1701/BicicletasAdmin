@@ -2,6 +2,7 @@ package com.example.jorge.testgithub;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -20,6 +21,10 @@ public class AdminLogin extends AppCompatActivity {
     EditText etPassword;
     @BindView (R.id.cbRecordar)
     CheckBox cbRecordar;
+    @BindView(R.id.etUsuarioError)
+    TextInputLayout etUsuarioError;
+    @BindView(R.id.etPasswordError)
+    TextInputLayout etPasswordError;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,10 +37,17 @@ public class AdminLogin extends AppCompatActivity {
         String usuario = etUsuario.getText ().toString ().trim ();
         String password = etPassword.getText ().toString ().trim ();
 
-        if (usuario.equals ("") || password.equals ("")) {
-            Toast.makeText (this, getResources ().getString (R.string.falta_usuario_contraseña), Toast.LENGTH_LONG).show ();
+        etUsuarioError.setError(null);
+        etPasswordError.setError(null);
+
+        if (usuario.equals ("")) {
+            //Toast.makeText (this, getResources ().getString (R.string.falta_usuario_contraseña), Toast.LENGTH_LONG).show ();
+           etUsuarioError.setError("usuario incorrecto");
             return;
-        }
+        }else if(password.equals ("")){
+            etPasswordError.setError("Contraseña incorrecta");
+            return;
+        }else
 
         if (Usuario.verificarUsuario (usuario, password)) {
             if (cbRecordar.isChecked())
