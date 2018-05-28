@@ -1,5 +1,14 @@
 package com.example.jorge.testgithub;
 
+
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.location.Address;
@@ -29,8 +38,11 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class EditarParada extends FragmentActivity implements OnMapReadyCallback {
 
+
+public class EditarParada extends Fragment implements OnMapReadyCallback{
+
+    private SupportMapFragment mapFragment;
     private GoogleMap mMap;
     private Marker marcador;
     @BindView(R.id.nombre)
@@ -44,27 +56,60 @@ public class EditarParada extends FragmentActivity implements OnMapReadyCallback
     @BindView(R.id.cantBicisError)
     TextInputLayout cantBicisError;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_editar_parada);
-        ButterKnife.bind(this);
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+
+    public EditarParada() {
+        // Required empty public constructor
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
 
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+
+        View v = inflater.inflate(R.layout.fragment_editar_parada, container, false);
+        mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+
+        if(mapFragment == null){
+            FragmentManager fm = getFragmentManager();
+            FragmentTransaction ft = fm.beginTransaction();
+            mapFragment = SupportMapFragment.newInstance();
+            ft.replace(R.id.map, mapFragment).commit();
+        }
+
+        mapFragment.getMapAsync(this);
+        ButterKnife.bind(this, v);
+        Button btn = (Button) v.findViewById(R.id.editarParada);
+
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                nombreError.setError(null);
+                cantBicisError.setError(null);
+
+                if (nombre.getText().toString().trim().equals("")) {
+                    nombreError.setError("Nombre Invalido");
+                    return;
+                }else if (cantBicis.getText().toString().trim().equals("") || Integer.valueOf(cantBicis.getText().toString().trim()) < 1) {
+                    cantBicisError.setError("Cantidad Invalida");
+                    return;
+
+                }
+
+                Toast.makeText(getActivity(),"TODO BIEN",Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "NOMBRE:" + nombre.getText().toString().trim(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "Ubicacion" + marcador.getPosition().latitude + "|" + marcador.getPosition().longitude, Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "DIRECCION:" + getDireccion(marcador.getPosition()), Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "BICIS:" + cantBicis.getText().toString().trim(), Toast.LENGTH_LONG).show();
+            }
+        });
+
+        return v;
+    }
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -143,7 +188,7 @@ public class EditarParada extends FragmentActivity implements OnMapReadyCallback
     }
 
     public String getDireccion(LatLng posicion) {
-        Geocoder gc = new Geocoder(EditarParada.this);
+        Geocoder gc = new Geocoder(getActivity());
         List<Address> list = null;
         try {
             list = gc.getFromLocation(posicion.latitude, posicion.longitude, 1);
@@ -155,24 +200,5 @@ public class EditarParada extends FragmentActivity implements OnMapReadyCallback
         return add.getAddressLine(0);
     }
 
-    public void EditarParada(View v) {
 
-        nombreError.setError(null);
-        cantBicisError.setError(null);
-
-        if (nombre.getText().toString().trim().equals("")) {
-            nombreError.setError("Nombre Invalido");
-            return;
-        }else if (cantBicis.getText().toString().trim().equals("") || Integer.valueOf(cantBicis.getText().toString().trim()) < 1) {
-            cantBicisError.setError("Cantidad Invalida");
-            return;
-
-        }
-
-        Toast.makeText(EditarParada.this,"TODO BIEN",Toast.LENGTH_LONG).show();
-        Toast.makeText(EditarParada.this, "NOMBRE:" + nombre.getText().toString().trim(), Toast.LENGTH_LONG).show();
-        Toast.makeText(EditarParada.this, "Ubicacion" + marcador.getPosition().latitude + "|" + marcador.getPosition().longitude, Toast.LENGTH_LONG).show();
-        Toast.makeText(EditarParada.this, "DIRECCION:" + getDireccion(marcador.getPosition()), Toast.LENGTH_LONG).show();
-        Toast.makeText(EditarParada.this, "BICIS:" + cantBicis.getText().toString().trim(), Toast.LENGTH_LONG).show();
-    }
 }

@@ -12,14 +12,14 @@
         android:layout_weight="0"
         android:orientation="vertical">
 
-        <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+        <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:map="http://schemas.android.com/apk/res-auto"
             xmlns:tools="http://schemas.android.com/tools"
             android:id="@+id/map"
             android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
             android:layout_height="400dp"
-            tools:context=".AgregarParada" />
+            tools:context=".MenuAdmin" />
 
     </LinearLayout>
 
@@ -29,18 +29,20 @@
         android:layout_height="wrap_content"
         app:errorEnabled="true"
         app:counterEnabled="true"
-        app:counterMaxLength="40">
+        app:counterMaxLength="40"
+        android:visibility="invisible">
 
 
-    <EditText
-        android:id="@+id/nombre"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAlignment="center"
-        android:inputType="text"
-        android:hint="Nombre" />
+        <EditText
+            android:id="@+id/nombre"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:inputType="text"
+            android:hint="Nombre"
+            android:visibility="invisible"/>
 
     </android.support.design.widget.TextInputLayout>
 
@@ -48,36 +50,32 @@
         android:id="@+id/cantBicisError"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:errorEnabled="true">
+        app:errorEnabled="true"
+        android:visibility="invisible">
 
-    <EditText
-        android:id="@+id/cantBicis"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAlignment="center"
-        android:inputType="phone"
-        android:digits="1234567890"
-        android:hint="Cant Bicis" />
+        <EditText
+            android:id="@+id/cantBicis"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:inputType="phone"
+            android:digits="1234567890"
+            android:hint="Cant Bicis"
+            android:visibility="invisible" />
 
     </android.support.design.widget.TextInputLayout>
 
     <Button
-        android:id="@+id/agregarParada"
+        android:id="@+id/editarParada"
         android:layout_margin="20dp"
-        android:onClick="AgregarParada"
+        android:onClick="EditarParada"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/title_activity_agregar_parada"
+        android:text="@string/title_activity_editar_parada"
         android:layout_marginHorizontal="20dp"
-        android:background="@drawable/boton_iniciar_sesion"/>
+        android:background="@drawable/boton_iniciar_sesion"
+        android:visibility="invisible" />
 
 </LinearLayout>
-
-
-
-
-
-
-
