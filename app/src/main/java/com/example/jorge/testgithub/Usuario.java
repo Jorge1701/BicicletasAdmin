@@ -1,7 +1,20 @@
 package com.example.jorge.testgithub;
 
+import android.util.Log;
+import android.widget.Toast;
+
+import com.example.jorge.testgithub.BD.BDCliente;
+import com.example.jorge.testgithub.BD.BDInterface;
+import com.example.jorge.testgithub.BD.Respuesta;
+import com.example.jorge.testgithub.Util.Login;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class Usuario {
 
@@ -38,9 +51,20 @@ public class Usuario {
 		this.validado = validado;
 	}
 
-	public static boolean verificarUsuario (String usuario, String password) {
-		// TODO: Verificar usuario con la base de datos
-		return true;
+	public static void verificarUsuario (final Login l, final String usuario, final String password) {
+		BDInterface bd = BDCliente.getClient().create(BDInterface.class);
+		Call<Respuesta> call = bd.login ("Anda a cagar", password, usuario);
+		call.enqueue(new Callback<Respuesta>() {
+			@Override
+			public void onResponse(Call<Respuesta> call, Response<Respuesta> response) {
+				l.verificarLogin(response.body().getCodigo().equals("1"), usuario, password);
+			}
+
+			@Override
+			public void onFailure(Call<Respuesta> call, Throwable t) {
+
+			}
+		});
 	}
 
 	public static List<Usuario> cargarUsuarios () {
