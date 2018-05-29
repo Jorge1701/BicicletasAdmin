@@ -1,7 +1,9 @@
 package com.example.jorge.testgithub;
 
+import android.content.ComponentName;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -26,6 +28,7 @@ public class AdminLogin extends AppCompatActivity implements Login {
     @BindView(R.id.etUsuarioError)
     TextInputLayout etUsuarioError;
     @BindView(R.id.etPasswordError)
+
     TextInputLayout etPasswordError;
 
     @Override

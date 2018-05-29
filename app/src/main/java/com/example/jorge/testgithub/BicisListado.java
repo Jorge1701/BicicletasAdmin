@@ -78,7 +78,8 @@ public class BicisListado extends Fragment {
             @Override
             public void onSearchViewClosed () {
                 filtro = -1;
-                filtrarBicis ();
+                if (filtro != -1)
+                    filtrarBicis ();
             }
         });
 

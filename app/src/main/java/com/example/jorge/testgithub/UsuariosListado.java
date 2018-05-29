@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -27,7 +28,7 @@ public class UsuariosListado extends Fragment {
     @BindView (R.id.search)
     MaterialSearchView searchView;
     @BindView (R.id.lvLista)
-    ListView lvLista;
+	RecyclerView lvLista;
     @BindView (R.id.cbSinValidar)
     CheckBox cbSinValidar;
 
