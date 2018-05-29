@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:text="@string/usuarios_sin_validar"/>
 
-        <ListView
+        <android.support.v7.widget.RecyclerView
             android:id="@+id/lvLista"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -31,7 +31,7 @@
             android:divider="#CCC"
             android:paddingBottom="5dp">
 
-        </ListView>
+        </android.support.v7.widget.RecyclerView>
 
     </LinearLayout>
 

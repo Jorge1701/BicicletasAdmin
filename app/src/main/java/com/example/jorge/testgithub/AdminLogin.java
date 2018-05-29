@@ -28,6 +28,7 @@ public class AdminLogin extends AppCompatActivity implements Login {
     @BindView(R.id.etUsuarioError)
     TextInputLayout etUsuarioError;
     @BindView(R.id.etPasswordError)
+
     TextInputLayout etPasswordError;
 
     @Override
