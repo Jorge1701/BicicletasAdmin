@@ -7,17 +7,26 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+
+import com.example.jorge.testgithub.BD.BDCliente;
+import com.example.jorge.testgithub.BD.BDInterface;
+import com.example.jorge.testgithub.BD.RespuestaParadas;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ParadasListado extends Fragment {
     private OnFragmentInteractionListener mListener;
@@ -42,11 +51,21 @@ public class ParadasListado extends Fragment {
         View view = inflater.inflate(R.layout.fragment_paradas_listado, container, false);
         ButterKnife.bind(this, view);
 
-        List<Parada> paradas = cargarParadas();
-        adaptador = new ParadasListadoAdaptador(getActivity(), paradas);
-        mRecyclerView.setAdapter(adaptador);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mRecyclerView.setHasFixedSize(true);
+        BDInterface bd = BDCliente.getClient().create(BDInterface.class);
+        Call<RespuestaParadas> call = bd.getParadas();
+        call.enqueue(new Callback<RespuestaParadas>() {
+            @Override
+            public void onResponse(Call<RespuestaParadas> call, Response<RespuestaParadas> response) {
+                if (response.isSuccessful()) {
+                	cargarParadas(response.body().getParadas());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RespuestaParadas> call, Throwable t) {
+
+            }
+        });
 
 
         return view;
@@ -70,19 +89,15 @@ public class ParadasListado extends Fragment {
     }
 
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
 
     //------------------------------------------------------------------------------------------------------------------------------
 
-    public List<Parada> cargarParadas() {
-        List<Parada> paradas = new ArrayList<>();
-
-        for (int i = 0; i < 50; i++) {
-            paradas.add(new Parada(i, "Centro", "-232332223 324354524", "18 de Julio  y Montevideo", 20, 20));
-            paradas.add(new Parada(i, "Playa", "-32424223 4465574524", "Av salto", 30, 10));
-        }
-        return paradas;
-    }
+	public void cargarParadas (List<com.example.jorge.testgithub.Clases.Parada> paradas) {
+		adaptador = new ParadasListadoAdaptador(getActivity(), paradas);
+		mRecyclerView.setAdapter(adaptador);
+		mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+		mRecyclerView.setHasFixedSize(true);
+	}
 }

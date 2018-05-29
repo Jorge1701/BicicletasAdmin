@@ -87,7 +87,7 @@ public class AgregarParada extends Fragment implements OnMapReadyCallback, Parad
                     List<Parada> re = response.body().getParadas();
                     //List<MarkerOptions> paradas = new ArrayList<>();
                     for(int i=0; i < re.size();i++) {
-                        paradas.add(new MarkerOptions().position(new LatLng(re.get(i).getLat(), re.get(i).getLng())).title(re.get(i).getNombre()));
+                        paradas.add(new MarkerOptions().position(new LatLng(re.get(i).getLatitud(), re.get(i).getLongitud())).title(re.get(i).getNombre()));
                     }
                 }
 
@@ -197,8 +197,6 @@ public class AgregarParada extends Fragment implements OnMapReadyCallback, Parad
 
             @Override
             public void onMapClick(LatLng arg0) {
-                // TODO Auto-generated method stub
-
                 cantBicisError.setError(null);
                 nombreError.setError(null);
 

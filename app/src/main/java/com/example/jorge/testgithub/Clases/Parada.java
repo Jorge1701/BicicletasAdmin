@@ -25,7 +25,18 @@ public class Parada {
     private int cantidadLibre;
     private int cantidadOcupada;
 
-    public static void agregarParada(final Paradas p ,String nombre,String direccion,double lat,double lng,int cantBicis){
+    public Parada(int id, String nombre, double latitud, double longitud, String direccion, int cantBicis, int cantidadLibre, int cantidadOcupada) {
+        this.id = id;
+        this.nombre = nombre;
+        this.latitud = latitud;
+        this.longitud = longitud;
+        this.direccion = direccion;
+        this.cantBicis = cantBicis;
+        this.cantidadLibre = cantidadLibre;
+        this.cantidadOcupada = cantidadOcupada;
+    }
+
+    public static void agregarParada(final Paradas p , String nombre, String direccion, double lat, double lng, int cantBicis){
         BDInterface bd = BDCliente.getClient().create(BDInterface.class);
         Call<Respuesta> call = bd.agregarParada(nombre,lat,lng,direccion,cantBicis);
         call.enqueue(new Callback<Respuesta>() {
@@ -39,22 +50,6 @@ public class Parada {
                 p.agregarParada(false);
             }
         });
-    }
-
-    public int getCantidadLibre() {
-        return cantidadLibre;
-    }
-
-    public void setCantidadLibre(int cantidadLibre) {
-        this.cantidadLibre = cantidadLibre;
-    }
-
-    public int getCantidadOcupada() {
-        return cantidadOcupada;
-    }
-
-    public void setCantidadOcupada(int cantidadOcupada) {
-        this.cantidadOcupada = cantidadOcupada;
     }
 
     public int getId() {
@@ -73,20 +68,20 @@ public class Parada {
         this.nombre = nombre;
     }
 
-    public double getLat() {
+    public double getLatitud() {
         return latitud;
     }
 
-    public void setLat(double lat) {
-        this.latitud = lat;
+    public void setLatitud(double latitud) {
+        this.latitud = latitud;
     }
 
-    public double getLng() {
+    public double getLongitud() {
         return longitud;
     }
 
-    public void setLng(double lng) {
-        this.longitud = lng;
+    public void setLongitud(double longitud) {
+        this.longitud = longitud;
     }
 
     public String getDireccion() {
@@ -103,5 +98,21 @@ public class Parada {
 
     public void setCantBicis(int cantBicis) {
         this.cantBicis = cantBicis;
+    }
+
+    public int getCantidadLibre() {
+        return cantidadLibre;
+    }
+
+    public void setCantidadLibre(int cantidadLibre) {
+        this.cantidadLibre = cantidadLibre;
+    }
+
+    public int getCantidadOcupada() {
+        return cantidadOcupada;
+    }
+
+    public void setCantidadOcupada(int cantidadOcupada) {
+        this.cantidadOcupada = cantidadOcupada;
     }
 }

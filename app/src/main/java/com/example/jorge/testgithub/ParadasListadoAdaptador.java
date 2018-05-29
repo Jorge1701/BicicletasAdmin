@@ -18,6 +18,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import com.example.jorge.testgithub.Clases.Parada;
 
 public class ParadasListadoAdaptador extends RecyclerView.Adapter<ParadasListadoAdaptador.ParadaViewHolder> {
     private Context mContext;
@@ -89,9 +90,9 @@ public class ParadasListadoAdaptador extends RecyclerView.Adapter<ParadasListado
 
         public void bindParada(Parada parada){
             nombreParada.setText(parada.getNombre());
-            numeroParada.setText(""+parada.getNumero());
-            cantBicisLibres.setText(""+parada.getCantBicisLibres());
-            cantBicisOcupadas.setText(""+parada.getCantBicisOcupadas());
+            numeroParada.setText(""+parada.getId());
+            cantBicisLibres.setText(""+parada.getCantidadLibre());
+            cantBicisOcupadas.setText(""+parada.getCantidadOcupada());
         }
     }
 }

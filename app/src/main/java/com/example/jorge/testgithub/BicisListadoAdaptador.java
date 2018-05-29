@@ -99,7 +99,7 @@ public class BicisListadoAdaptador extends RecyclerView.Adapter<BicisListadoAdap
             }else{
                 estadoBici.setTextColor(mContext.getResources().getColor(R.color.green));
             }
-            paradaBici.setText(""+bici.getParada().getNumero());
+            paradaBici.setText(""+bici.getParada().getId());
         }
     }
 
