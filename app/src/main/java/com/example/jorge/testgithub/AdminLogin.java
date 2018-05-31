@@ -1,9 +1,7 @@
 package com.example.jorge.testgithub;
 
-import android.content.ComponentName;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,6 +10,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.jorge.testgithub.Clases.Usuario;
 import com.example.jorge.testgithub.Util.Login;
 
 import butterknife.BindView;
