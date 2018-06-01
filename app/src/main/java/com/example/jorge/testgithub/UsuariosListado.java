@@ -4,7 +4,10 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import retrofit2.Call;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -13,14 +16,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.ListView;
 
+import com.example.jorge.testgithub.BD.BDCliente;
+import com.example.jorge.testgithub.BD.BDInterface;
+import com.example.jorge.testgithub.BD.Respuesta;
+import com.example.jorge.testgithub.BD.RespuestaUsuarios;
+import com.example.jorge.testgithub.Clases.Usuario;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class UsuariosListado extends Fragment {
@@ -31,6 +41,8 @@ public class UsuariosListado extends Fragment {
 	RecyclerView lvLista;
     @BindView (R.id.cbSinValidar)
     CheckBox cbSinValidar;
+
+	private List<Usuario> usuarios;
 
     private String filtro;
 
@@ -87,6 +99,22 @@ public class UsuariosListado extends Fragment {
             }
         });
 
+		BDInterface bd = BDCliente.getClient().create(BDInterface.class);
+		Call<RespuestaUsuarios> call = bd.obtenerUsuarios ();
+		call.enqueue(new Callback<RespuestaUsuarios>() {
+			@Override
+			public void onResponse(Call<RespuestaUsuarios> call, Response<RespuestaUsuarios> response) {
+				usuarios = response.body().getUsuarios();
+				filtrarUsuarios ();
+			}
+
+			@Override
+			public void onFailure(Call<RespuestaUsuarios> call, Throwable t) {
+				t.printStackTrace();
+				Log.d ("ASD", t.toString());
+			}
+		});
+
         return v;
 	}
 
@@ -124,8 +152,16 @@ public class UsuariosListado extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
+    private List<Usuario> copiarUsuarios () {
+    	List<Usuario> res = new ArrayList<>();
+    	if (usuarios != null)
+			for (Usuario u : usuarios)
+				res.add(u);
+    	return res;
+	}
+
     private void filtrarUsuarios () {
-        List<Usuario> usuarios = Usuario.cargarUsuarios ();
+        List<Usuario> usuarios = copiarUsuarios ();
 
         if (filtro != null && !filtro.isEmpty ())
             for (int i = usuarios.size() - 1; i >= 0; i--)
@@ -134,9 +170,11 @@ public class UsuariosListado extends Fragment {
 
         if (cbSinValidar.isChecked ())
             for (int i = usuarios.size() - 1; i >= 0; i--)
-                if (usuarios.get (i).isValidado ())
+                if (usuarios.get(i).isActivado() == 0)
                     usuarios.remove (i);
 
-        lvLista.setAdapter (new AdaptadorListaUsuarios(this.requireContext(), usuarios));
+        lvLista.setAdapter (new AdaptadorListaUsuarios(this.getContext(), usuarios));
+		lvLista.setLayoutManager(new LinearLayoutManager(getActivity()));
+		lvLista.setHasFixedSize(true);
     }
 }

@@ -6,6 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/item_lista_usuario"
     app:cardBackgroundColor="#CCC"
+    android:layout_gravity="center"
     android:orientation="horizontal">
 
     <LinearLayout
@@ -51,6 +52,12 @@
                 android:layout_height="62dp"
                 android:layout_margin="10dp"
                 android:background="@drawable/ic_inhabilitar"/>
+
+            <ProgressBar
+                android:id="@+id/barraProgreso"
+                android:layout_width="62dp"
+                android:layout_height="62dp"
+                android:layout_margin="10dp" />
 
         </LinearLayout>
 

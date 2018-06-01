@@ -7,14 +7,17 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
+import com.example.jorge.testgithub.Clases.Usuario;
 
 import java.util.List;
 
@@ -58,13 +61,14 @@ public class AdaptadorListaUsuarios extends RecyclerView.Adapter<AdaptadorListaU
 	}
 
 	public class UsuarioViewHolder extends RecyclerView.ViewHolder {
-    	@BindView (R.id.tvTitulo)
-		TextView tvTitulo;
+    	@BindView (R.id.tvNombre)
+		TextView tvNombre;
 		@BindView (R.id.btnHabilitar)
-		Button btnHabilitar;
+		public Button btnHabilitar;
 		@BindView (R.id.btnInhabilitar)
-		Button btnInhabilitar;
-		@BindView (R.id.item_lista_usuario)
+		public Button btnInhabilitar;
+		@BindView (R.id.barraProgreso)
+		public ProgressBar barraProgreso;
 		CardView cardView;
 
 		private Context mContext;
@@ -72,13 +76,16 @@ public class AdaptadorListaUsuarios extends RecyclerView.Adapter<AdaptadorListaU
 		public UsuarioViewHolder (View itemView) {
 			super (itemView);
 			ButterKnife.bind (this, itemView);
+			cardView = itemView.findViewById (R.id.item_lista_usuario);
 			mContext = itemView.getContext ();
 		}
 
 		public void bindUsuario (final Usuario u) {
-			tvTitulo.setText (u.getNombre ());
+			tvNombre.setText (u.getNombre ());
 			// TODO: Cargar imagen del usuario
-			boolean activo = u.isValidado ();
+			boolean activo = u.isActivado() != 0;
+
+			barraProgreso.setVisibility (View.GONE);
 
 			btnHabilitar.setVisibility (!activo ? View.VISIBLE : View.GONE);
 			btnInhabilitar.setVisibility (activo ? View.VISIBLE : View.GONE);
@@ -102,7 +109,7 @@ public class AdaptadorListaUsuarios extends RecyclerView.Adapter<AdaptadorListaU
 			final Dialog dialog = new Dialog(mContext, android.R.style.Theme_Translucent_NoTitleBar);
 			View view = LayoutInflater.from(mContext).inflate(R.layout.custom_alert, null);
 
-			tvTitulo.setText ("Habilitar " + u.getNombre () + "?");
+			((TextView) view.findViewById(R.id.tvTitulo)).setText ("Habilitar " + u.getNombre () + "?");
 
 			view.findViewById(R.id.btnCancelar).setOnClickListener(new View.OnClickListener() {
 				@Override
@@ -114,7 +121,9 @@ public class AdaptadorListaUsuarios extends RecyclerView.Adapter<AdaptadorListaU
 			view.findViewById(R.id.btnAceptar).setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					u.habilitar ();
+					barraProgreso.setVisibility (View.VISIBLE);
+					btnHabilitar.setVisibility (View.GONE);
+					u.habilitar (UsuarioViewHolder.this);
 					dialog.dismiss();
 				}
 			});
@@ -127,7 +136,7 @@ public class AdaptadorListaUsuarios extends RecyclerView.Adapter<AdaptadorListaU
 			final Dialog dialog = new Dialog(mContext, android.R.style.Theme_Translucent_NoTitleBar);
 			View view = LayoutInflater.from(mContext).inflate(R.layout.custom_alert, null);
 
-			tvTitulo.setText ("Inhabilitar " + u.getNombre () + "?");
+			((TextView) view.findViewById(R.id.tvTitulo)).setText ("Inhabilitar " + u.getNombre () + "?");
 
 			view.findViewById(R.id.btnCancelar).setOnClickListener(new View.OnClickListener() {
 				@Override
@@ -139,7 +148,9 @@ public class AdaptadorListaUsuarios extends RecyclerView.Adapter<AdaptadorListaU
 			view.findViewById(R.id.btnAceptar).setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					u.inhabilitar ();
+					barraProgreso.setVisibility (View.VISIBLE);
+					btnInhabilitar.setVisibility (View.GONE);
+					u.inhabilitar (UsuarioViewHolder.this);
 					dialog.dismiss();
 				}
 			});
