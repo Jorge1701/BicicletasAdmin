@@ -1,55 +1,52 @@
 package com.example.jorge.testgithub.Clases;
 
+import com.example.jorge.testgithub.BD.BDCliente;
+import com.example.jorge.testgithub.BD.BDInterface;
+import com.example.jorge.testgithub.BD.RespuestaBicicletas;
+import com.example.jorge.testgithub.BD.RespuestaParadas;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class Bici {
-    private int id = 0;
-    private String estado = "";
-    private Parada parada = null;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
-    public Bici() {
+public class Bicicleta {
+    private String id = "";
+    private String disponible = "";
+    private String parada = "";
+
+    public Bicicleta() {
     }
 
-    public Bici(int id, String estado, Parada parada) {
+    public Bicicleta(String id, String disponible, String parada) {
         this.id = id;
-        this.estado = estado;
+        this.disponible = disponible;
         this.parada = parada;
     }
 
-    public static List<Bici> cargarBicis() {
-        // TODO: Cargar Bicicletas desde la bd
-        List<Bici> bicis = new ArrayList<>();
-
-        for (int i = 0; i < 50; i++) {
-            bicis.add(new Bici(i, "Disponible", new Parada(i, "Centro", -232332223,  324354524, "18 de Julio  y Montevideo", 20, 20, 3)));
-            bicis.add(new Bici(i, "Ocupada", new Parada(i + 5, "Centro", -232332223, 324354524, "18 de Julio  y Montevideo", 20, 20, 3)));
-        }
-
-        return bicis;
-    }
-
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public String getEstado() {
-        return estado;
+    public String getDisponible() {
+        return disponible;
     }
 
-    public void setEstado(String estado) {
-        this.estado = estado;
+    public void setDisponible(String disponible) {
+        this.disponible = disponible;
     }
 
-    public Parada getParada() {
+    public String getParada() {
         return parada;
     }
 
-    public void setParada(Parada parada) {
+    public void setParada(String parada) {
         this.parada = parada;
     }
 }

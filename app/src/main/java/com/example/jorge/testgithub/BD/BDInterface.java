@@ -19,6 +19,9 @@ public interface BDInterface {
 	@GET("paradas")
 	Call<RespuestaParadas> getParadas();
 
+	@GET("bicicletas")
+	Call<RespuestaBicicletas> getBicicletas();
+
 	@FormUrlEncoded
 	@POST("agregarParada")
 	Call<Respuesta> agregarParada(
