@@ -133,6 +133,10 @@ public class AgregarParada extends Fragment implements OnMapReadyCallback, Parad
                 }
 
                 altaParada(nombre.getText().toString().trim(), marcador.getTitle(), marcador.getPosition().latitude, marcador.getPosition().longitude, Integer.valueOf(cantBicis.getText().toString().trim()));
+                //Toast.makeText(getActivity(), "Nombre:" + nombre.getText().toString().trim() , Toast.LENGTH_LONG).show();
+                //Toast.makeText(getActivity(), "Ubicacion:" + marcador.getPosition().latitude + "|" + marcador.getPosition().longitude, Toast.LENGTH_LONG).show();
+                //Toast.makeText(getActivity(), "Direccion:" + marcador.getTitle(), Toast.LENGTH_LONG).show();
+                //Toast.makeText(getActivity(), "CantBicis:" + cantBicis.getText().toString().trim(), Toast.LENGTH_LONG).show();
             }
         });
         return v;
