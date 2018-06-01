@@ -7,34 +7,44 @@
          Google Maps Android API v2, but you must specify either coarse or fine
          location permissions for the 'MyLocation' functionality.
     -->
+
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher"
+        android:logo="@mipmap/ic_launcher"
+        android:banner="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".AdminLogin"></activity>
+        <activity android:name=".AdminLogin"
+            android:icon="@mipmap/ic_launcher"
+            android:roundIcon="@mipmap/ic_launcher"
+            android:logo="@mipmap/ic_launcher"
+            android:banner="@mipmap/ic_launcher"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"></activity>
+
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".AgregarParada"
-            android:label="@string/title_activity_agregar_parada">
-        </activity>
-        <activity
-            android:name=".EditarParada"
-            android:label="@string/title_activity_editar_parada">
-        </activity>
-        <activity
+            android:icon="@mipmap/ic_launcher"
+            android:roundIcon="@mipmap/ic_launcher"
+            android:logo="@mipmap/ic_launcher"
+            android:banner="@mipmap/ic_launcher"
             android:name=".MenuAdmin"
-            android:label="@string/title_activity_menu_admin"
-            android:theme="@style/launchScreen">
-            <!-- android:theme="@style/AppTheme"> -->
+            android:label="@string/app_name"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

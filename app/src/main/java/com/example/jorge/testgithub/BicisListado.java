@@ -51,7 +51,7 @@ public class BicisListado extends Fragment {
 
         if (filtro != -1)
             for (int i = bicis.size() - 1; i >= 0; i--)
-                if (bicis.get (i).getParada ().getNumero () != filtro)
+                if (bicis.get (i).getParada ().getId () != filtro)
                     bicis.remove (i);
 
         adaptador = new BicisListadoAdaptador(getActivity(), bicis);
@@ -78,7 +78,8 @@ public class BicisListado extends Fragment {
             @Override
             public void onSearchViewClosed () {
                 filtro = -1;
-                filtrarBicis ();
+                if (filtro != -1)
+                    filtrarBicis ();
             }
         });
 

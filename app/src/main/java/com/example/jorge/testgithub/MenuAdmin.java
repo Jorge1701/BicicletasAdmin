@@ -14,13 +14,14 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.jorge.testgithub.Util.Login;
 
 import butterknife.ButterKnife;
 
 public class MenuAdmin extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, UsuariosListado.OnFragmentInteractionListener, ParadasListado.OnFragmentInteractionListener, BicisListado.OnFragmentInteractionListener {
+        implements NavigationView.OnNavigationItemSelectedListener, UsuariosListado.OnFragmentInteractionListener, ParadasListado.OnFragmentInteractionListener, BicisListado.OnFragmentInteractionListener, Login {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,12 +65,11 @@ public class MenuAdmin extends AppCompatActivity
         }
 
         // Si hay datos se verifica que sean validos
-        if (u.isEmpty () && p.isEmpty () || !Usuario.verificarUsuario (u, p)) {
+        if (u.isEmpty () && p.isEmpty ()) {
             // En caso de que el usuario fuera eliminado mientras tenia la aplicacion cerrada se borran los datos y se muestra un mensaje
             cerrarSesion();
-        }
-
-
+        } else
+            Usuario.verificarUsuario (this, u, p);
     }
 
     private void cerrarSesion () {
@@ -89,6 +89,12 @@ public class MenuAdmin extends AppCompatActivity
         ed.clear();
         ed.commit();
         super.onStop();
+    }
+
+    @Override
+    public void verificarLogin (boolean verificado, String usuario, String password) {
+        if (!verificado)
+            cerrarSesion ();
     }
 
     @Override
@@ -134,12 +140,12 @@ public class MenuAdmin extends AppCompatActivity
 
         switch (id) {
             case R.id.nav_ver_mapa:
-                Intent i = new Intent(this, AgregarParada.class);
-                startActivity(i);
+                fragment = new AgregarParada();
+                fragmentTransaction = true;
                 break;
             case R.id.nav_editar_mapa:
-                Intent is = new Intent(this, EditarParada.class);
-                startActivity(is);
+                fragment = new EditarParada();
+                fragmentTransaction = true;
                 break;
             case R.id.nav_usuarios:
                 fragment = new UsuariosListado();

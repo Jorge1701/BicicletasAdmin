@@ -1,7 +1,9 @@
 package com.example.jorge.testgithub;
 
+import android.content.ComponentName;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,10 +12,12 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.jorge.testgithub.Util.Login;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class AdminLogin extends AppCompatActivity {
+public class AdminLogin extends AppCompatActivity implements Login {
 
     @BindView (R.id.etUsuario)
     EditText etUsuario;
@@ -24,6 +28,7 @@ public class AdminLogin extends AppCompatActivity {
     @BindView(R.id.etUsuarioError)
     TextInputLayout etUsuarioError;
     @BindView(R.id.etPasswordError)
+
     TextInputLayout etPasswordError;
 
     @Override
@@ -31,6 +36,17 @@ public class AdminLogin extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.admin_login);
         ButterKnife.bind (this);
+    }
+
+    @Override
+    public void verificarLogin (boolean verificado, String usuario, String password) {
+        if (verificado) {
+            if (cbRecordar.isChecked())
+                recordarUsuario(usuario, password);
+
+            cargarInicioAdmin (usuario, password);
+        } else
+            Toast.makeText(this, getResources ().getString (R.string.login_incorrecto), Toast.LENGTH_SHORT).show();
     }
 
     public void IniciarSesion (View v) {
@@ -48,14 +64,7 @@ public class AdminLogin extends AppCompatActivity {
             etPasswordError.setError("Contraseña incorrecta");
             return;
         }else
-
-        if (Usuario.verificarUsuario (usuario, password)) {
-            if (cbRecordar.isChecked())
-                recordarUsuario(usuario, password);
-
-            cargarInicioAdmin (usuario, password);
-        } else
-            Toast.makeText(this, getResources ().getString (R.string.login_incorrecto), Toast.LENGTH_SHORT).show();
+            Usuario.verificarUsuario (this, usuario, password);
     }
 
     private void recordarUsuario (String usuario, String password) {
