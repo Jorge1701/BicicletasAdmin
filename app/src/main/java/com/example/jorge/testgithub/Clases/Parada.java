@@ -52,6 +52,24 @@ public class Parada {
         });
     }
 
+    public static void editarParada(final Paradas p ,int id, String nombre, String direccion, double lat, double lng, int cantBicis){
+        BDInterface bd = BDCliente.getClient().create(BDInterface.class);
+        Call<Respuesta> call = bd.editarParada(id,nombre,lat,lng,direccion,cantBicis);
+        call.enqueue(new Callback<Respuesta>() {
+            @Override
+            public void onResponse(Call<Respuesta> call, Response<Respuesta> response) {
+                p.editarParada(response.body().getCodigo().equals("1") ? true : false);
+            }
+
+            @Override
+            public void onFailure(Call<Respuesta> call, Throwable t) {
+                p.editarParada(false);
+            }
+        });
+    }
+
+
+
     public int getId() {
         return id;
     }
@@ -80,9 +98,7 @@ public class Parada {
         return longitud;
     }
 
-    public void setLongitud(double longitud) {
-        this.longitud = longitud;
-    }
+    public void setLongitud(double longitud) { this.longitud = longitud; }
 
     public String getDireccion() {
         return direccion;

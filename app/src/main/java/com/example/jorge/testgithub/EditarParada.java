@@ -24,6 +24,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.jorge.testgithub.BD.BDCliente;
+import com.example.jorge.testgithub.BD.BDInterface;
+import com.example.jorge.testgithub.BD.RespuestaParadas;
+import com.example.jorge.testgithub.Clases.Parada;
+import com.example.jorge.testgithub.Util.Paradas;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -33,18 +38,22 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
-
-public class EditarParada extends Fragment implements OnMapReadyCallback{
+public class EditarParada extends Fragment implements OnMapReadyCallback, Paradas{
 
     private SupportMapFragment mapFragment;
     private GoogleMap mMap;
     private Marker marcador;
+    private List<Parada> paradas;
     @BindView(R.id.nombre)
     EditText nombre;
     @BindView(R.id.cantBicis)
@@ -69,6 +78,30 @@ public class EditarParada extends Fragment implements OnMapReadyCallback{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        //obtener paradas
+        BDInterface bd = BDCliente.getClient().create(BDInterface.class);
+        Call<RespuestaParadas> call = bd.getParadas();
+        call.enqueue(new Callback<RespuestaParadas>() {
+            @Override
+            public void onResponse(Call<RespuestaParadas> call, Response<RespuestaParadas> response) {
+                paradas = new ArrayList<>();
+                if(response.body().getCodigo().equals("1")){
+                    List<Parada> re = response.body().getParadas();
+
+                    for(int i=0; i < re.size();i++)
+                        paradas.add(re.get(i));
+                }
+
+                if(mMap != null)
+                    prepararMapa();
+            }
+
+            @Override
+            public void onFailure(Call<RespuestaParadas> call, Throwable t) {
+                Log.d("ASD", "onFailure(PARADAS): ");
+            }
+        });
+
 
         View v = inflater.inflate(R.layout.fragment_editar_parada, container, false);
         mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
@@ -98,31 +131,41 @@ public class EditarParada extends Fragment implements OnMapReadyCallback{
                     return;
 
                 }
+                int id = 0;
 
-                Toast.makeText(getActivity(),"TODO BIEN",Toast.LENGTH_LONG).show();
-                Toast.makeText(getActivity(), "NOMBRE:" + nombre.getText().toString().trim(), Toast.LENGTH_LONG).show();
-                Toast.makeText(getActivity(), "Ubicacion" + marcador.getPosition().latitude + "|" + marcador.getPosition().longitude, Toast.LENGTH_LONG).show();
-                Toast.makeText(getActivity(), "DIRECCION:" + getDireccion(marcador.getPosition()), Toast.LENGTH_LONG).show();
-                Toast.makeText(getActivity(), "BICIS:" + cantBicis.getText().toString().trim(), Toast.LENGTH_LONG).show();
+                for(Parada p : paradas)
+                    if(p.getNombre().equals(marcador.getTitle()))
+                        id = p.getId();
+
+
+                modificarParada(id,nombre.getText().toString().trim(),getDireccion(marcador.getPosition()),marcador.getPosition().latitude,marcador.getPosition().longitude,Integer.valueOf(cantBicis.getText().toString().trim()));
             }
         });
 
         return v;
     }
 
+    public void modificarParada(int id,String nombre, String direccion, double lat, double lng, int cantBicis) {
+        Parada.editarParada(this,id,nombre,direccion,lat,lng,cantBicis);
+    }
+
+    public void prepararMapa(){
+        Log.d("ASD", "prepararMapa: ");
+        for(int i=0; i < paradas.size(); i++){
+            mMap.addMarker(new MarkerOptions().position(new LatLng(paradas.get(i).getLatitud(), paradas.get(i).getLongitud())).title(paradas.get(i).getNombre()).draggable(true).snippet(paradas.get(i).getDireccion()));
+        }
+
+        //obtener la posicion de todas las paradas y hacer los marcadores
+        LatLng paysandu = new LatLng(-32.316465, -58.088980);
+        //mMap.addMarker(new MarkerOptions().position(new LatLng(-32.317921, -58.089010)).title("Parada1").draggable(true));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(paysandu));
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(15.0f));
+    }
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         marcador = null;
-
-        //obtener la posicion de todas las paradas y hacer los marcadores
-        LatLng paysandu = new LatLng(-32.316465, -58.088980);
-        mMap.addMarker(new MarkerOptions().position(new LatLng(-32.317921, -58.089010)).title("Parada1").draggable(true));
-        mMap.addMarker(new MarkerOptions().position(new LatLng(-32.315908, -58.084246)).title("Parada2").draggable(true));
-        mMap.addMarker(new MarkerOptions().position(new LatLng(-32.314838, -58.088559)).title("Parada3").draggable(true));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(paysandu));
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(15.0f));
-
 
         googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                                                @Override
@@ -138,19 +181,11 @@ public class EditarParada extends Fragment implements OnMapReadyCallback{
                                                    cantBicisError.setError(null);
                                                    nombreError.setError(null);
 
-                                                   if (marker.getTitle().equals("Parada1")) {
-                                                       nombre.setText("Parada1");
-                                                       cantBicis.setText(String.valueOf(1));
-                                                   }
-
-                                                   if (marker.getTitle().equals("Parada2")) {
-                                                       nombre.setText("Parada2");
-                                                       cantBicis.setText(String.valueOf(2));
-                                                   }
-
-                                                   if (marker.getTitle().equals("Parada3")) {
-                                                       nombre.setText("Parada3");
-                                                       cantBicis.setText(String.valueOf(3));
+                                                   for(Parada p : paradas){
+                                                       if(p.getNombre().equals(marcador.getTitle())){
+                                                           nombre.setText(p.getNombre());
+                                                           cantBicis.setText(String.valueOf(p.getCantidadLibre() + p.getCantidadOcupada()));
+                                                       }
                                                    }
 
                                                    marker.showInfoWindow();
@@ -173,7 +208,6 @@ public class EditarParada extends Fragment implements OnMapReadyCallback{
             @Override
             public void onMarkerDragEnd(Marker marker) {
                 //Toast.makeText(EditarParada.this, "TERMINO DE MOVER", Toast.LENGTH_LONG).show();
-                nombre.setText(marker.getTitle());
                 marcador = marker;
                 nombre.setVisibility(View.VISIBLE);
                 cantBicis.setVisibility(View.VISIBLE);
@@ -182,8 +216,19 @@ public class EditarParada extends Fragment implements OnMapReadyCallback{
                 cantBicisError.setVisibility(View.VISIBLE);
                 cantBicisError.setError(null);
                 nombreError.setError(null);
+
+                for(Parada p : paradas){
+                    if(p.getNombre().equals(marcador.getTitle())){
+                        marcador.setSnippet(getDireccion(marcador.getPosition()));
+                        nombre.setText(p.getNombre());
+                        cantBicis.setText(String.valueOf(p.getCantidadLibre() + p.getCantidadOcupada()));
+                    }
+                }
             }
         });
+
+        if(paradas != null)
+            prepararMapa();
 
     }
 
@@ -201,4 +246,28 @@ public class EditarParada extends Fragment implements OnMapReadyCallback{
     }
 
 
+    @Override
+    public boolean agregarParada(boolean ok) {
+        return false;
+    }
+
+    @Override
+    public boolean editarParada(boolean ok) {
+        if(ok){
+            Toast.makeText(getActivity(), "PARADA EDITADA", Toast.LENGTH_LONG).show();
+            nombre.setText("");
+            cantBicis.setText("");
+            nombre.setVisibility(View.INVISIBLE);
+            cantBicis.setVisibility(View.INVISIBLE);
+            editarParada.setVisibility(View.INVISIBLE);
+            nombreError.setVisibility(View.INVISIBLE);
+            cantBicisError.setVisibility(View.INVISIBLE);
+            cantBicisError.setError(null);
+            nombreError.setError(null);
+        }else{
+            Toast.makeText(getActivity(), "ERROR AL EDITAR", Toast.LENGTH_LONG).show();
+        }
+
+        return ok;
+    }
 }

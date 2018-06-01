@@ -1,6 +1,4 @@
-package com.example.jorge.testgithub;
-
-import com.example.jorge.testgithub.Clases.Parada;
+package com.example.jorge.testgithub.Clases;
 
 import java.util.ArrayList;
 import java.util.List;

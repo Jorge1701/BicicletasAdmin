@@ -5,8 +5,6 @@ import android.annotation.TargetApi;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Build;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -14,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -23,8 +20,8 @@ import android.widget.TextView;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
-
-import org.w3c.dom.Text;
+import com.example.jorge.testgithub.Clases.Incidencia;
+import com.example.jorge.testgithub.Clases.Incidencia.Estado;
 
 import java.util.List;
 
@@ -49,34 +46,23 @@ public class AdaptadorListaIncidencias extends RecyclerView.Adapter<AdaptadorLis
 	}
 
 	@Override
-	public void onBindViewHolder (AdaptadorListaIncidencias.IncidenciaViewHolder holder, int position) {
+	public void onBindViewHolder(AdaptadorListaIncidencias.IncidenciaViewHolder holder, int position) {
 		YoYo.with(Techniques.ZoomIn).duration(500).playOn(holder.cardView);
-		holder.bindIncidencia (incidencias.get (position));
+		holder.bindIncidencia(incidencias.get(position));
 	}
 
 	@Override
-	public int getItemCount () {
-		return incidencias.size ();
+	public int getItemCount() {
+		return incidencias.size();
 	}
 
 	@TargetApi(Build.VERSION_CODES.LOLLIPOP)
 	@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 	@Override
-	public void onViewAttachedToWindow (AdaptadorListaIncidencias.IncidenciaViewHolder paradaViewHolder){
-		super.onViewAttachedToWindow(paradaViewHolder);
-		//animateCircularReveal (paradaViewHolder.itemView);
+	public void onViewAttachedToWindow(AdaptadorListaIncidencias.IncidenciaViewHolder usuarioViewHolder){
+		super.onViewAttachedToWindow(usuarioViewHolder);
+		//animateCircularReveal(paradaViewHolder.itemView);
 	}
-
-	/*@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-	public void animateCircularReveal(View view){
-		int centerX = 0;
-		int centerY = 0;
-		int startRadius = 0;
-		int endRadius = Math.max(view.getWidth(),view.getHeight());
-		Animator animation = ViewAnimationUtils.createCircularReveal(view,centerX,centerY,startRadius,endRadius);
-		view.setVisibility(View.VISIBLE);
-		animation.start();
-	}*/
 
 	public class IncidenciaViewHolder extends RecyclerView.ViewHolder {
 
@@ -98,7 +84,6 @@ public class AdaptadorListaIncidencias extends RecyclerView.Adapter<AdaptadorLis
 		TextView tvTituloComentarios;
 		@BindView (R.id.etComentar)
 		EditText etComentar;
-
 		CardView cardView;
 
 		private Context context;
@@ -107,8 +92,8 @@ public class AdaptadorListaIncidencias extends RecyclerView.Adapter<AdaptadorLis
 		public IncidenciaViewHolder (View v) {
 			super (v);
 			ButterKnife.bind (this, v);
+			cardView = itemView.findViewById (R.id.item_lista_usuario);
 			context = v.getContext ();
-			cardView = itemView.findViewById(R.id.item_incidencia);
 		}
 
 		public void bindIncidencia (final Incidencia i) {
