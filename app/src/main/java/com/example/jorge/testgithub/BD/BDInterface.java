@@ -29,4 +29,15 @@ public interface BDInterface {
             @Field ("cantBicis") int cantBicis
    );
 
+	@FormUrlEncoded
+	@POST ("editarParada")
+	Call<Respuesta> editarParada (
+			@Field("id") int id,
+			@Field ("nombre") String nombre,
+			@Field("lat") double lat,
+			@Field("lng") double lng,
+			@Field ("direccion") String direccion,
+			@Field ("cantBicis") int cantBicis
+	);
+
 }

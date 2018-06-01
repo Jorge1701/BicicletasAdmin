@@ -86,12 +86,10 @@ public class AgregarParada extends Fragment implements OnMapReadyCallback, Parad
                     Log.d("ASD", "onResponse(PARADAS): "+ re.size());
                     for(int i=0; i < re.size();i++)
                         paradas.add(re.get(i));
-
                 }
 
                 if(mMap != null)
                     prepararMapa();
-
             }
 
             @Override
@@ -131,12 +129,7 @@ public class AgregarParada extends Fragment implements OnMapReadyCallback, Parad
                     Toast.makeText(getActivity(), "Seleccione un punto en el mapa", Toast.LENGTH_LONG).show();
                     return;
                 }
-
                 altaParada(nombre.getText().toString().trim(), marcador.getTitle(), marcador.getPosition().latitude, marcador.getPosition().longitude, Integer.valueOf(cantBicis.getText().toString().trim()));
-                //Toast.makeText(getActivity(), "Nombre:" + nombre.getText().toString().trim() , Toast.LENGTH_LONG).show();
-                //Toast.makeText(getActivity(), "Ubicacion:" + marcador.getPosition().latitude + "|" + marcador.getPosition().longitude, Toast.LENGTH_LONG).show();
-                //Toast.makeText(getActivity(), "Direccion:" + marcador.getTitle(), Toast.LENGTH_LONG).show();
-                //Toast.makeText(getActivity(), "CantBicis:" + cantBicis.getText().toString().trim(), Toast.LENGTH_LONG).show();
             }
         });
         return v;
@@ -149,9 +142,8 @@ public class AgregarParada extends Fragment implements OnMapReadyCallback, Parad
     public void prepararMapa(){
         Log.d("ASD", "prepararMapa: ");
             for(int i=0; i < paradas.size(); i++){
-                mMap.addMarker(new MarkerOptions().position(new LatLng(paradas.get(i).getLat(), paradas.get(i).getLng())).title(paradas.get(i).getNombre()).draggable(true));
+                mMap.addMarker(new MarkerOptions().position(new LatLng(paradas.get(i).getLatitud(), paradas.get(i).getLongitud())).title(paradas.get(i).getNombre()).draggable(true).snippet(paradas.get(i).getDireccion()));
             }
-
 
         //obtener la posicion de todas las paradas y hacer los marcadores
         LatLng paysandu = new LatLng(-32.316465, -58.088980);
@@ -222,10 +214,17 @@ public class AgregarParada extends Fragment implements OnMapReadyCallback, Parad
 
         if(ok){
             Toast.makeText(getActivity(), "PARADA AGREGADA", Toast.LENGTH_LONG).show();
+            nombre.setText("");
+            cantBicis.setText("");
         }else{
             Toast.makeText(getActivity(), "ERROR AL AGREGAR", Toast.LENGTH_LONG).show();
         }
 
         return ok;
+    }
+
+    @Override
+    public boolean editarParada(boolean ok) {
+        return false;
     }
 }
