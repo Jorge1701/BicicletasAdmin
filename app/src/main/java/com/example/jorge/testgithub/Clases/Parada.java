@@ -24,6 +24,12 @@ public class Parada {
     private int cantBicis;
     private int cantidadLibre;
     private int cantidadOcupada;
+    private int cantAlquileresDia;
+    private int cantAlquileresSemana;
+    private int cantAlquileresMes;
+
+    public Parada(){
+    }
 
     public Parada(int id, String nombre, double latitud, double longitud, String direccion, int cantBicis, int cantidadLibre, int cantidadOcupada) {
         this.id = id;
@@ -34,11 +40,14 @@ public class Parada {
         this.cantBicis = cantBicis;
         this.cantidadLibre = cantidadLibre;
         this.cantidadOcupada = cantidadOcupada;
+        this.cantAlquileresDia = 0;
+        this.cantAlquileresSemana = 0;
+        this.cantAlquileresMes = 0;
     }
 
-    public static void agregarParada(final Paradas p , String nombre, String direccion, double lat, double lng, int cantBicis){
+    public static void agregarParada(final Paradas p, String nombre, String direccion, double lat, double lng, int cantBicis) {
         BDInterface bd = BDCliente.getClient().create(BDInterface.class);
-        Call<Respuesta> call = bd.agregarParada(nombre,lat,lng,direccion,cantBicis);
+        Call<Respuesta> call = bd.agregarParada(nombre, lat, lng, direccion, cantBicis);
         call.enqueue(new Callback<Respuesta>() {
             @Override
             public void onResponse(Call<Respuesta> call, Response<Respuesta> response) {
@@ -52,9 +61,9 @@ public class Parada {
         });
     }
 
-    public static void editarParada(final Paradas p ,int id, String nombre, String direccion, double lat, double lng, int cantBicis){
+    public static void editarParada(final Paradas p, int id, String nombre, String direccion, double lat, double lng, int cantBicis) {
         BDInterface bd = BDCliente.getClient().create(BDInterface.class);
-        Call<Respuesta> call = bd.editarParada(id,nombre,lat,lng,direccion,cantBicis);
+        Call<Respuesta> call = bd.editarParada(id, nombre, lat, lng, direccion, cantBicis);
         call.enqueue(new Callback<Respuesta>() {
             @Override
             public void onResponse(Call<Respuesta> call, Response<Respuesta> response) {
@@ -67,7 +76,6 @@ public class Parada {
             }
         });
     }
-
 
 
     public int getId() {
@@ -98,7 +106,9 @@ public class Parada {
         return longitud;
     }
 
-    public void setLongitud(double longitud) { this.longitud = longitud; }
+    public void setLongitud(double longitud) {
+        this.longitud = longitud;
+    }
 
     public String getDireccion() {
         return direccion;
@@ -130,5 +140,29 @@ public class Parada {
 
     public void setCantidadOcupada(int cantidadOcupada) {
         this.cantidadOcupada = cantidadOcupada;
+    }
+
+    public int getCantAlquileresDia() {
+        return cantAlquileresDia;
+    }
+
+    public void setCantAlquileresDia(int cantAlquileresDia) {
+        this.cantAlquileresDia = cantAlquileresDia;
+    }
+
+    public int getCantAlquileresSemana() {
+        return cantAlquileresSemana;
+    }
+
+    public void setCantAlquileresSemana(int cantAlquileresSemana) {
+        this.cantAlquileresSemana = cantAlquileresSemana;
+    }
+
+    public int getCantAlquileresMes() {
+        return cantAlquileresMes;
+    }
+
+    public void setCantAlquileresMes(int cantAlquileresMes) {
+        this.cantAlquileresMes = cantAlquileresMes;
     }
 }
