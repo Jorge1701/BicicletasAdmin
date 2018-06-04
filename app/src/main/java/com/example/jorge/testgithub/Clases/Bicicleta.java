@@ -16,6 +16,7 @@ public class Bicicleta {
     private String id = "";
     private String disponible = "";
     private String parada = "";
+    private String fechaAlquilada = "20-6-2018";
 
     public Bicicleta() {
     }
@@ -48,5 +49,13 @@ public class Bicicleta {
 
     public void setParada(String parada) {
         this.parada = parada;
+    }
+
+    public String getFechaAlquilada() {
+        return fechaAlquilada;
+    }
+
+    public void setFechaAlquilada(String fechaAlquilada) {
+        this.fechaAlquilada = fechaAlquilada;
     }
 }
