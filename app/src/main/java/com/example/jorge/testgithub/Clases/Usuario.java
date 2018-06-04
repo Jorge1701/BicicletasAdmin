@@ -152,6 +152,7 @@ public class Usuario {
 				v.barraProgreso.setVisibility (View.GONE);
 				v.btnHabilitar.setVisibility(View.VISIBLE);
 				v.btnInhabilitar.setVisibility(View.GONE);
+				Log.d ("FALLO", t.getMessage ());
 			}
 		});
 	}
@@ -175,6 +176,7 @@ public class Usuario {
 				v.barraProgreso.setVisibility (View.GONE);
 				v.btnHabilitar.setVisibility (View.GONE);
 				v.btnInhabilitar.setVisibility (View.VISIBLE);
+				Log.d ("FALLO", t.getMessage ());
 			}
 		});
 	}
@@ -190,7 +192,7 @@ public class Usuario {
 
 			@Override
 			public void onFailure(Call<Respuesta> call, Throwable t) {
-
+				Log.d ("FALLO", t.getMessage ());
 			}
 		});
 	}

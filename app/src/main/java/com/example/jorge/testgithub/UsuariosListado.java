@@ -14,8 +14,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 
 import com.example.jorge.testgithub.BD.BDCliente;
 import com.example.jorge.testgithub.BD.BDInterface;
@@ -41,6 +44,16 @@ public class UsuariosListado extends Fragment {
 	RecyclerView lvLista;
     @BindView (R.id.cbSinValidar)
     CheckBox cbSinValidar;
+    @BindView (R.id.progressBar)
+	ProgressBar progressBar;
+    @BindView (R.id.llNoHay)
+	LinearLayout llNoHay;
+	@BindView (R.id.btnActualizar)
+	Button btnActualizar;
+	@BindView (R.id.btnActualizar2)
+	Button btnActualizar2;
+    @BindView (R.id.lista)
+    LinearLayout lista;
 
 	private List<Usuario> usuarios;
 
@@ -66,11 +79,11 @@ public class UsuariosListado extends Fragment {
         cbSinValidar.setOnCheckedChangeListener (new CompoundButton.OnCheckedChangeListener () {
             @Override
             public void onCheckedChanged (CompoundButton buttonView, boolean isChecked) {
-                filtrarUsuarios ();
+                bdcargarUsuarios();
             }
         });
 
-        filtrarUsuarios ();
+        bdcargarUsuarios();
 
         searchView.setOnSearchViewListener (new MaterialSearchView.SearchViewListener () {
             @Override
@@ -81,7 +94,7 @@ public class UsuariosListado extends Fragment {
             @Override
             public void onSearchViewClosed () {
                 filtro = null;
-                filtrarUsuarios ();
+                bdcargarUsuarios ();
             }
         });
 
@@ -94,28 +107,51 @@ public class UsuariosListado extends Fragment {
             @Override
             public boolean onQueryTextChange (String newText) {
                 filtro = newText;
-                filtrarUsuarios ();
+                bdcargarUsuarios ();
                 return true;
             }
         });
+
+		btnActualizar.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				bdcargarUsuarios();
+			}
+		});
+
+		btnActualizar2.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				bdcargarUsuarios();
+			}
+		});
+
+		progressBar.setVisibility (View.VISIBLE);
+		lista.setVisibility (View.GONE);
+
+        return v;
+	}
+
+	public void bdcargarUsuarios () {
+		llNoHay.setVisibility(View.GONE);
+		progressBar.setVisibility(View.VISIBLE);
+		lista.setVisibility(View.GONE);
 
 		BDInterface bd = BDCliente.getClient().create(BDInterface.class);
 		Call<RespuestaUsuarios> call = bd.obtenerUsuarios ();
 		call.enqueue(new Callback<RespuestaUsuarios>() {
 			@Override
 			public void onResponse(Call<RespuestaUsuarios> call, Response<RespuestaUsuarios> response) {
-				usuarios = response.body().getUsuarios();
-				filtrarUsuarios ();
+				filtrarUsuarios (response.body().getUsuarios());
 			}
 
 			@Override
 			public void onFailure(Call<RespuestaUsuarios> call, Throwable t) {
-				t.printStackTrace();
-				Log.d ("ASD", t.toString());
+				llNoHay.setVisibility(View.VISIBLE);
+				progressBar.setVisibility(View.GONE);
+				lista.setVisibility(View.GONE);
 			}
 		});
-
-        return v;
 	}
 
 	@Override
@@ -160,8 +196,13 @@ public class UsuariosListado extends Fragment {
     	return res;
 	}
 
-    private void filtrarUsuarios () {
-        List<Usuario> usuarios = copiarUsuarios ();
+    private void filtrarUsuarios (List<Usuario> usuarios) {
+    	if (usuarios == null) {
+			llNoHay.setVisibility (View.VISIBLE);
+			progressBar.setVisibility (View.GONE);
+			lista.setVisibility (View.GONE);
+			return;
+		}
 
         if (filtro != null && !filtro.isEmpty ())
             for (int i = usuarios.size() - 1; i >= 0; i--)
@@ -170,11 +211,21 @@ public class UsuariosListado extends Fragment {
 
         if (cbSinValidar.isChecked ())
             for (int i = usuarios.size() - 1; i >= 0; i--)
-                if (usuarios.get(i).isActivado() == 0)
+                if (usuarios.get(i).isActivado() == 1)
                     usuarios.remove (i);
 
         lvLista.setAdapter (new AdaptadorListaUsuarios(this.getContext(), usuarios));
 		lvLista.setLayoutManager(new LinearLayoutManager(getActivity()));
 		lvLista.setHasFixedSize(true);
+
+		if (usuarios.size() == 0) {
+			llNoHay.setVisibility (View.VISIBLE);
+			progressBar.setVisibility (View.GONE);
+			lista.setVisibility (View.GONE);
+		} else {
+			llNoHay.setVisibility (View.GONE);
+			progressBar.setVisibility (View.GONE);
+			lista.setVisibility (View.VISIBLE);
+		}
     }
 }
