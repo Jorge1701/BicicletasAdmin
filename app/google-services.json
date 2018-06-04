@@ -1,0 +1,59 @@
+{
+  "project_info": {
+    "project_number": "137651812952",
+    "firebase_url": "https://bicicletasadmin.firebaseio.com",
+    "project_id": "bicicletasadmin",
+    "storage_bucket": "bicicletasadmin.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:137651812952:android:b096945b3cd93609",
+        "android_client_info": {
+          "package_name": "com.example.jorge.testgithub"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "137651812952-rs32fojb6ldo5lb598mnvtubri2nuiem.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.jorge.testgithub",
+            "certificate_hash": "c014bdbc93ecca50855ca0c968f3b4cac047a9bb"
+          }
+        },
+        {
+          "client_id": "137651812952-guc57p46gt8pilmulors079r79fs12nh.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "137651812952-guc57p46gt8pilmulors079r79fs12nh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDWXaMRWAgl6AAmfgqFvVNtIEqwk6USrZE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "137651812952-guc57p46gt8pilmulors079r79fs12nh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

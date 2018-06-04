@@ -4,43 +4,74 @@
     tools:showIn="navigation_view">
 
     <group
-        android:checkableBehavior="single"
-        android:id="@+id/menu">
-        <item
-            android:id="@+id/nav_ver_mapa"
-            android:icon="@drawable/ic_menu_map"
-            android:title="Agregar Parada" />
-        <item
-            android:id="@+id/nav_editar_mapa"
-            android:icon="@drawable/ic_menu_map"
-            android:title="Editar Parada" />
+        android:id="@+id/menu"
+        android:checkableBehavior="single">
         <item
             android:id="@+id/nav_usuarios"
             android:icon="@drawable/ic_menu_user"
             android:title="Usuarios" />
-        <item
-            android:id="@+id/nav_paradas"
-            android:icon="@drawable/ic_menu_paradas"
-            android:title="Paradas" />
-        <item
-            android:id="@+id/nav_bicicletas"
-            android:icon="@drawable/ic_menu_bicycle"
-            android:title="Bicicletas" />
-        <item
-            android:id="@+id/nav_incidencias"
-            android:icon="@drawable/ic_menu_error"
-            android:title="Incidencias" />
+
+        <item android:title="Paradas">
+            <menu>
+                <group
+                    android:id="@+id/submenu_paradas"
+                    android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/nav_ver_mapa"
+                        android:icon="@drawable/ic_menu_agregar_parada"
+                        android:title="Agregar" />
+                    <item
+                        android:id="@+id/nav_editar_mapa"
+                        android:icon="@drawable/ic_menu_editar_parada"
+                        android:title="Editar" />
+                    <item
+                        android:id="@+id/nav_paradas"
+                        android:icon="@drawable/ic_menu_paradas"
+                        android:title="Listado con estado" />
+                    <item
+                        android:id="@+id/nav_paradas_alquileres"
+                        android:icon="@drawable/ic_menu_paradas"
+                        android:title="Listado con cant. alquileres" />
+                </group>
+            </menu>
+        </item>
+
+        <item android:title="Bicicletas">
+            <menu>
+                <group
+                    android:id="@+id/submenu_bicicletas"
+                    android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/nav_bicicletas"
+                        android:icon="@drawable/ic_menu_bicycle"
+                        android:title="Listado" />
+                    <item
+                        android:id="@+id/nav_bicicletas_no_devueltas"
+                        android:icon="@drawable/ic_menu_bicycle"
+                        android:title="Listado de no devueltas" />
+                </group>
+            </menu>
+        </item>
+
+        <group
+            android:id="@+id/incidencias"
+            android:checkableBehavior="single">
+            <item
+                android:id="@+id/nav_incidencias"
+                android:icon="@drawable/ic_menu_error"
+                android:title="Incidencias" />
+        </group>
+
     </group>
     <group
-        android:checkableBehavior="none"
-        android:id="@+id/menu_logout">
+        android:id="@+id/menu_logout"
+        android:checkableBehavior="none">
 
         <item
             android:id="@+id/nav_cerrar_sesion"
             android:icon="@drawable/ic_menu_logout"
             android:title="Cerrar sesión" />
     </group>
-
 
 
 </menu>

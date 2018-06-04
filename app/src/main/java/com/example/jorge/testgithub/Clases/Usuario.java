@@ -152,6 +152,7 @@ public class Usuario {
 				v.barraProgreso.setVisibility (View.GONE);
 				v.btnHabilitar.setVisibility(View.VISIBLE);
 				v.btnInhabilitar.setVisibility(View.GONE);
+				Log.d ("FALLO", t.getMessage ());
 			}
 		});
 	}
@@ -175,13 +176,14 @@ public class Usuario {
 				v.barraProgreso.setVisibility (View.GONE);
 				v.btnHabilitar.setVisibility (View.GONE);
 				v.btnInhabilitar.setVisibility (View.VISIBLE);
+				Log.d ("FALLO", t.getMessage ());
 			}
 		});
 	}
 
 	public static void verificarUsuario (final Login l, final String usuario, final String password) {
 		BDInterface bd = BDCliente.getClient().create(BDInterface.class);
-		Call<Respuesta> call = bd.login ("Anda a cagar", password, usuario);
+		Call<Respuesta> call = bd.login (usuario, password, null);
 		call.enqueue(new Callback<Respuesta>() {
 			@Override
 			public void onResponse(Call<Respuesta> call, Response<Respuesta> response) {
@@ -190,7 +192,7 @@ public class Usuario {
 
 			@Override
 			public void onFailure(Call<Respuesta> call, Throwable t) {
-
+				Log.d ("FALLO", t.getMessage ());
 			}
 		});
 	}
