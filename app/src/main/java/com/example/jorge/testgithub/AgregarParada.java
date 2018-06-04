@@ -34,6 +34,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
 import com.example.jorge.testgithub.Clases.Parada;
 
 import butterknife.BindView;
@@ -81,14 +82,14 @@ public class AgregarParada extends Fragment implements OnMapReadyCallback, Parad
             @Override
             public void onResponse(Call<RespuestaParadas> call, Response<RespuestaParadas> response) {
                 paradas = new ArrayList<>();
-                if(response.body().getCodigo().equals("1")){
+                if (response.body().getCodigo().equals("1")) {
                     List<Parada> re = response.body().getParadas();
-                    Log.d("ASD", "onResponse(PARADAS): "+ re.size());
-                    for(int i=0; i < re.size();i++)
+                    Log.d("ASD", "onResponse(PARADAS): " + re.size());
+                    for (int i = 0; i < re.size(); i++)
                         paradas.add(re.get(i));
                 }
 
-                if(mMap != null)
+                if (mMap != null)
                     prepararMapa();
             }
 
@@ -125,6 +126,8 @@ public class AgregarParada extends Fragment implements OnMapReadyCallback, Parad
                     cantBicisError.setError("Cantidad Invalida");
                     return;
 
+                } else if (Integer.valueOf(cantBicis.getText().toString().trim()) > 20) {
+                        cantBicisError.setError("Cantidad inválida (20 Max)");
                 } else if (marcador == null) {
                     Toast.makeText(getActivity(), "Seleccione un punto en el mapa", Toast.LENGTH_LONG).show();
                     return;
@@ -139,11 +142,11 @@ public class AgregarParada extends Fragment implements OnMapReadyCallback, Parad
         Parada.agregarParada(this, nombre, direccion, lat, lng, cantBicis);
     }
 
-    public void prepararMapa(){
+    public void prepararMapa() {
         Log.d("ASD", "prepararMapa: ");
-            for(int i=0; i < paradas.size(); i++){
-                mMap.addMarker(new MarkerOptions().position(new LatLng(paradas.get(i).getLatitud(), paradas.get(i).getLongitud())).title(paradas.get(i).getNombre()).draggable(true).snippet(paradas.get(i).getDireccion()));
-            }
+        for (int i = 0; i < paradas.size(); i++) {
+            mMap.addMarker(new MarkerOptions().position(new LatLng(paradas.get(i).getLatitud(), paradas.get(i).getLongitud())).title(paradas.get(i).getNombre()).draggable(true).snippet(paradas.get(i).getDireccion()));
+        }
 
         //obtener la posicion de todas las paradas y hacer los marcadores
         LatLng paysandu = new LatLng(-32.316465, -58.088980);
@@ -192,7 +195,7 @@ public class AgregarParada extends Fragment implements OnMapReadyCallback, Parad
             }
         });
 
-        if(paradas != null)
+        if (paradas != null)
             prepararMapa();
     }
 
@@ -212,11 +215,12 @@ public class AgregarParada extends Fragment implements OnMapReadyCallback, Parad
     @Override
     public boolean agregarParada(boolean ok) {
 
-        if(ok){
+        if (ok) {
             Toast.makeText(getActivity(), "PARADA AGREGADA", Toast.LENGTH_LONG).show();
             nombre.setText("");
             cantBicis.setText("");
-        }else{
+            marcador.remove();
+        } else {
             Toast.makeText(getActivity(), "ERROR AL AGREGAR", Toast.LENGTH_LONG).show();
         }
 
