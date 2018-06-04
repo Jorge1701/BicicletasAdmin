@@ -35,6 +35,22 @@ public class Incidencia {
 		// TODO: Cargar Incidencias desde la base de datos
 		incidencias = new ArrayList<>();
 
+		Usuario u1 = new Usuario("", "", "","","Jorge Rosas","","", 1, 0, 0,0);
+		Usuario u2 = new Usuario("", "", "","","Ale","","", 1, 0, 0,0);
+		Usuario u3 = new Usuario("", "", "","","El Brian","","", 1, 0, 0,0);
+
+		incidencias.add(new Incidencia(u1, 3, Estado.ABIERTA, "Se pincho la rueda", new ArrayList<ComentarioDeAdmin>()));
+
+		List<ComentarioDeAdmin> c =  new ArrayList<ComentarioDeAdmin>();
+		c.add(new ComentarioDeAdmin("Fulano", "Estamos trabajando para solucionarlo*"));
+		Incidencia i = new Incidencia(u2, 3, Estado.ASIGNADA, "Faltan bicicletas", c);
+		i.setAsignado("Fulano");
+		incidencias.add(i);
+		Incidencia i2 = new Incidencia(u3, 5, Estado.ABIERTA, "e ñery y la vici", new ArrayList<ComentarioDeAdmin>());
+		i2.setAsignado ("Mengano");
+		i2.setEstado (Estado.RESUELTA);
+		incidencias.add(i2);
+
 		return incidencias;
 	}
 

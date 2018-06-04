@@ -92,7 +92,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/maps/ic_add_location_black_24dp.xml" />
+                                      <entry key="url" value="jar:file:/D:/Programas/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/navigation/ic_refresh_black_24dp.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -102,8 +102,8 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="color" value="080101" />
-                            <entry key="outputName" value="ic_menu_agregar_parada" />
+                            <entry key="color" value="ffffff" />
+                            <entry key="outputName" value="ic_refresh_black_24dp" />
                             <entry key="sourceFile" value="C:\Users\Jorge" />
                           </map>
                         </option>

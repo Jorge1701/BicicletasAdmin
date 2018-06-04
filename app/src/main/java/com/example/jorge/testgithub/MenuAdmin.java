@@ -143,6 +143,7 @@ public class MenuAdmin extends AppCompatActivity
         switch (id) {
             case R.id.nav_ver_mapa:
                 fragment = new AgregarParada();
+                //fragment = new MapaCalor();
                 fragmentTransaction = true;
                 break;
             case R.id.nav_editar_mapa:

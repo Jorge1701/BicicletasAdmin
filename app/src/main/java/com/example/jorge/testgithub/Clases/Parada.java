@@ -1,15 +1,9 @@
 package com.example.jorge.testgithub.Clases;
 
-import android.util.Log;
-import android.widget.Toast;
-
 import com.example.jorge.testgithub.BD.BDCliente;
 import com.example.jorge.testgithub.BD.BDInterface;
 import com.example.jorge.testgithub.BD.Respuesta;
-import com.example.jorge.testgithub.BD.RespuestaParadas;
 import com.example.jorge.testgithub.Util.Paradas;
-
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
