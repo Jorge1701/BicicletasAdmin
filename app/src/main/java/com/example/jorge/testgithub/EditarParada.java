@@ -130,6 +130,8 @@ public class EditarParada extends Fragment implements OnMapReadyCallback, Parada
                     cantBicisError.setError("Cantidad Invalida");
                     return;
 
+                }else if(Integer.valueOf(cantBicis.getText().toString().trim()) > 20){
+                    cantBicisError.setError("Cantidad inválida (Máx 20)");
                 }
                 int id = 0;
 
