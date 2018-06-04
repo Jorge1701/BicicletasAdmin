@@ -183,7 +183,7 @@ public class Usuario {
 
 	public static void verificarUsuario (final Login l, final String usuario, final String password) {
 		BDInterface bd = BDCliente.getClient().create(BDInterface.class);
-		Call<Respuesta> call = bd.login ("Anda a cagar", password, usuario);
+		Call<Respuesta> call = bd.login (usuario, password, null);
 		call.enqueue(new Callback<Respuesta>() {
 			@Override
 			public void onResponse(Call<Respuesta> call, Response<Respuesta> response) {

@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
-import com.example.jorge.testgithub.Clases.Bici;
+import com.example.jorge.testgithub.Clases.Bicicleta;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,11 +23,11 @@ import butterknife.ButterKnife;
 
 public class BicisListadoAdaptador extends RecyclerView.Adapter<BicisListadoAdaptador.BicisViewHolder>{
     private Context mContext;
-    private List<Bici> mBicis = new ArrayList<>();
+    private List<Bicicleta> mBicicletas = new ArrayList<>();
 
-    public BicisListadoAdaptador(Context context, List<Bici> bicis) {
+    public BicisListadoAdaptador(Context context, List<Bicicleta> bicicletas) {
         mContext = context;
-        mBicis = bicis;
+        mBicicletas = bicicletas;
     }
 
     @Override
@@ -40,12 +40,12 @@ public class BicisListadoAdaptador extends RecyclerView.Adapter<BicisListadoAdap
     @Override
     public void onBindViewHolder(BicisListadoAdaptador.BicisViewHolder holder, int position) {
         YoYo.with(Techniques.ZoomIn).duration(500).playOn(holder.cardView);
-        holder.bindBici(mBicis.get(position));
+        holder.bindBici(mBicicletas.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return mBicis.size();
+        return mBicicletas.size();
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
@@ -86,15 +86,15 @@ public class BicisListadoAdaptador extends RecyclerView.Adapter<BicisListadoAdap
             cardView = itemView.findViewById(R.id.item_bicis_listado);
         }
 
-        public void bindBici(Bici bici){
-            idBici.setText(""+bici.getId());
-            estadoBici.setText(bici.getEstado());
-            if(bici.getEstado().equals("Ocupada")){
-                estadoBici.setTextColor(mContext.getResources().getColor(R.color.red));
-            }else{
+        public void bindBici(Bicicleta bicicleta){
+            idBici.setText(""+ bicicleta.getId());
+            estadoBici.setText((bicicleta.getDisponible().equals("false")) ? "Disponible": "Ocupada");
+            if(bicicleta.getDisponible().equals("false")){
                 estadoBici.setTextColor(mContext.getResources().getColor(R.color.green));
+            }else{
+                estadoBici.setTextColor(mContext.getResources().getColor(R.color.red));
             }
-            paradaBici.setText(""+bici.getParada().getId());
+            paradaBici.setText(""+ (bicicleta.getParada().equals("") ? "-" :bicicleta.getParada()));
         }
     }
 

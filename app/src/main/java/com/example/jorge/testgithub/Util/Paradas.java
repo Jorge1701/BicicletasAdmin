@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface Paradas {
     public boolean agregarParada(boolean ok);
+    public boolean editarParada(boolean ok);
 }

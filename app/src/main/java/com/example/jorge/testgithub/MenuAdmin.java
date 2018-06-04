@@ -38,6 +38,7 @@ public class MenuAdmin extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        onNavigationItemSelected(navigationView.getMenu().findItem(R.id.nav_usuarios));
 
         //----------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -152,6 +153,11 @@ public class MenuAdmin extends AppCompatActivity
                 break;
             case R.id.nav_paradas:
                 fragment = new ParadasListado();
+                fragmentTransaction = true;
+                break;
+            case R.id.nav_paradas_alquileres:
+                fragment = new ParadasListado();
+                ((ParadasListado)fragment).setAlquileres(true);
                 fragmentTransaction = true;
                 break;
             case R.id.nav_bicicletas:

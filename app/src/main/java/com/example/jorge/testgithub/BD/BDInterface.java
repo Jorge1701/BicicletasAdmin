@@ -19,6 +19,9 @@ public interface BDInterface {
 	@GET("paradas")
 	Call<RespuestaParadas> getParadas();
 
+	@GET("bicicletas")
+	Call<RespuestaBicicletas> getBicicletas();
+
 	@FormUrlEncoded
 	@POST("agregarParada")
 	Call<Respuesta> agregarParada(
@@ -42,6 +45,17 @@ public interface BDInterface {
 	@POST ("inhabilitar")
 	Call<Respuesta> inhabilitar (
 			@Field ("email") String email
+	);
+
+	@FormUrlEncoded
+	@POST ("editarParada")
+	Call<Respuesta> editarParada (
+			@Field("id") int id,
+			@Field ("nombre") String nombre,
+			@Field("lat") double lat,
+			@Field("lng") double lng,
+			@Field ("direccion") String direccion,
+			@Field ("cantBicis") int cantBicis
 	);
 
 }
