@@ -48,7 +48,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class EditarParada extends Fragment implements OnMapReadyCallback, Paradas{
+public class EditarParada extends Fragment implements OnMapReadyCallback, Paradas {
 
     private SupportMapFragment mapFragment;
     private GoogleMap mMap;
@@ -85,14 +85,14 @@ public class EditarParada extends Fragment implements OnMapReadyCallback, Parada
             @Override
             public void onResponse(Call<RespuestaParadas> call, Response<RespuestaParadas> response) {
                 paradas = new ArrayList<>();
-                if(response.body().getCodigo().equals("1")){
+                if (response.body().getCodigo().equals("1")) {
                     List<Parada> re = response.body().getParadas();
 
-                    for(int i=0; i < re.size();i++)
+                    for (int i = 0; i < re.size(); i++)
                         paradas.add(re.get(i));
                 }
 
-                if(mMap != null)
+                if (mMap != null)
                     prepararMapa();
             }
 
@@ -106,7 +106,7 @@ public class EditarParada extends Fragment implements OnMapReadyCallback, Parada
         View v = inflater.inflate(R.layout.fragment_editar_parada, container, false);
         mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
 
-        if(mapFragment == null){
+        if (mapFragment == null) {
             FragmentManager fm = getFragmentManager();
             FragmentTransaction ft = fm.beginTransaction();
             mapFragment = SupportMapFragment.newInstance();
@@ -126,34 +126,35 @@ public class EditarParada extends Fragment implements OnMapReadyCallback, Parada
                 if (nombre.getText().toString().trim().equals("")) {
                     nombreError.setError("Nombre Invalido");
                     return;
-                }else if (cantBicis.getText().toString().trim().equals("") || Integer.valueOf(cantBicis.getText().toString().trim()) < 1) {
+                } else if (cantBicis.getText().toString().trim().equals("") || Integer.valueOf(cantBicis.getText().toString().trim()) < 1) {
                     cantBicisError.setError("Cantidad Invalida");
                     return;
 
-                }else if(Integer.valueOf(cantBicis.getText().toString().trim()) > 20){
+                } else if (Integer.valueOf(cantBicis.getText().toString().trim()) > 20) {
                     cantBicisError.setError("Cantidad inválida (Máx 20)");
+                    return;
                 }
                 int id = 0;
 
-                for(Parada p : paradas)
-                    if(p.getNombre().equals(marcador.getTitle()))
+                for (Parada p : paradas)
+                    if (p.getNombre().equals(marcador.getTitle()))
                         id = p.getId();
 
 
-                modificarParada(id,nombre.getText().toString().trim(),getDireccion(marcador.getPosition()),marcador.getPosition().latitude,marcador.getPosition().longitude,Integer.valueOf(cantBicis.getText().toString().trim()));
+                modificarParada(id, nombre.getText().toString().trim(), getDireccion(marcador.getPosition()), marcador.getPosition().latitude, marcador.getPosition().longitude, Integer.valueOf(cantBicis.getText().toString().trim()));
             }
         });
 
         return v;
     }
 
-    public void modificarParada(int id,String nombre, String direccion, double lat, double lng, int cantBicis) {
-        Parada.editarParada(this,id,nombre,direccion,lat,lng,cantBicis);
+    public void modificarParada(int id, String nombre, String direccion, double lat, double lng, int cantBicis) {
+        Parada.editarParada(this, id, nombre, direccion, lat, lng, cantBicis);
     }
 
-    public void prepararMapa(){
+    public void prepararMapa() {
         Log.d("ASD", "prepararMapa: ");
-        for(int i=0; i < paradas.size(); i++){
+        for (int i = 0; i < paradas.size(); i++) {
             mMap.addMarker(new MarkerOptions().position(new LatLng(paradas.get(i).getLatitud(), paradas.get(i).getLongitud())).title(paradas.get(i).getNombre()).draggable(true).snippet(paradas.get(i).getDireccion()));
         }
 
@@ -183,8 +184,8 @@ public class EditarParada extends Fragment implements OnMapReadyCallback, Parada
                                                    cantBicisError.setError(null);
                                                    nombreError.setError(null);
 
-                                                   for(Parada p : paradas){
-                                                       if(p.getNombre().equals(marcador.getTitle())){
+                                                   for (Parada p : paradas) {
+                                                       if (p.getNombre().equals(marcador.getTitle())) {
                                                            nombre.setText(p.getNombre());
                                                            cantBicis.setText(String.valueOf(p.getCantidadLibre() + p.getCantidadOcupada()));
                                                        }
@@ -219,8 +220,8 @@ public class EditarParada extends Fragment implements OnMapReadyCallback, Parada
                 cantBicisError.setError(null);
                 nombreError.setError(null);
 
-                for(Parada p : paradas){
-                    if(p.getNombre().equals(marcador.getTitle())){
+                for (Parada p : paradas) {
+                    if (p.getNombre().equals(marcador.getTitle())) {
                         marcador.setSnippet(getDireccion(marcador.getPosition()));
                         nombre.setText(p.getNombre());
                         cantBicis.setText(String.valueOf(p.getCantidadLibre() + p.getCantidadOcupada()));
@@ -229,7 +230,7 @@ public class EditarParada extends Fragment implements OnMapReadyCallback, Parada
             }
         });
 
-        if(paradas != null)
+        if (paradas != null)
             prepararMapa();
 
     }
@@ -255,7 +256,7 @@ public class EditarParada extends Fragment implements OnMapReadyCallback, Parada
 
     @Override
     public boolean editarParada(boolean ok) {
-        if(ok){
+        if (ok) {
             Toast.makeText(getActivity(), "PARADA EDITADA", Toast.LENGTH_LONG).show();
             nombre.setText("");
             cantBicis.setText("");
@@ -266,7 +267,7 @@ public class EditarParada extends Fragment implements OnMapReadyCallback, Parada
             cantBicisError.setVisibility(View.INVISIBLE);
             cantBicisError.setError(null);
             nombreError.setError(null);
-        }else{
+        } else {
             Toast.makeText(getActivity(), "ERROR AL EDITAR", Toast.LENGTH_LONG).show();
         }
 

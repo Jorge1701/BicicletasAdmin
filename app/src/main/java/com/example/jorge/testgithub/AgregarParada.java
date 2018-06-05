@@ -127,7 +127,8 @@ public class AgregarParada extends Fragment implements OnMapReadyCallback, Parad
                     return;
 
                 } else if (Integer.valueOf(cantBicis.getText().toString().trim()) > 20) {
-                        cantBicisError.setError("Cantidad inválida (20 Max)");
+                    cantBicisError.setError("Cantidad inválida (20 Max)");
+                    return;
                 } else if (marcador == null) {
                     Toast.makeText(getActivity(), "Seleccione un punto en el mapa", Toast.LENGTH_LONG).show();
                     return;

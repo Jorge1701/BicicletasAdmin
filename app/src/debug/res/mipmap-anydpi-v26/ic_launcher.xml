@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<adaptive-icon xmlns:andorid="http://schemas.android.com/apk/res/android">
-    <background andorid:drawable="@drawable/ic_launcher_background"/>
-    <foreground andorid:drawable="@drawable/ic_inhabilitar"/>
-</adaptive-icon>
