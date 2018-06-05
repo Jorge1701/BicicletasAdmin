@@ -18,6 +18,31 @@
             android:inputType="numberDecimal"
             android:visibility="gone"/>
 
+        <CheckBox
+            android:id="@+id/checkboxNoDevueltas"
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:layout_marginBottom="2dp"
+            android:layout_marginTop="2dp"
+            android:background="@color/white"
+            android:checked="false"
+            android:text="@string/bicicletas_sin_devolver"
+            android:textColor="@color/red" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white">
+
+            <Spinner
+                android:id="@+id/spinnerFechas"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone" />
+        </LinearLayout>
+
+
+
         <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="match_parent"

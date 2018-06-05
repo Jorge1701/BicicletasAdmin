@@ -27,7 +27,7 @@
                     <item
                         android:id="@+id/nav_paradas"
                         android:icon="@drawable/ic_menu_paradas"
-                        android:title="Listado con estado" />
+                        android:title="Listado" />
                     <item
                         android:id="@+id/nav_paradas_alquileres"
                         android:icon="@drawable/ic_menu_paradas"
@@ -36,26 +36,15 @@
             </menu>
         </item>
 
-        <item android:title="Bicicletas">
-            <menu>
-                <group
-                    android:id="@+id/submenu_bicicletas"
-                    android:checkableBehavior="single">
-                    <item
-                        android:id="@+id/nav_bicicletas"
-                        android:icon="@drawable/ic_menu_bicycle"
-                        android:title="Listado" />
-                    <item
-                        android:id="@+id/nav_bicicletas_no_devueltas"
-                        android:icon="@drawable/ic_menu_bicycle"
-                        android:title="Listado de no devueltas" />
-                </group>
-            </menu>
-        </item>
-
         <group
-            android:id="@+id/incidencias"
+            android:id="@+id/masOpciones"
             android:checkableBehavior="single">
+
+            <item
+                android:id="@+id/nav_bicicletas"
+                android:icon="@drawable/ic_menu_bicycle"
+                android:title="Bicicletas" />
+
             <item
                 android:id="@+id/nav_incidencias"
                 android:icon="@drawable/ic_menu_error"
