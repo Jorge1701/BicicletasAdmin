@@ -2,6 +2,9 @@ package com.example.jorge.testgithub;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.ColorFilter;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -134,7 +137,6 @@ public class MenuAdmin extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
         boolean fragmentTransaction = false;
         Fragment fragment = null;
 
@@ -179,7 +181,11 @@ public class MenuAdmin extends AppCompatActivity
                     .replace(R.id.contenido_seleccionado,fragment)
                     .commit();
             item.setChecked(true);
-            getSupportActionBar().setTitle(item.getTitle());
+            getSupportActionBar().setTitle("  "+item.getTitle());
+            Drawable icon = item.getIcon();
+            icon.mutate().setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
+            getSupportActionBar().setIcon(icon);
+
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
