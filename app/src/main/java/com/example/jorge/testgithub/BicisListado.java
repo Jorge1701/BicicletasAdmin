@@ -133,7 +133,7 @@ public class BicisListado extends Fragment {
             Log.d("fecha", fecha);
             for (int i = bs.size() - 1; i >= 0; i--) {
                 if (bs.get(i).getParada() == "") {
-                    if (!bs.get(i).getFechaAlquilada().equals(fecha))
+                    if (!bs.get(i).getFechaAlquiler().equals(fecha))
                         bs.remove(i);
                 } else {
                     bs.remove(i);

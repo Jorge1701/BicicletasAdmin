@@ -16,6 +16,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.example.jorge.testgithub.Clases.Usuario;
 import com.example.jorge.testgithub.Util.Login;
@@ -39,6 +40,7 @@ public class MenuAdmin extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+        //Iniciar en el fragment usuarios
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         onNavigationItemSelected(navigationView.getMenu().findItem(R.id.nav_usuarios));
@@ -98,6 +100,8 @@ public class MenuAdmin extends AppCompatActivity
     public void verificarLogin (boolean verificado, String usuario, String password) {
         if (!verificado)
             cerrarSesion ();
+        TextView textView = findViewById(R.id.correoUsuario);
+        textView.setText(usuario);
     }
 
     @Override
@@ -119,16 +123,6 @@ public class MenuAdmin extends AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        //if (id == R.id.action_settings) {
-        //    return true;
-        //}
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -161,6 +155,10 @@ public class MenuAdmin extends AppCompatActivity
             case R.id.nav_paradas_alquileres:
                 fragment = new ParadasListado();
                 ((ParadasListado)fragment).setAlquileres(true);
+                fragmentTransaction = true;
+                break;
+            case R.id.nav_mapa_calor:
+                fragment = new MapaCalor();
                 fragmentTransaction = true;
                 break;
             case R.id.nav_bicicletas:

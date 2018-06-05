@@ -191,10 +191,10 @@ public class Usuario {
 				l.verificarLogin(response.body().getCodigo().equals("1"), usuario, password);
 			}
 
-			@Override
-			public void onFailure(Call<Respuesta> call, Throwable t) {
-				Log.d ("FALLO", t.getMessage ());
-			}
-		});
-	}
+            @Override
+            public void onFailure(Call<Respuesta> call, Throwable t) {
+                Log.d("Error","No se pudo conectar al servidor");
+            }
+        });
+    }
 }

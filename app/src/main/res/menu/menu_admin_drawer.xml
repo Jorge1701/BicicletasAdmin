@@ -27,11 +27,15 @@
                     <item
                         android:id="@+id/nav_paradas"
                         android:icon="@drawable/ic_menu_paradas"
-                        android:title="Listado" />
+                        android:title="Ver" />
                     <item
                         android:id="@+id/nav_paradas_alquileres"
                         android:icon="@drawable/ic_menu_paradas"
-                        android:title="Listado con cant. alquileres" />
+                        android:title="Ver con cant. alquileres" />
+                    <item
+                        android:id="@+id/nav_mapa_calor"
+                        android:icon="@drawable/ic_menu_map"
+                        android:title="Mapa de calor" />
                 </group>
             </menu>
         </item>
