@@ -2,7 +2,6 @@ package com.example.jorge.testgithub;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.ColorFilter;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -14,16 +13,22 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.jorge.testgithub.BD.BDCliente;
+import com.example.jorge.testgithub.BD.BDInterface;
+import com.example.jorge.testgithub.BD.Respuesta;
 import com.example.jorge.testgithub.Clases.Usuario;
-import com.example.jorge.testgithub.Util.Login;
 
 import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MenuAdmin extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, UsuariosListado.OnFragmentInteractionListener, ParadasListado.OnFragmentInteractionListener, BicisListado.OnFragmentInteractionListener, Login {
+        implements NavigationView.OnNavigationItemSelectedListener, UsuariosListado.OnFragmentInteractionListener, ParadasListado.OnFragmentInteractionListener, BicisListado.OnFragmentInteractionListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +36,7 @@ public class MenuAdmin extends AppCompatActivity
         setContentView(R.layout.menu_admin);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar ().setTitle ("Menu Administrador");
+        getSupportActionBar().setTitle("Menu Administrador");
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -45,59 +50,75 @@ public class MenuAdmin extends AppCompatActivity
 
         //----------------------------------------------------------------------------------------------------------------------------------------------------------
 
-        ButterKnife.bind (this);
+        ButterKnife.bind(this);
 
         // Se cargan los datos del usuario guardado
-        SharedPreferences sp = getSharedPreferences ("usuario_guardado", MODE_PRIVATE);
-        String usuario = sp.getString ("usuario", null);
-        String password = sp.getString ("password", null);
+        SharedPreferences sp = getSharedPreferences("usuario_guardado", MODE_PRIVATE);
+        String usuario = sp.getString("usuario", null);
+        String password = sp.getString("password", null);
 
-        SharedPreferences sp_tmp = getSharedPreferences ("usuario_guardado_temp", MODE_PRIVATE);
-        String usuario_tmp = sp_tmp.getString ("usuario", null);
-        String password_tmp = sp_tmp.getString ("password", null);
+        SharedPreferences sp_tmp = getSharedPreferences("usuario_guardado_temp", MODE_PRIVATE);
+        String usuario_tmp = sp_tmp.getString("usuario", null);
+        String password_tmp = sp_tmp.getString("password", null);
 
         String u = "";
         String p = "";
 
         if (usuario_tmp != null && password_tmp != null) {
             u = usuario_tmp;
-            p = usuario_tmp;
+            p = password_tmp;
         } else if (usuario != null && password != null) {
             u = usuario;
             p = password;
         }
 
         // Si hay datos se verifica que sean validos
-        if (u.isEmpty () && p.isEmpty ()) {
+        if (u.isEmpty() && p.isEmpty()) {
             // En caso de que el usuario fuera eliminado mientras tenia la aplicacion cerrada se borran los datos y se muestra un mensaje
             cerrarSesion();
         } else
-            Usuario.verificarUsuario (this, u, p);
+            verificarUsuario(u, p);
     }
 
-    private void cerrarSesion () {
-        SharedPreferences sp = getSharedPreferences ("usuario_guardado", MODE_PRIVATE);
+    private void verificarUsuario(String u, String password) {
+
+        BDInterface bd = BDCliente.getClient().create(BDInterface.class);
+        Call<Respuesta> call = bd.login("Andate a cagar", password, u);
+        call.enqueue(new Callback<Respuesta>() {
+            @Override
+            public void onResponse(Call<Respuesta> call, Response<Respuesta> response) {
+                Log.d("ASD", response.body().getCodigo());
+                if (!response.body().getCodigo().equals("1")) {
+                    cerrarSesion();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Respuesta> call, Throwable t) {
+                Log.d("FALLO", t.getMessage());
+            }
+        });
+
+    }
+
+    private void cerrarSesion() {
+        SharedPreferences sp = getSharedPreferences("usuario_guardado", MODE_PRIVATE);
         SharedPreferences.Editor ed = sp.edit();
         ed.clear();
         ed.commit();
 
         Intent i = new Intent(MenuAdmin.this, AdminLogin.class);
-        i.addFlags (Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        startActivity (i);
+        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        startActivity(i);
     }
+
     @Override
     protected void onStop() {
-        SharedPreferences sp = getSharedPreferences ("usuario_guardado_temp", MODE_PRIVATE);
+        SharedPreferences sp = getSharedPreferences("usuario_guardado_temp", MODE_PRIVATE);
         SharedPreferences.Editor ed = sp.edit();
         ed.clear();
         ed.commit();
         super.onStop();
-    }
-
-    @Override
-    public void verificarLogin (boolean verificado, String usuario, String password) {
-        if (!verificado)
-            cerrarSesion ();
     }
 
     @Override
@@ -160,7 +181,7 @@ public class MenuAdmin extends AppCompatActivity
                 break;
             case R.id.nav_paradas_alquileres:
                 fragment = new ParadasListado();
-                ((ParadasListado)fragment).setAlquileres(true);
+                ((ParadasListado) fragment).setAlquileres(true);
                 fragmentTransaction = true;
                 break;
             case R.id.nav_bicicletas:
@@ -168,7 +189,7 @@ public class MenuAdmin extends AppCompatActivity
                 fragmentTransaction = true;
                 break;
             case R.id.nav_incidencias:
-                fragment = new IncidenciaListado ();
+                fragment = new IncidenciaListado();
                 fragmentTransaction = true;
                 break;
             case R.id.nav_cerrar_sesion:
@@ -176,12 +197,12 @@ public class MenuAdmin extends AppCompatActivity
                 break;
         }
 
-        if(fragmentTransaction){
+        if (fragmentTransaction) {
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.contenido_seleccionado,fragment)
+                    .replace(R.id.contenido_seleccionado, fragment)
                     .commit();
             item.setChecked(true);
-            getSupportActionBar().setTitle("  "+item.getTitle());
+            getSupportActionBar().setTitle("  " + item.getTitle());
             Drawable icon = item.getIcon();
             icon.mutate().setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
             getSupportActionBar().setIcon(icon);

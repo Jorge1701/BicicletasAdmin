@@ -6,10 +6,6 @@ import android.view.View;
 import com.example.jorge.testgithub.BD.BDCliente;
 import com.example.jorge.testgithub.BD.BDInterface;
 import com.example.jorge.testgithub.BD.Respuesta;
-import com.example.jorge.testgithub.Util.Login;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -176,23 +172,6 @@ public class Usuario {
 				v.barraProgreso.setVisibility (View.GONE);
 				v.btnHabilitar.setVisibility (View.GONE);
 				v.btnInhabilitar.setVisibility (View.VISIBLE);
-				Log.d ("FALLO", t.getMessage ());
-			}
-		});
-	}
-
-	public static void verificarUsuario (final Login l, final String usuario, final String password) {
-		BDInterface bd = BDCliente.getClient().create(BDInterface.class);
-		Call<Respuesta> call = bd.login ("Andate a cagar", password, usuario);
-		call.enqueue(new Callback<Respuesta>() {
-			@Override
-			public void onResponse(Call<Respuesta> call, Response<Respuesta> response) {
-				Log.d ("ASD", response.body().getCodigo());
-				l.verificarLogin(response.body().getCodigo().equals("1"), usuario, password);
-			}
-
-			@Override
-			public void onFailure(Call<Respuesta> call, Throwable t) {
 				Log.d ("FALLO", t.getMessage ());
 			}
 		});

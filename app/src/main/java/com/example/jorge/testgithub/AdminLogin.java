@@ -5,24 +5,30 @@ import android.content.SharedPreferences;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.jorge.testgithub.BD.BDCliente;
+import com.example.jorge.testgithub.BD.BDInterface;
+import com.example.jorge.testgithub.BD.Respuesta;
 import com.example.jorge.testgithub.Clases.Usuario;
-import com.example.jorge.testgithub.Util.Login;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
-public class AdminLogin extends AppCompatActivity implements Login {
+public class AdminLogin extends AppCompatActivity {
 
-    @BindView (R.id.etUsuario)
+    @BindView(R.id.etUsuario)
     EditText etUsuario;
-    @BindView (R.id.etPassword)
+    @BindView(R.id.etPassword)
     EditText etPassword;
-    @BindView (R.id.cbRecordar)
+    @BindView(R.id.cbRecordar)
     CheckBox cbRecordar;
     @BindView(R.id.etUsuarioError)
     TextInputLayout etUsuarioError;
@@ -34,55 +40,69 @@ public class AdminLogin extends AppCompatActivity implements Login {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.admin_login);
-        ButterKnife.bind (this);
+        ButterKnife.bind(this);
     }
 
-    @Override
-    public void verificarLogin (boolean verificado, String usuario, String password) {
-        if (verificado) {
-            if (cbRecordar.isChecked())
-                recordarUsuario(usuario, password);
+    private void verificarUsuario(final String u, final String password) {
 
-            cargarInicioAdmin (usuario, password);
-        } else
-            Toast.makeText(this, getResources ().getString (R.string.login_incorrecto), Toast.LENGTH_SHORT).show();
+        BDInterface bd = BDCliente.getClient().create(BDInterface.class);
+        Call<Respuesta> call = bd.login("Andate a cagar", password, u);
+        call.enqueue(new Callback<Respuesta>() {
+            @Override
+            public void onResponse(Call<Respuesta> call, Response<Respuesta> response) {
+                Log.d("ASD", response.body().getCodigo());
+                if (response.body().getCodigo().equals("1")) {
+                    if (cbRecordar.isChecked())
+                        recordarUsuario(u, password);
+
+                    cargarInicioAdmin(u, password);
+                } else
+                    Toast.makeText(AdminLogin.this, getString(R.string.login_incorrecto), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<Respuesta> call, Throwable t) {
+                Log.d("FALLO", t.getMessage());
+            }
+        });
+
     }
 
-    public void IniciarSesion (View v) {
-        String usuario = etUsuario.getText ().toString ().trim ();
-        String password = etPassword.getText ().toString ().trim ();
+    public void IniciarSesion(View v) {
+        String usuario = etUsuario.getText().toString().trim();
+        String password = etPassword.getText().toString().trim();
 
         etUsuarioError.setError(null);
         etPasswordError.setError(null);
 
-        if (usuario.equals ("")) {
+        if (usuario.equals("")) {
             //Toast.makeText (this, getResources ().getString (R.string.falta_usuario_contraseña), Toast.LENGTH_LONG).show ();
-           etUsuarioError.setError("usuario incorrecto");
+            etUsuarioError.setError("usuario incorrecto");
             return;
-        }else if(password.equals ("")){
+        } else if (password.equals("")) {
             etPasswordError.setError("Contraseña incorrecta");
             return;
-        }else
-            Usuario.verificarUsuario (this, usuario, password);
+        } else
+            verificarUsuario(usuario, password);
     }
 
-    private void recordarUsuario (String usuario, String password) {
-        SharedPreferences sp = getSharedPreferences ("usuario_guardado", MODE_PRIVATE);
-        SharedPreferences.Editor et = sp.edit ();
-        et.putString ("usuario", usuario);
-        et.putString ("password", password);
-        et.commit ();
+    private void recordarUsuario(String usuario, String password) {
+        SharedPreferences sp = getSharedPreferences("usuario_guardado", MODE_PRIVATE);
+        SharedPreferences.Editor et = sp.edit();
+        et.putString("usuario", usuario);
+        et.putString("password", password);
+        et.commit();
     }
 
-    private void cargarInicioAdmin (String usuario, String password) {
-		SharedPreferences sp = getSharedPreferences ("usuario_guardado_temp", MODE_PRIVATE);
-		SharedPreferences.Editor et = sp.edit ();
-		et.putString ("usuario", usuario);
-		et.putString ("password", password);
-		et.commit ();
+    private void cargarInicioAdmin(String usuario, String password) {
+        SharedPreferences sp = getSharedPreferences("usuario_guardado_temp", MODE_PRIVATE);
+        SharedPreferences.Editor et = sp.edit();
+        et.putString("usuario", usuario);
+        et.putString("password", password);
+        et.commit();
 
         Intent i = new Intent(AdminLogin.this, MenuAdmin.class);
-        i.addFlags (Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity (i);
+        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(i);
     }
 }
