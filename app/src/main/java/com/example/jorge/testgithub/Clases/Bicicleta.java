@@ -13,18 +13,23 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class Bicicleta {
-    private String id = "";
-    private String disponible = "";
-    private String parada = "";
-    private String fechaAlquilada = "20-06-2018";
+    private String id;
+    private String disponible;
+    private String parada;
+    private String fechaAlquiler;
 
     public Bicicleta() {
+        id = "";
+        disponible = "";
+        parada = "";
+        fechaAlquiler = "";
     }
 
-    public Bicicleta(String id, String disponible, String parada) {
+    public Bicicleta(String id, String disponible, String parada, String fechaAlquiler) {
         this.id = id;
         this.disponible = disponible;
         this.parada = parada;
+        this.fechaAlquiler= fechaAlquiler;
     }
 
     public String getId() {
@@ -51,11 +56,11 @@ public class Bicicleta {
         this.parada = parada;
     }
 
-    public String getFechaAlquilada() {
-        return fechaAlquilada;
+    public String getFechaAlquiler() {
+        return fechaAlquiler;
     }
 
-    public void setFechaAlquilada(String fechaAlquilada) {
-        this.fechaAlquilada = fechaAlquilada;
+    public void setFechaAlquiler(String fechaAlquilada) {
+        this.fechaAlquiler = fechaAlquilada;
     }
 }
