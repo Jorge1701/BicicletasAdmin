@@ -7,10 +7,35 @@
 
 
     <android.support.v7.widget.RecyclerView
+        android:id="@+id/lista_paradas"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/lista_paradas"
         android:background="#CCC"
         android:divider="#CCC"
-        android:paddingBottom="3dp"/>
+        android:paddingBottom="3dp" />
+
+    <LinearLayout
+        android:id="@+id/noHayParadas"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="50dp"
+            android:gravity="center"
+            android:paddingBottom="5dp"
+            android:text="No hay Paradas"
+            android:textAlignment="center"
+            android:textSize="40sp" />
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/cargandoParadas"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="100dp" />
 </FrameLayout>

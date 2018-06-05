@@ -62,9 +62,11 @@ public class ParadasListadoAdaptador extends RecyclerView.Adapter<ParadasListado
     @Override
     public void onViewAttachedToWindow(ParadaViewHolder paradaViewHolder) {
         super.onViewAttachedToWindow(paradaViewHolder);
+        //Agregar animacion circular
         //animateCircularReveal(paradaViewHolder.itemView);
     }
 
+    //Animacion circular
     /*@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public void animateCircularReveal(View view){
         int centerX = 0;

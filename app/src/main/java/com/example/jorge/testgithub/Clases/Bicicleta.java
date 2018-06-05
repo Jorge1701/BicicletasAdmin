@@ -16,7 +16,7 @@ public class Bicicleta {
     private String id;
     private String disponible;
     private String parada;
-    private String fechaAlquiler;
+    private String fechaAlquiler = "";
 
     public Bicicleta() {
         id = "";
