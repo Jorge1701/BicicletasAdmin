@@ -1,81 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_weight="0"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <LinearLayout
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="match_parent"
         android:layout_weight="0"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:id="@+id/layout"
+        android:visibility="gone">
 
-        <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:map="http://schemas.android.com/apk/res-auto"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:id="@+id/map"
-            android:name="com.google.android.gms.maps.SupportMapFragment"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="400dp"
-            tools:context=".MenuAdmin" />
+            android:layout_height="300dp"
+            android:layout_weight="0"
+            android:orientation="vertical">
+
+            <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:map="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/map"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="400dp"
+                tools:context=".MenuAdmin" />
+
+        </LinearLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/nombreError"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            app:counterEnabled="true"
+            app:counterMaxLength="40"
+            app:errorEnabled="true">
+
+
+            <EditText
+                android:id="@+id/nombre"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:hint="Nombre"
+                android:inputType="text"
+                android:textAlignment="center"
+                android:visibility="invisible" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/cantBicisError"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            app:errorEnabled="true">
+
+            <EditText
+                android:id="@+id/cantBicis"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:digits="1234567890"
+                android:hint="Cant Bicis"
+                android:inputType="phone"
+                android:textAlignment="center"
+                android:visibility="invisible" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <Button
+            android:id="@+id/editarParada"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:layout_marginHorizontal="20dp"
+            android:background="@drawable/boton_iniciar_sesion"
+            android:onClick="EditarParada"
+            android:text="@string/title_activity_editar_parada"
+            android:visibility="invisible" />
 
     </LinearLayout>
 
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/nombreError"
+    <LinearLayout
+        android:id="@+id/carga"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:errorEnabled="true"
-        app:counterEnabled="true"
-        app:counterMaxLength="40"
-        android:visibility="invisible">
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:gravity="center"
+        android:orientation="vertical">
 
-
-        <EditText
-            android:id="@+id/nombre"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="Cargando mapa..."
             android:textAlignment="center"
-            android:inputType="text"
-            android:hint="Nombre"
-            android:visibility="invisible"/>
+            android:textSize="25sp" />
 
-    </android.support.design.widget.TextInputLayout>
-
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/cantBicisError"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:errorEnabled="true"
-        android:visibility="invisible">
-
-        <EditText
-            android:id="@+id/cantBicis"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
+        <ProgressBar
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:inputType="phone"
-            android:digits="1234567890"
-            android:hint="Cant Bicis"
-            android:visibility="invisible" />
+            android:indeterminate="true" />
 
-    </android.support.design.widget.TextInputLayout>
+    </LinearLayout>
 
-    <Button
-        android:id="@+id/editarParada"
-        android:layout_margin="20dp"
-        android:onClick="EditarParada"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/title_activity_editar_parada"
-        android:layout_marginHorizontal="20dp"
-        android:background="@drawable/boton_iniciar_sesion"
-        android:visibility="invisible" />
-
-</LinearLayout>
+</FrameLayout>

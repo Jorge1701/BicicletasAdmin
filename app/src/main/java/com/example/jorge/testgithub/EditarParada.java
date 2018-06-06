@@ -22,6 +22,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.jorge.testgithub.BD.BDCliente;
@@ -64,6 +65,10 @@ public class EditarParada extends Fragment implements OnMapReadyCallback, Parada
     TextInputLayout nombreError;
     @BindView(R.id.cantBicisError)
     TextInputLayout cantBicisError;
+    @BindView(R.id.carga)
+    LinearLayout carga;
+    @BindView(R.id.layout)
+    LinearLayout layout;
 
 
     public EditarParada() {
@@ -163,6 +168,8 @@ public class EditarParada extends Fragment implements OnMapReadyCallback, Parada
         //mMap.addMarker(new MarkerOptions().position(new LatLng(-32.317921, -58.089010)).title("Parada1").draggable(true));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(paysandu));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(15.0f));
+        carga.setVisibility(View.GONE);
+        layout.setVisibility(View.VISIBLE);
     }
 
     @Override

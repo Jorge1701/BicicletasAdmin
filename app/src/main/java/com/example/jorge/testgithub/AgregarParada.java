@@ -1,7 +1,6 @@
 package com.example.jorge.testgithub;
 
 
-import android.content.SharedPreferences;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
@@ -16,12 +15,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.jorge.testgithub.BD.BDCliente;
 import com.example.jorge.testgithub.BD.BDInterface;
-import com.example.jorge.testgithub.BD.Respuesta;
 import com.example.jorge.testgithub.BD.RespuestaParadas;
+import com.example.jorge.testgithub.Clases.Parada;
 import com.example.jorge.testgithub.Util.Paradas;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -34,8 +34,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.example.jorge.testgithub.Clases.Parada;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -59,7 +57,10 @@ public class AgregarParada extends Fragment implements OnMapReadyCallback, Parad
     TextInputLayout nombreError;
     @BindView(R.id.cantBicisError)
     TextInputLayout cantBicisError;
-
+    @BindView(R.id.carga)
+    LinearLayout carga;
+    @BindView(R.id.layout)
+    LinearLayout layout;
 
     public AgregarParada() {
         // Required empty public constructor
@@ -165,6 +166,9 @@ public class AgregarParada extends Fragment implements OnMapReadyCallback, Parad
             }
         });
 
+
+       carga.setVisibility(View.GONE);
+       layout.setVisibility(View.VISIBLE);
     }
 
     @Override

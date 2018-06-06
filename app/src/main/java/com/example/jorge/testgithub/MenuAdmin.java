@@ -17,12 +17,11 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.example.jorge.testgithub.BD.BDCliente;
 import com.example.jorge.testgithub.BD.BDInterface;
 import com.example.jorge.testgithub.BD.Respuesta;
-import com.example.jorge.testgithub.Clases.Usuario;
-import com.example.jorge.testgithub.Util.Login;
 
 import butterknife.ButterKnife;
 import retrofit2.Call;
@@ -82,7 +81,7 @@ public class MenuAdmin extends AppCompatActivity
             verificarUsuario(u, p);
     }
 
-    private void verificarUsuario(String u, String password) {
+    private void verificarUsuario(final String u, String password) {
 
         BDInterface bd = BDCliente.getClient().create(BDInterface.class);
         Call<Respuesta> call = bd.login("Andate a cagar", password, u);
@@ -93,6 +92,8 @@ public class MenuAdmin extends AppCompatActivity
                 if (!response.body().getCodigo().equals("1")) {
                     cerrarSesion();
                 }
+                TextView textView = findViewById(R.id.correoUsuario);
+                textView.setText(u);
             }
 
             @Override
@@ -173,7 +174,7 @@ public class MenuAdmin extends AppCompatActivity
                 break;
             case R.id.nav_paradas_alquileres:
                 fragment = new ParadasListado();
-                ((ParadasListado)fragment).setAlquileres(true);
+                ((ParadasListado) fragment).setAlquileres(true);
                 fragmentTransaction = true;
                 break;
             case R.id.nav_mapa_calor:
@@ -185,7 +186,7 @@ public class MenuAdmin extends AppCompatActivity
                 fragmentTransaction = true;
                 break;
             case R.id.nav_incidencias:
-                fragment = new IncidenciaListado ();
+                fragment = new IncidenciaListado();
                 fragmentTransaction = true;
                 break;
             case R.id.nav_cerrar_sesion:
@@ -195,10 +196,10 @@ public class MenuAdmin extends AppCompatActivity
 
         if (fragmentTransaction) {
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.contenido_seleccionado,fragment)
+                    .replace(R.id.contenido_seleccionado, fragment)
                     .commit();
             item.setChecked(true);
-            getSupportActionBar().setTitle("  "+item.getTitle());
+            getSupportActionBar().setTitle("  " + item.getTitle());
             Drawable icon = item.getIcon();
             icon.mutate().setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
             getSupportActionBar().setIcon(icon);

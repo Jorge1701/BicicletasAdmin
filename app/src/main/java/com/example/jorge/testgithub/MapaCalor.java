@@ -22,6 +22,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.jorge.testgithub.BD.BDCliente;
@@ -61,6 +62,10 @@ public class MapaCalor extends Fragment implements OnMapReadyCallback {
     private TileOverlay mOverlay;
     private List<LatLng> Heatlist;
     private List<Parada> paradas;
+    @BindView(R.id.carga)
+    LinearLayout carga;
+    @BindView(R.id.layout)
+    LinearLayout layout;
 
 
     public MapaCalor() {
@@ -120,6 +125,8 @@ public class MapaCalor extends Fragment implements OnMapReadyCallback {
         //mMap.addMarker(new MarkerOptions().position(new LatLng(-32.317921, -58.089010)).title("Parada1").draggable(true));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(paysandu));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(10.0f));
+        carga.setVisibility(View.GONE);
+        layout.setVisibility(View.VISIBLE);
     }
 
     @Override
