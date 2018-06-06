@@ -45,7 +45,7 @@ public class UsuariosListado extends Fragment {
     @BindView (R.id.cbSinValidar)
     CheckBox cbSinValidar;
     @BindView (R.id.progressBar)
-	ProgressBar progressBar;
+	LinearLayout progressBar;
     @BindView (R.id.llNoHay)
 	LinearLayout llNoHay;
 	@BindView (R.id.btnActualizar)

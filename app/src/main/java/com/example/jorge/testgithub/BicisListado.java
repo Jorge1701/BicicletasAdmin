@@ -23,6 +23,8 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -122,17 +124,21 @@ public class BicisListado extends Fragment {
         mRecyclerView.setAdapter(adaptador);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setHasFixedSize(true);
+        LinearLayout noHayBicicletas = getActivity().findViewById(R.id.noHayBicicletas);
         if (bicicletas.size() == 0) {
-            Toast.makeText(getContext(), "No hay bicicletas", Toast.LENGTH_LONG);
+            noHayBicicletas.setVisibility(View.VISIBLE);
+        } else {
+            noHayBicicletas.setVisibility(View.GONE);
         }
+        LinearLayout cargandoBicicletas = getActivity().findViewById(R.id.cargandoBicicletas);
+        cargandoBicicletas.setVisibility(View.GONE);
     }
 
     private void fitrarBicicletasDia(String fecha) {
         if (bicicletas != null) {
             List<Bicicleta> bs = new ArrayList<>(bicicletas);
-            Log.d("fecha", fecha);
             for (int i = bs.size() - 1; i >= 0; i--) {
-                if (bs.get(i).getParada() == "") {
+                if (bs.get(i).getParada() == "" && bs.get(i).getFechaAlquiler() != null) {
                     if (!bs.get(i).getFechaAlquiler().equals(fecha))
                         bs.remove(i);
                 } else {
@@ -154,9 +160,6 @@ public class BicisListado extends Fragment {
             final String fechaHoy = formato.format(hoy.getTime());
             hoy.add(Calendar.DAY_OF_MONTH, -1);
             final String fechaAyer = formato.format(hoy.getTime());
-
-            Log.d("fecha hoy", fechaHoy);
-            Log.d("fecha seleccionada", fechaSeleccionada);
 
             final List<String> contfechas = new ArrayList<>();
             contfechas.add("Hoy");
