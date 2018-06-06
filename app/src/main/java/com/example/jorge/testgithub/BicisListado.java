@@ -124,14 +124,14 @@ public class BicisListado extends Fragment {
         mRecyclerView.setAdapter(adaptador);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setHasFixedSize(true);
-        LinearLayout linearLayout = getActivity().findViewById(R.id.noHayBicicletas);
+        LinearLayout noHayBicicletas = getActivity().findViewById(R.id.noHayBicicletas);
         if (bicicletas.size() == 0) {
-            linearLayout.setVisibility(View.VISIBLE);
+            noHayBicicletas.setVisibility(View.VISIBLE);
         } else {
-            linearLayout.setVisibility(View.GONE);
+            noHayBicicletas.setVisibility(View.GONE);
         }
-        ProgressBar progressBar = getActivity().findViewById(R.id.cargandoBicicletas);
-        progressBar.setVisibility(View.GONE);
+        LinearLayout cargandoBicicletas = getActivity().findViewById(R.id.cargandoBicicletas);
+        cargandoBicicletas.setVisibility(View.GONE);
     }
 
     private void fitrarBicicletasDia(String fecha) {

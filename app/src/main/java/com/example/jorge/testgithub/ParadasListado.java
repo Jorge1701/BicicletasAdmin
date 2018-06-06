@@ -108,10 +108,10 @@ public class ParadasListado extends Fragment {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setHasFixedSize(true);
         if(paradas.size() == 0){
-            LinearLayout linearLayout = getActivity().findViewById(R.id.noHayParadas);
-            linearLayout.setVisibility(View.VISIBLE);
+            LinearLayout noHayParadas = getActivity().findViewById(R.id.noHayParadas);
+            noHayParadas.setVisibility(View.VISIBLE);
         }
-        ProgressBar progressBar = getActivity().findViewById(R.id.cargandoParadas);
-        progressBar.setVisibility(View.GONE);
+        LinearLayout cargandoParadas = getActivity().findViewById(R.id.cargandoParadas);
+        cargandoParadas.setVisibility(View.GONE);
     }
 }
