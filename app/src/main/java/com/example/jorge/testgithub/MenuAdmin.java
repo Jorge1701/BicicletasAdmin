@@ -2,6 +2,7 @@ package com.example.jorge.testgithub;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.ColorFilter;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -21,6 +22,7 @@ import com.example.jorge.testgithub.BD.BDCliente;
 import com.example.jorge.testgithub.BD.BDInterface;
 import com.example.jorge.testgithub.BD.Respuesta;
 import com.example.jorge.testgithub.Clases.Usuario;
+import com.example.jorge.testgithub.Util.Login;
 
 import butterknife.ButterKnife;
 import retrofit2.Call;
@@ -140,16 +142,6 @@ public class MenuAdmin extends AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        //if (id == R.id.action_settings) {
-        //    return true;
-        //}
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -181,7 +173,11 @@ public class MenuAdmin extends AppCompatActivity
                 break;
             case R.id.nav_paradas_alquileres:
                 fragment = new ParadasListado();
-                ((ParadasListado) fragment).setAlquileres(true);
+                ((ParadasListado)fragment).setAlquileres(true);
+                fragmentTransaction = true;
+                break;
+            case R.id.nav_mapa_calor:
+                fragment = new MapaCalor();
                 fragmentTransaction = true;
                 break;
             case R.id.nav_bicicletas:
@@ -189,7 +185,7 @@ public class MenuAdmin extends AppCompatActivity
                 fragmentTransaction = true;
                 break;
             case R.id.nav_incidencias:
-                fragment = new IncidenciaListado();
+                fragment = new IncidenciaListado ();
                 fragmentTransaction = true;
                 break;
             case R.id.nav_cerrar_sesion:
@@ -199,10 +195,10 @@ public class MenuAdmin extends AppCompatActivity
 
         if (fragmentTransaction) {
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.contenido_seleccionado, fragment)
+                    .replace(R.id.contenido_seleccionado,fragment)
                     .commit();
             item.setChecked(true);
-            getSupportActionBar().setTitle("  " + item.getTitle());
+            getSupportActionBar().setTitle("  "+item.getTitle());
             Drawable icon = item.getIcon();
             icon.mutate().setColorFilter(getResources().getColor(R.color.white), PorterDuff.Mode.SRC_ATOP);
             getSupportActionBar().setIcon(icon);

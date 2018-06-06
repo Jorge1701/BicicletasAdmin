@@ -88,8 +88,8 @@ public class BicisListadoAdaptador extends RecyclerView.Adapter<BicisListadoAdap
 
         public void bindBici(Bicicleta bicicleta){
             idBici.setText(""+ bicicleta.getId());
-            estadoBici.setText((bicicleta.getDisponible().equals("false")) ? "Disponible": "Ocupada");
-            if(bicicleta.getDisponible().equals("false")){
+            estadoBici.setText((bicicleta.getDisponible().equals("true")) ? "Disponible": "Ocupada");
+            if(bicicleta.getDisponible().equals("true")){
                 estadoBici.setTextColor(mContext.getResources().getColor(R.color.green));
             }else{
                 estadoBici.setTextColor(mContext.getResources().getColor(R.color.red));
