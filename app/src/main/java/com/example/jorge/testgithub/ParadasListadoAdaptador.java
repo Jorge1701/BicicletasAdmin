@@ -2,6 +2,7 @@ package com.example.jorge.testgithub;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.CardView;
@@ -20,6 +21,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import com.example.jorge.testgithub.Clases.Parada;
+import com.jjoe64.graphview.DefaultLabelFormatter;
+import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.ValueDependentColor;
+import com.jjoe64.graphview.helper.StaticLabelsFormatter;
+import com.jjoe64.graphview.series.BarGraphSeries;
+import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.LineGraphSeries;
 
 public class ParadasListadoAdaptador extends RecyclerView.Adapter<ParadasListadoAdaptador.ParadaViewHolder> {
     private Context mContext;
@@ -41,14 +49,20 @@ public class ParadasListadoAdaptador extends RecyclerView.Adapter<ParadasListado
 
     @Override
     public ParadasListadoAdaptador.ParadaViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_paradas_listado, parent, false);
+        View view;
+        if (alquileres) {
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_paradas_listado_alquileres, parent, false);
+        } else {
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_paradas_listado, parent, false);
+        }
+
         ParadaViewHolder viewHolder = new ParadaViewHolder(view);
         return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(ParadasListadoAdaptador.ParadaViewHolder holder, int position) {
-        YoYo.with(Techniques.ZoomIn).duration(500).playOn(holder.cardView);
+        YoYo.with(Techniques.ZoomIn).duration(500).playOn(holder.itemView);
         holder.bindParada(mParadas.get(position));
     }
 
@@ -83,23 +97,8 @@ public class ParadasListadoAdaptador extends RecyclerView.Adapter<ParadasListado
     public class ParadaViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.nombreParada)
         TextView nombreParada;
-        @BindView(R.id.numeroParada)
-        TextView numeroParada;
-        @BindView(R.id.cantBicisLibres)
-        TextView cantBicisLibres;
-        @BindView(R.id.cantBicisOcupadas)
-        TextView cantBicisOcupadas;
-        @BindView(R.id.item_paradas_listado)
-        CardView cardView;
-
-        @BindView(R.id.dia)
-        TextView dia;
-        @BindView(R.id.semana)
-        TextView semana;
-        @BindView(R.id.mes)
-        TextView mes;
-
         private Context mContext;
+
 
         public ParadaViewHolder(View itemView) {
             super(itemView);
@@ -110,13 +109,54 @@ public class ParadasListadoAdaptador extends RecyclerView.Adapter<ParadasListado
         public void bindParada(Parada parada) {
             nombreParada.setText(parada.getNombre());
             if (isAlquileres()) {
-                dia.setText("Día");
-                numeroParada.setText("" + parada.getCantAlquileresDia());
-                semana.setText("Semana");
-                cantBicisLibres.setText("" + parada.getCantAlquileresSemana());
-                mes.setText("Mes");
-                cantBicisOcupadas.setText("" + parada.getCantAlquileresMes());
+                //Graphica
+                final GraphView graph = (GraphView) itemView.findViewById(R.id.graph);
+                if (graph.getSeries().size() == 0) {
+                    BarGraphSeries<DataPoint> series = new BarGraphSeries<>(new DataPoint[]{
+                            new DataPoint(0, parada.getCantAlquileresDia()),
+                            new DataPoint(1, parada.getCantAlquileresSemana()),
+                            new DataPoint(2, parada.getCantAlquileresMes()),
+                    });
+                    graph.addSeries(series);
+
+                    // Estilo
+                    series.setValueDependentColor(new ValueDependentColor<DataPoint>() {
+                        @Override
+                        public int get(DataPoint data) {
+                            return Color.rgb((int) data.getX() * 255 / 4, (int) Math.abs(data.getY() * 255 / 6), 100);
+                        }
+                    });
+
+                    series.setSpacing(50);
+
+                    // Colocar valores encima de la barra
+                    series.setDrawValuesOnTop(true);
+                    series.setValuesOnTopColor(Color.RED);
+
+
+                    //Cambiar las etiquetas
+                    StaticLabelsFormatter staticLabelsFormatter = new StaticLabelsFormatter(graph);
+                    staticLabelsFormatter.setDynamicLabelFormatter(new DefaultLabelFormatter() {
+                        @Override
+                        public String formatLabel(double value, boolean isValueX) {
+                            if (isValueX) {
+                                // show normal x values
+                                return super.formatLabel(value, isValueX);
+                            } else {
+                                // show currency for y values
+                                return super.formatLabel(value, isValueX);
+                            }
+                        }
+                    });
+                    staticLabelsFormatter.setHorizontalLabels(new String[]{"Dia", "Semana", "Mes"});
+                    graph.getGridLabelRenderer().setLabelFormatter(staticLabelsFormatter);
+
+                }
             } else {
+                TextView numeroParada = itemView.findViewById(R.id.numeroParada);
+                TextView cantBicisLibres = itemView.findViewById(R.id.cantBicisLibres);
+                TextView cantBicisOcupadas = itemView.findViewById(R.id.cantBicisOcupadas);
+
                 numeroParada.setText("" + parada.getId());
                 cantBicisLibres.setText("" + parada.getCantidadLibre());
                 cantBicisOcupadas.setText("" + parada.getCantidadOcupada());
