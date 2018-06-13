@@ -24,8 +24,8 @@ public class Parada {
 
     public Parada(){
         this.cantAlquileresDia = 5;
-        this.cantAlquileresSemana = 7;
-        this.cantAlquileresMes = 10;
+        this.cantAlquileresSemana = 23;
+        this.cantAlquileresMes = 200;
     }
 
     public Parada(int id, String nombre, double latitud, double longitud, String direccion, int cantBicis, int cantidadLibre, int cantidadOcupada) {
