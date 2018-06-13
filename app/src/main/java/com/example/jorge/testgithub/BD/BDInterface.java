@@ -60,4 +60,12 @@ public interface BDInterface {
 
 	@GET ("incidencias")
 	Call<RespuestaIncidencias> obtenerIncidencias ();
+
+	@FormUrlEncoded
+	@POST ("nuevoComentario")
+	Call<Respuesta> agregarComentario (
+			@Field ("admin") String admin,
+			@Field ("incidencia") int incidencia,
+			@Field ("comentario") String comentario
+	);
 }

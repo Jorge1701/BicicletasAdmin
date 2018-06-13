@@ -82,7 +82,6 @@ public class MenuAdmin extends AppCompatActivity
     }
 
     private void verificarUsuario(final String u, String password) {
-
         BDInterface bd = BDCliente.getClient().create(BDInterface.class);
         Call<Respuesta> call = bd.login("Andate a cagar", password, u);
         call.enqueue(new Callback<Respuesta>() {
@@ -94,6 +93,11 @@ public class MenuAdmin extends AppCompatActivity
                 }
                 TextView textView = findViewById(R.id.correoUsuario);
                 textView.setText(u);
+
+                SharedPreferences sp = getSharedPreferences ("usuario_logueado", MODE_PRIVATE);
+                SharedPreferences.Editor ed = sp.edit ();
+                ed.putString ("usuario", u);
+                ed.commit ();
             }
 
             @Override
@@ -109,6 +113,11 @@ public class MenuAdmin extends AppCompatActivity
         SharedPreferences.Editor ed = sp.edit();
         ed.clear();
         ed.commit();
+
+        SharedPreferences sp2 = getSharedPreferences("usuario_logueado", MODE_PRIVATE);
+        SharedPreferences.Editor ed2 = sp2.edit();
+        ed2.clear();
+        ed2.commit();
 
         Intent i = new Intent(MenuAdmin.this, AdminLogin.class);
         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);

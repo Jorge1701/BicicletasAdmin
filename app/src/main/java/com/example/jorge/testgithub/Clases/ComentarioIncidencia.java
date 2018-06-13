@@ -8,6 +8,11 @@ public class ComentarioIncidencia {
 	private String comentario;
 	private String fecha;
 
+	public ComentarioIncidencia(String admin, String comentario) {
+		this.admin = admin;
+		this.comentario = comentario;
+	}
+
 	public ComentarioIncidencia(int id, String admin, int incidencia, String comentario, String fecha) {
 		this.id = id;
 		this.admin = admin;
