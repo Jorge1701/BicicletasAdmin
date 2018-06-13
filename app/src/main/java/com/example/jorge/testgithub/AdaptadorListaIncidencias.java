@@ -14,10 +14,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.Transformation;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -87,10 +91,22 @@ public class AdaptadorListaIncidencias extends RecyclerView.Adapter<AdaptadorLis
 		TextView tvTituloComentarios;
 		@BindView (R.id.etComentar)
 		EditText etComentar;
+		@BindView (R.id.enviarProgressBar)
+		ProgressBar enviarProgressBar;
+
+		@BindView (R.id.cabecera)
+		LinearLayout cabecera;
+		@BindView (R.id.msjExpandir)
+		LinearLayout msjExpandir;
+		@BindView (R.id.contenido)
+		LinearLayout contenido;
+
 		CardView cardView;
 
 		private Context context;
 		private Incidencia i;
+
+		private boolean abierto = false;
 
 		public IncidenciaViewHolder (View v) {
 			super (v);
@@ -130,10 +146,27 @@ public class AdaptadorListaIncidencias extends RecyclerView.Adapter<AdaptadorLis
 				public void onClick(View v2) {
 					if (etComentar.getText ().toString ().equals (""))
 						return;
-					// TODO: Desactivar boton mandar comentario hasta que se resuelva el envio del actual
+
+					ivSendComentar.setVisibility (View.GONE);
+					enviarProgressBar.setVisibility (View.VISIBLE);
+
 					SharedPreferences sp = context.getSharedPreferences("usuario_logueado", Context.MODE_PRIVATE);
 					String usuario = sp.getString("usuario", null);
 					i.comentar (IncidenciaViewHolder.this, usuario, etComentar.getText ().toString ());
+				}
+			});
+
+			cabecera.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					if (abierto) {
+						com.example.jorge.testgithub.Util.Animation.colapsar (contenido);
+						com.example.jorge.testgithub.Util.Animation.expandir (msjExpandir);
+					} else {
+						com.example.jorge.testgithub.Util.Animation.expandir (contenido);
+						com.example.jorge.testgithub.Util.Animation.colapsar (msjExpandir);
+					}
+					abierto = !abierto;
 				}
 			});
 		}
@@ -177,11 +210,14 @@ public class AdaptadorListaIncidencias extends RecyclerView.Adapter<AdaptadorLis
 				}
 			}
 			etComentar.setText ("");
+			enviarProgressBar.setVisibility (View.GONE);
+			ivSendComentar.setVisibility (View.VISIBLE);
 		}
 
 		public void errorAlComentar () {
-			// TODO: Reestablecer el boton enviar
 			etComentar.setText ("");
+			enviarProgressBar.setVisibility (View.GONE);
+			ivSendComentar.setVisibility (View.VISIBLE);
 			Toast.makeText(context, "No se pudo enviar el comentario", Toast.LENGTH_SHORT).show();
 		}
 

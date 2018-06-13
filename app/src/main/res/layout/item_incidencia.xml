@@ -25,6 +25,7 @@
             android:background="@drawable/fondo_blanco">
 
             <LinearLayout
+                android:id="@+id/cabecera"
                 android:layout_width="match_parent"
                 android:layout_height="60dp">
 
@@ -114,58 +115,95 @@
 
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/tvDescripcion"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:textSize="20sp"
-                android:text="fjkhjkdfghjk dfkgh dgfj hdfgkjh dfgkjh f  kjhg dkjhdf gkj ksdg nkshdf sdkjh k afsklhdg  halkshd sdg dgjkh sfk dgkj  asf jksdgj hasfkj fh kjdg jkasf kjhkjdgd bas dsgkj fkj sdgklasklj akj bad b as  jbasdg kbasdg badg badg dg jk g djkag dng aljkag bkg lab as gklag  jkba gjkadgs djbg akjdg kjbg klas gkbg jkjkag kj g "
-                android:textColor="#000" />
-
-            <TextView
-                android:id="@+id/tvTituloComentarios"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="15dp"
-                android:layout_marginTop="5dp"
-                android:text="Comentarios"/>
-
             <LinearLayout
-                android:id="@+id/llComentarios"
+                android:id="@+id/msjExpandir"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:orientation="vertical">
+                android:background="@drawable/fondo_msj"
+                android:layout_marginHorizontal="15dp"
+                android:layout_marginVertical="1dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Toque para expandir"
+                    android:textColor="#FFF"
+                    android:textAlignment="center"/>
 
             </LinearLayout>
 
-            <android.support.design.widget.CoordinatorLayout
+            <LinearLayout
+                android:id="@+id/contenido"
+                android:visibility="gone"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp">
+                android:layout_height="wrap_content" android:orientation="vertical">
 
-                <EditText
-                    android:id="@+id/etComentar"
+                <TextView
+                    android:id="@+id/tvDescripcion"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Comentar..."
-                    android:paddingVertical="5dp"
-                    android:paddingLeft="15dp"
-                    android:paddingRight="35dp"
-                    android:inputType="textMultiLine"
-                    android:background="@drawable/fondo_input_incidencia" />
+                    android:layout_margin="10dp"
+                    android:textSize="20sp"
+                    android:text="fjkhjkdfghjk dfkgh dgfj hdfgkjh dfgkjh f  kjhg dkjhdf gkj ksdg nkshdf sdkjh k afsklhdg  halkshd sdg dgjkh sfk dgkj  asf jksdgj hasfkj fh kjdg jkasf kjhkjdgd bas dsgkj fkj sdgklasklj akj bad b as  jbasdg kbasdg badg badg dg jk g djkag dng aljkag bkg lab as gklag  jkba gjkadgs djbg akjdg kjbg klas gkbg jkjkag kj g "
+                    android:textColor="#000" />
 
-                <ImageView
-                    android:id="@+id/ivSendComentar"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:background="@drawable/ic_send_comentar"
-                    android:layout_marginBottom="3dp"
-                    android:layout_marginRight="3dp"
-                    android:layout_gravity="bottom|end"/>
+                <TextView
+                    android:id="@+id/tvTituloComentarios"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="15dp"
+                    android:layout_marginTop="5dp"
+                    android:text="Comentarios"/>
 
-            </android.support.design.widget.CoordinatorLayout>
+                <LinearLayout
+                    android:id="@+id/llComentarios"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:orientation="vertical">
+
+                </LinearLayout>
+
+                <android.support.design.widget.CoordinatorLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp">
+
+                    <EditText
+                        android:id="@+id/etComentar"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Comentar..."
+                        android:paddingVertical="5dp"
+                        android:paddingLeft="15dp"
+                        android:paddingRight="35dp"
+                        android:inputType="textMultiLine"
+                        android:background="@drawable/fondo_input_incidencia" />
+
+                    <FrameLayout
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_marginBottom="3dp"
+                        android:layout_marginRight="3dp"
+                        android:layout_gravity="bottom|end">
+
+                        <ImageView
+                            android:id="@+id/ivSendComentar"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/ic_send_comentar"/>
+
+                        <ProgressBar
+                            android:visibility="gone"
+                            android:id="@+id/enviarProgressBar"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
+
+                    </FrameLayout>
+
+                </android.support.design.widget.CoordinatorLayout>
+
+            </LinearLayout>
 
         </LinearLayout>
 

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<set xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <set xmlns:android="http://schemas.android.com/apk/res/android"
+        android:interpolator="@android:anim/linear_interpolator"
+        android:propertyName="layout_height"
+        android:valueType="floatType"
+        android:valueTo="720dp"
+        android:valueFrom="0dp"
+        android:duration="300"/>
+
+</set>
