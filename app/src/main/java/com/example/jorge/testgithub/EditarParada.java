@@ -84,28 +84,7 @@ public class EditarParada extends Fragment implements OnMapReadyCallback, Parada
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         //obtener paradas
-        BDInterface bd = BDCliente.getClient().create(BDInterface.class);
-        Call<RespuestaParadas> call = bd.getParadas();
-        call.enqueue(new Callback<RespuestaParadas>() {
-            @Override
-            public void onResponse(Call<RespuestaParadas> call, Response<RespuestaParadas> response) {
-                paradas = new ArrayList<>();
-                if (response.body().getCodigo().equals("1")) {
-                    List<Parada> re = response.body().getParadas();
-
-                    for (int i = 0; i < re.size(); i++)
-                        paradas.add(re.get(i));
-                }
-
-                if (mMap != null)
-                    prepararMapa();
-            }
-
-            @Override
-            public void onFailure(Call<RespuestaParadas> call, Throwable t) {
-                Log.d("ASD", "onFailure(PARADAS): ");
-            }
-        });
+        cargarParadas ();
 
 
         View v = inflater.inflate(R.layout.fragment_editar_parada, container, false);
@@ -153,21 +132,52 @@ public class EditarParada extends Fragment implements OnMapReadyCallback, Parada
         return v;
     }
 
+    private void cargarParadas () {
+        BDInterface bd = BDCliente.getClient().create(BDInterface.class);
+        Call<RespuestaParadas> call = bd.getParadas();
+        call.enqueue(new Callback<RespuestaParadas>() {
+            @Override
+            public void onResponse(Call<RespuestaParadas> call, Response<RespuestaParadas> response) {
+                paradas = new ArrayList<>();
+                if (response.body().getCodigo().equals("1")) {
+                    List<Parada> re = response.body().getParadas();
+
+                    for (int i = 0; i < re.size(); i++)
+                        paradas.add(re.get(i));
+                }
+
+                if (mMap != null)
+                    prepararMapa();
+            }
+
+            @Override
+            public void onFailure(Call<RespuestaParadas> call, Throwable t) {
+                Log.d("ASD", "onFailure(PARADAS): ");
+            }
+        });
+    }
+
     public void modificarParada(int id, String nombre, String direccion, double lat, double lng, int cantBicis) {
         Parada.editarParada(this, id, nombre, direccion, lat, lng, cantBicis);
     }
 
+    private List<Marker> marks;
+
     public void prepararMapa() {
         Log.d("ASD", "prepararMapa: ");
+        if (marks == null)
+            marks = new ArrayList<>();
+
+        for (Marker m : marks)
+            m.remove();
+
+        marks.clear();
         for (int i = 0; i < paradas.size(); i++) {
-            mMap.addMarker(new MarkerOptions().position(new LatLng(paradas.get(i).getLatitud(), paradas.get(i).getLongitud())).title(paradas.get(i).getNombre()).draggable(true).snippet(paradas.get(i).getDireccion()));
+            Marker m = mMap.addMarker(new MarkerOptions().position(new LatLng(paradas.get(i).getLatitud(), paradas.get(i).getLongitud())).title(paradas.get(i).getNombre()).draggable(true).snippet(paradas.get(i).getDireccion()));
+            m.setSnippet(paradas.get(i).getDireccion());
+            marks.add (m);
         }
 
-        //obtener la posicion de todas las paradas y hacer los marcadores
-        LatLng paysandu = new LatLng(-32.316465, -58.088980);
-        //mMap.addMarker(new MarkerOptions().position(new LatLng(-32.317921, -58.089010)).title("Parada1").draggable(true));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(paysandu));
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(15.0f));
         carga.setVisibility(View.GONE);
         layout.setVisibility(View.VISIBLE);
     }
@@ -240,6 +250,11 @@ public class EditarParada extends Fragment implements OnMapReadyCallback, Parada
         if (paradas != null)
             prepararMapa();
 
+        //obtener la posicion de todas las paradas y hacer los marcadores
+        LatLng paysandu = new LatLng(-32.316465, -58.088980);
+        //mMap.addMarker(new MarkerOptions().position(new LatLng(-32.317921, -58.089010)).title("Parada1").draggable(true));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(paysandu));
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(15.0f));
     }
 
     public String getDireccion(LatLng posicion) {
@@ -264,6 +279,7 @@ public class EditarParada extends Fragment implements OnMapReadyCallback, Parada
     @Override
     public boolean editarParada(boolean ok) {
         if (ok) {
+            cargarParadas ();
             Toast.makeText(getActivity(), "PARADA EDITADA", Toast.LENGTH_LONG).show();
             nombre.setText("");
             cantBicis.setText("");

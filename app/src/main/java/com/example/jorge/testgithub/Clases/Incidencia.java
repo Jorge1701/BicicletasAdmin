@@ -1,122 +1,90 @@
 package com.example.jorge.testgithub.Clases;
 
-import com.example.jorge.testgithub.ComentarioDeAdmin;
-
 import java.util.ArrayList;
-import java.util.List;
 
 public class Incidencia {
 
-	public enum Estado {
-		ABIERTA, ASIGNADA, RESUELTA
-	}
+	private int id;
+	private String usuario;
+	private String parada;
+	private int estado;
+	private String admin;
+	private String comentario;
+	private String fecha;
+	private ArrayList<ComentarioIncidencia> comentarioIncidencias;
 
-	private Usuario usuario;
-	private int parada;
-	private Estado estado;
-	private String asignado;
-	private String incidencia;
-	private List<ComentarioDeAdmin> comentarios;
-
-	public Incidencia(Usuario usuario, int parada, Estado estado, String incidencia, List<ComentarioDeAdmin> comentarios) {
+	public Incidencia(int id, String usuario, String parada, int estado, String admin, String comentario, String fecha, ArrayList<ComentarioIncidencia> comentarioIncidencias) {
+		this.id = id;
 		this.usuario = usuario;
 		this.parada = parada;
 		this.estado = estado;
-		this.incidencia = incidencia;
-		this.comentarios = comentarios;
+		this.admin = admin;
+		this.comentario = comentario;
+		this.fecha = fecha;
+		this.comentarioIncidencias = comentarioIncidencias;
 	}
 
-	private static List<Incidencia> incidencias;
-
-	public static List<Incidencia> cargarIncidencias () {
-		if (incidencias != null)
-			return incidencias;
-
-		// TODO: Cargar Incidencias desde la base de datos
-		incidencias = new ArrayList<>();
-
-		Usuario u1 = new Usuario("", "", "","","Jorge Rosas","","", 1, 0, 0,0);
-		Usuario u2 = new Usuario("", "", "","","Ale","","", 1, 0, 0,0);
-		Usuario u3 = new Usuario("", "", "","","El Brian","","", 1, 0, 0,0);
-
-		incidencias.add(new Incidencia(u1, 3, Estado.ABIERTA, "Se pincho la rueda", new ArrayList<ComentarioDeAdmin>()));
-
-		List<ComentarioDeAdmin> c =  new ArrayList<ComentarioDeAdmin>();
-		c.add(new ComentarioDeAdmin("Fulano", "Estamos trabajando para solucionarlo*"));
-		Incidencia i = new Incidencia(u2, 3, Estado.ASIGNADA, "Faltan bicicletas", c);
-		i.setAsignado("Fulano");
-		incidencias.add(i);
-		Incidencia i2 = new Incidencia(u3, 5, Estado.ABIERTA, "e ñery y la vici", new ArrayList<ComentarioDeAdmin>());
-		i2.setAsignado ("Mengano");
-		i2.setEstado (Estado.RESUELTA);
-		incidencias.add(i2);
-
-		return incidencias;
+	public int getId() {
+		return id;
 	}
 
-	public void comentar (ComentarioDeAdmin comentario) {
-		// TODO: Agregar el comentario a la base de datos
-		if (comentarios == null)
-			comentarios = new ArrayList<>();
-
-		comentarios.add (comentario);
+	public void setId(int id) {
+		this.id = id;
 	}
 
-	public Usuario getUsuario() {
+	public String getUsuario() {
 		return usuario;
 	}
 
-	public void setUsuario(Usuario usuario) {
+	public void setUsuario(String usuario) {
 		this.usuario = usuario;
 	}
 
-	public int getParada() {
+	public String getParada() {
 		return parada;
 	}
 
-	public void setParada(int parada) {
+	public void setParada(String parada) {
 		this.parada = parada;
 	}
 
-	public Estado getEstado() {
+	public int getEstado() {
 		return estado;
 	}
 
-	public void setEstado(Estado estado) {
-		// TODO: Cambiar estado en BD
+	public void setEstado(int estado) {
 		this.estado = estado;
 	}
 
-	public String getAsignado() {
-		return asignado;
+	public String getAdmin() {
+		return admin;
 	}
 
-	public void setAsignado(String asignado) {
-		// TODO: Cambiar asignado en BD
-		this.asignado = asignado;
+	public void setAdmin(String admin) {
+		this.admin = admin;
 	}
 
-	public static List<Incidencia> getIncidencias() {
-		return incidencias;
+	public String getComentario() {
+		return comentario;
 	}
 
-	public static void setIncidencias(List<Incidencia> incidencias) {
-		Incidencia.incidencias = incidencias;
+	public void setComentario(String comentario) {
+		this.comentario = comentario;
 	}
 
-	public String getIncidencia() {
-		return incidencia;
+	public String getFecha() {
+		return fecha;
 	}
 
-	public void setIncidencia(String incidencia) {
-		this.incidencia = incidencia;
+	public void setFecha(String fecha) {
+		this.fecha = fecha;
 	}
 
-	public List<ComentarioDeAdmin> getComentarios() {
-		return comentarios;
+	public ArrayList<ComentarioIncidencia> getComentarioIncidencias() {
+		return comentarioIncidencias;
 	}
 
-	public void setComentarios(List<ComentarioDeAdmin> comentarios) {
-		this.comentarios = comentarios;
+	public void setComentarioIncidencias(ArrayList<ComentarioIncidencia> comentarioIncidencias) {
+		this.comentarioIncidencias = comentarioIncidencias;
 	}
 }

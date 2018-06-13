@@ -27,6 +27,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -77,29 +78,7 @@ public class AgregarParada extends Fragment implements OnMapReadyCallback, Parad
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         Log.d("ASD", "onCreateView: ");
-        BDInterface bd = BDCliente.getClient().create(BDInterface.class);
-        Call<RespuestaParadas> call = bd.getParadas();
-        call.enqueue(new Callback<RespuestaParadas>() {
-            @Override
-            public void onResponse(Call<RespuestaParadas> call, Response<RespuestaParadas> response) {
-                paradas = new ArrayList<>();
-                if (response.body().getCodigo().equals("1")) {
-                    List<Parada> re = response.body().getParadas();
-                    Log.d("ASD", "onResponse(PARADAS): " + re.size());
-                    for (int i = 0; i < re.size(); i++)
-                        paradas.add(re.get(i));
-                }
-
-                if (mMap != null)
-                    prepararMapa();
-            }
-
-            @Override
-            public void onFailure(Call<RespuestaParadas> call, Throwable t) {
-                Log.d("ASD", "onFailure(PARADAS): ");
-            }
-        });
-        //
+        cargarParadas ();
         View v = inflater.inflate(R.layout.fragment_agregar_parada, container, false);
         mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
 
@@ -140,21 +119,51 @@ public class AgregarParada extends Fragment implements OnMapReadyCallback, Parad
         return v;
     }
 
+    private void cargarParadas () {
+        BDInterface bd = BDCliente.getClient().create(BDInterface.class);
+        Call<RespuestaParadas> call = bd.getParadas();
+        call.enqueue(new Callback<RespuestaParadas>() {
+            @Override
+            public void onResponse(Call<RespuestaParadas> call, Response<RespuestaParadas> response) {
+                paradas = new ArrayList<>();
+                if (response.body().getCodigo().equals("1")) {
+                    List<Parada> re = response.body().getParadas();
+                    Log.d("ASD", "onResponse(PARADAS): " + re.size());
+                    for (int i = 0; i < re.size(); i++)
+                        paradas.add(re.get(i));
+                }
+
+                if (mMap != null)
+                    prepararMapa();
+            }
+
+            @Override
+            public void onFailure(Call<RespuestaParadas> call, Throwable t) {
+                Log.d("ASD", "onFailure(PARADAS): ");
+            }
+        });
+        //
+    }
+
     public void altaParada(String nombre, String direccion, double lat, double lng, int cantBicis) {
         Parada.agregarParada(this, nombre, direccion, lat, lng, cantBicis);
     }
 
+    private List<Marker> marks;
+
     public void prepararMapa() {
         Log.d("ASD", "prepararMapa: ");
-        for (int i = 0; i < paradas.size(); i++) {
-            mMap.addMarker(new MarkerOptions().position(new LatLng(paradas.get(i).getLatitud(), paradas.get(i).getLongitud())).title(paradas.get(i).getNombre()).draggable(true).snippet(paradas.get(i).getDireccion()));
-        }
+        if (marks == null)
+            marks = new ArrayList<>();
 
-        //obtener la posicion de todas las paradas y hacer los marcadores
-        LatLng paysandu = new LatLng(-32.316465, -58.088980);
-        //mMap.addMarker(new MarkerOptions().position(new LatLng(-32.317921, -58.089010)).title("Parada1").draggable(true));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(paysandu));
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(15.0f));
+        for (Marker m : marks)
+            m.remove();
+
+        marks.clear();
+
+        for (int i = 0; i < paradas.size(); i++) {
+            marks.add (mMap.addMarker(new MarkerOptions().position(new LatLng(paradas.get(i).getLatitud(), paradas.get(i).getLongitud())).title(paradas.get(i).getNombre()).draggable(true).snippet(paradas.get(i).getDireccion())));
+        }
 
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
@@ -188,12 +197,12 @@ public class AgregarParada extends Fragment implements OnMapReadyCallback, Parad
                 nombreError.setError(null);
 
                 if (marcador == null) {
-                    marcador = mMap.addMarker(new MarkerOptions().position(arg0).title(getDireccion(arg0)));
+                    marcador = mMap.addMarker(new MarkerOptions().position(arg0).title(getDireccion(arg0)).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)));
                     mMap.moveCamera(CameraUpdateFactory.newLatLng(arg0));
 
                 } else {
                     marcador.remove();
-                    marcador = mMap.addMarker(new MarkerOptions().position(arg0).title(getDireccion(arg0)));
+                    marcador = mMap.addMarker(new MarkerOptions().position(arg0).title(getDireccion(arg0)).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)));
                     mMap.moveCamera(CameraUpdateFactory.newLatLng(arg0));
                 }
 
@@ -202,6 +211,13 @@ public class AgregarParada extends Fragment implements OnMapReadyCallback, Parad
 
         if (paradas != null)
             prepararMapa();
+
+
+        //obtener la posicion de todas las paradas y hacer los marcadores
+        LatLng paysandu = new LatLng(-32.316465, -58.088980);
+        //mMap.addMarker(new MarkerOptions().position(new LatLng(-32.317921, -58.089010)).title("Parada1").draggable(true));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(paysandu));
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(15.0f));
     }
 
     public String getDireccion(LatLng posicion) {
@@ -221,6 +237,9 @@ public class AgregarParada extends Fragment implements OnMapReadyCallback, Parad
     public boolean agregarParada(boolean ok) {
 
         if (ok) {
+            layout.setVisibility(View.GONE);
+            carga.setVisibility(View.VISIBLE);
+            cargarParadas ();
             Toast.makeText(getActivity(), "PARADA AGREGADA", Toast.LENGTH_LONG).show();
             nombre.setText("");
             cantBicis.setText("");

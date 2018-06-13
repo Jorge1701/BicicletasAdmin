@@ -20,8 +20,8 @@ import android.widget.TextView;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
+import com.example.jorge.testgithub.Clases.ComentarioIncidencia;
 import com.example.jorge.testgithub.Clases.Incidencia;
-import com.example.jorge.testgithub.Clases.Incidencia.Estado;
 
 import java.util.List;
 
@@ -99,7 +99,7 @@ public class AdaptadorListaIncidencias extends RecyclerView.Adapter<AdaptadorLis
 		public void bindIncidencia (final Incidencia i) {
 			this.i = i;
 			// TODO: Cargar imagen del usuario
-			tvNombreUsuario.setText (i.getUsuario ().getNombre ());
+			tvNombreUsuario.setText (i.getUsuario ());
 
 			cargarEstado ();
 
@@ -107,18 +107,18 @@ public class AdaptadorListaIncidencias extends RecyclerView.Adapter<AdaptadorLis
 				@Override
 				public void onClick(View v) {
 					switch (i.getEstado ()) {
-						case ABIERTA:
+						case 0:
 							Asignar (i);
 							break;
-						case ASIGNADA:
+						case 1:
 							Resolver (i);
 							break;
 					}
 				}
 			});
 
-			tvParadaIncidencia.setText (i.getParada () == -1 ? "---" : i.getParada () + "");
-			tvDescripcion.setText (i.getIncidencia ());
+			tvParadaIncidencia.setText (i.getParada () == null ? "---" : i.getParada ());
+			tvDescripcion.setText (i.getComentario ());
 
 			cargarComentarios ();
 
@@ -129,7 +129,7 @@ public class AdaptadorListaIncidencias extends RecyclerView.Adapter<AdaptadorLis
 						return;
 
 					// TODO: Mandar nombre del admin logueado (En vez de "Jorge")
-					i.comentar (new ComentarioDeAdmin ("Jorge", etComentar.getText ().toString ()));
+					// TODO: i.comentar (new ComentarioDeAdmin ("Jorge", etComentar.getText ().toString ()));
 					cargarComentarios ();
 					etComentar.setText ("");
 				}
@@ -138,18 +138,18 @@ public class AdaptadorListaIncidencias extends RecyclerView.Adapter<AdaptadorLis
 
 		private void cargarEstado () {
 			switch (i.getEstado ()) {
-				case ABIERTA:
+				case 0:
 					tvAsignado.setText ("");
 					estado.setTextColor (0xFFFF4444);
 					estado.setText ("ABIERTA");
 					break;
-				case ASIGNADA:
-					tvAsignado.setText (i.getAsignado ());
+				case 1:
+					// TODO: tvAsignado.setText (i.getAsignado ());
 					estado.setTextColor (0xFFFF9D00);
 					estado.setText ("ASIGNADA");
 					break;
-				case RESUELTA:
-					tvAsignado.setText (i.getAsignado ());
+				case 2:
+					// TODO: tvAsignado.setText (i.getAsignado ());
 					estado.setTextColor (0xFF35D002);
 					estado.setText ("RESUELTA");
 					break;
@@ -157,7 +157,7 @@ public class AdaptadorListaIncidencias extends RecyclerView.Adapter<AdaptadorLis
 		}
 
 		private void cargarComentarios () {
-			if (i.getComentarios () == null || i.getComentarios ().size () == 0) {
+			if (i.getComentarioIncidencias () == null || i.getComentarioIncidencias ().size () == 0) {
 				tvTituloComentarios.setVisibility (View.GONE);
 				llComentarios.setVisibility (View.GONE);
 			} else {
@@ -167,7 +167,7 @@ public class AdaptadorListaIncidencias extends RecyclerView.Adapter<AdaptadorLis
 				tvTituloComentarios.setVisibility (View.VISIBLE);
 				llComentarios.setVisibility (View.VISIBLE);
 
-				for (ComentarioDeAdmin c: i.getComentarios ()) {
+				for (ComentarioIncidencia c: i.getComentarioIncidencias ()) {
 					View v = LayoutInflater.from (context).inflate (R.layout.item_comentario, null, false);
 					((TextView) v.findViewById (R.id.tvNombreAdmin)).setText (c.getAdmin ());
 					((TextView) v.findViewById (R.id.tvComentario)).setText (c.getComentario ());
@@ -193,8 +193,8 @@ public class AdaptadorListaIncidencias extends RecyclerView.Adapter<AdaptadorLis
 			view.findViewById(R.id.btnAceptar).setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					i.setEstado (Incidencia.Estado.ASIGNADA);
-					i.setAsignado (etNombreAsigando.getText ().toString ());
+					i.setEstado (1);
+					// TODO: i.setAsignado (etNombreAsigando.getText ().toString ());
 					cargarEstado ();
 					dialog.dismiss();
 				}
@@ -220,7 +220,7 @@ public class AdaptadorListaIncidencias extends RecyclerView.Adapter<AdaptadorLis
 			view.findViewById (R.id.btnAceptar).setOnClickListener (new View.OnClickListener () {
 				@Override
 				public void onClick(View v) {
-					i.setEstado (Incidencia.Estado.RESUELTA);
+					i.setEstado (2);
 					cargarEstado ();
 					dialog.dismiss ();
 				}

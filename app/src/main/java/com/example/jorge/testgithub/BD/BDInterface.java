@@ -58,4 +58,6 @@ public interface BDInterface {
 			@Field ("cantBicis") int cantBicis
 	);
 
+	@GET ("incidencias")
+	Call<RespuestaIncidencias> obtenerIncidencias ();
 }

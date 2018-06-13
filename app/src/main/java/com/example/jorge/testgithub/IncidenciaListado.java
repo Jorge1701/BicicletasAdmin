@@ -6,19 +6,39 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
+import com.example.jorge.testgithub.BD.BDCliente;
+import com.example.jorge.testgithub.BD.BDInterface;
+import com.example.jorge.testgithub.BD.RespuestaIncidencias;
 import com.example.jorge.testgithub.Clases.Incidencia;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class IncidenciaListado extends Fragment {
 
 	@BindView(R.id.lvIncidencias)
 	RecyclerView lvIncidencias;
+
+
+	@BindView (R.id.progressBar)
+	LinearLayout progressBar;
+	@BindView (R.id.noHay)
+	LinearLayout noHay;
+	@BindView (R.id.btnActualizar)
+	Button btnActualizar;
 
 	private UsuariosListado.OnFragmentInteractionListener mListener;
 
@@ -34,11 +54,53 @@ public class IncidenciaListado extends Fragment {
 		View v = inflater.inflate(R.layout.fragment_listado_incidencias, container, false);
 		ButterKnife.bind (this, v);
 
-		lvIncidencias.setAdapter (new AdaptadorListaIncidencias (getActivity (), Incidencia.cargarIncidencias ()));
-		lvIncidencias.setLayoutManager (new LinearLayoutManager (getActivity ()));
-		lvIncidencias.setHasFixedSize (true);
+		recargarIncidencias ();
+
+		btnActualizar.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				recargarIncidencias ();
+			}
+		});
 
 		return v;
+	}
+
+	private void recargarIncidencias () {
+		progressBar.setVisibility (View.VISIBLE);
+
+		BDInterface bd = BDCliente.getClient().create(BDInterface.class);
+		Call<RespuestaIncidencias> call = bd.obtenerIncidencias();
+		call.enqueue(new Callback<RespuestaIncidencias>() {
+			@Override
+			public void onResponse(Call<RespuestaIncidencias> call, Response<RespuestaIncidencias> response) {
+				if (response.body().getIncidencias() != null) {
+					noHay.setVisibility (View.GONE);
+					cargarIncidencias(response.body().getIncidencias());
+				} else {
+					Toast.makeText(IncidenciaListado.this.getActivity(), "No se pudieron cargar las incidencias", Toast.LENGTH_SHORT).show();
+					noHay.setVisibility (View.VISIBLE);
+				}
+				progressBar.setVisibility (View.GONE);
+			}
+
+			@Override
+			public void onFailure(Call<RespuestaIncidencias> call, Throwable t) {
+				Toast.makeText(IncidenciaListado.this.getActivity (), "No se pudieron cargar las incidencias", Toast.LENGTH_SHORT).show();
+				Log.d ("ASD", t.getMessage());
+				noHay.setVisibility (View.VISIBLE);
+				progressBar.setVisibility (View.GONE);
+			}
+		});
+	}
+
+	private void cargarIncidencias (List<Incidencia> incidencias) {
+		lvIncidencias.setAdapter (new AdaptadorListaIncidencias(this.getContext(), incidencias));
+		lvIncidencias.setLayoutManager(new LinearLayoutManager(getActivity()));
+		lvIncidencias.setHasFixedSize(true);
+
+		if (incidencias.size() == 0)
+			noHay.setVisibility (View.VISIBLE);
 	}
 
 	public void onButtonPressed(Uri uri) {
