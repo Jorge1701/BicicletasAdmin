@@ -139,6 +139,8 @@ public class Usuario {
 					v.barraProgreso.setVisibility (View.GONE);
 					v.btnHabilitar.setVisibility(View.GONE);
 					v.btnInhabilitar.setVisibility(View.VISIBLE);
+					v.imgHabilitado.setVisibility(View.VISIBLE);
+					v.imgInhabilitado.setVisibility(View.GONE);
 					Activado = 1;
 				}
 			}
@@ -148,6 +150,8 @@ public class Usuario {
 				v.barraProgreso.setVisibility (View.GONE);
 				v.btnHabilitar.setVisibility(View.VISIBLE);
 				v.btnInhabilitar.setVisibility(View.GONE);
+				v.imgHabilitado.setVisibility(View.GONE);
+				v.imgInhabilitado.setVisibility(View.VISIBLE);
 				Log.d ("FALLO", t.getMessage ());
 			}
 		});
@@ -163,6 +167,8 @@ public class Usuario {
 					v.barraProgreso.setVisibility (View.GONE);
 					v.btnHabilitar.setVisibility (View.VISIBLE);
 					v.btnInhabilitar.setVisibility (View.GONE);
+					v.imgHabilitado.setVisibility(View.GONE);
+					v.imgInhabilitado.setVisibility(View.VISIBLE);
 					Activado = 0;
 				}
 			}
@@ -172,6 +178,8 @@ public class Usuario {
 				v.barraProgreso.setVisibility (View.GONE);
 				v.btnHabilitar.setVisibility (View.GONE);
 				v.btnInhabilitar.setVisibility (View.VISIBLE);
+				v.imgHabilitado.setVisibility(View.VISIBLE);
+				v.imgInhabilitado.setVisibility(View.GONE);
 				Log.d ("FALLO", t.getMessage ());
 			}
 		});

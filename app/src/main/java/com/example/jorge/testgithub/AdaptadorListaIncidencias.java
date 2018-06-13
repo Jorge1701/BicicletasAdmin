@@ -161,10 +161,10 @@ public class AdaptadorListaIncidencias extends RecyclerView.Adapter<AdaptadorLis
 				public void onClick(View v) {
 					if (abierto) {
 						com.example.jorge.testgithub.Util.Animation.colapsar (contenido);
-						com.example.jorge.testgithub.Util.Animation.expandir (msjExpandir);
+						msjExpandir.setVisibility(View.VISIBLE);
 					} else {
 						com.example.jorge.testgithub.Util.Animation.expandir (contenido);
-						com.example.jorge.testgithub.Util.Animation.colapsar (msjExpandir);
+						msjExpandir.setVisibility(View.GONE);
 					}
 					abierto = !abierto;
 				}

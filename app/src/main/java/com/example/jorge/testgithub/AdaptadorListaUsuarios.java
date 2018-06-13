@@ -12,12 +12,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.example.jorge.testgithub.Clases.Usuario;
+import com.example.jorge.testgithub.Util.Animation;
 
 import java.util.List;
 
@@ -69,7 +72,20 @@ public class AdaptadorListaUsuarios extends RecyclerView.Adapter<AdaptadorListaU
 		public Button btnInhabilitar;
 		@BindView (R.id.barraProgreso)
 		public ProgressBar barraProgreso;
+		@BindView (R.id.imgHabilitado)
+		public ImageView imgHabilitado;
+		@BindView (R.id.imgInhabilitado)
+		public ImageView imgInhabilitado;
 		CardView cardView;
+
+		@BindView (R.id.cabecera)
+		LinearLayout cabecera;
+		@BindView (R.id.contenido)
+		LinearLayout contenido;
+		@BindView (R.id.msjExpandir)
+		LinearLayout msjExpandir;
+
+		private boolean abierto = false;
 
 		private Context mContext;
 
@@ -89,6 +105,8 @@ public class AdaptadorListaUsuarios extends RecyclerView.Adapter<AdaptadorListaU
 
 			btnHabilitar.setVisibility (!activo ? View.VISIBLE : View.GONE);
 			btnInhabilitar.setVisibility (activo ? View.VISIBLE : View.GONE);
+			imgHabilitado.setVisibility(activo ? View.VISIBLE : View.GONE);
+			imgInhabilitado.setVisibility(!activo ? View.VISIBLE : View.GONE);
 
 			btnHabilitar.setOnClickListener (new View.OnClickListener () {
 				@Override
@@ -101,6 +119,20 @@ public class AdaptadorListaUsuarios extends RecyclerView.Adapter<AdaptadorListaU
 				@Override
 				public void onClick (View v) {
 					Inhabilitar (u);
+				}
+			});
+
+			cabecera.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					if (abierto) {
+						com.example.jorge.testgithub.Util.Animation.colapsar (contenido);
+						msjExpandir.setVisibility(View.VISIBLE);
+					} else {
+						com.example.jorge.testgithub.Util.Animation.expandir (contenido);
+						msjExpandir.setVisibility(View.GONE);
+					}
+					abierto = !abierto;
 				}
 			});
 		}
@@ -121,8 +153,11 @@ public class AdaptadorListaUsuarios extends RecyclerView.Adapter<AdaptadorListaU
 			view.findViewById(R.id.btnAceptar).setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
+					Animation.colapsar (contenido);
+					msjExpandir.setVisibility (View.VISIBLE);
 					barraProgreso.setVisibility (View.VISIBLE);
 					btnHabilitar.setVisibility (View.GONE);
+					imgInhabilitado.setVisibility(View.GONE);
 					u.habilitar (UsuarioViewHolder.this);
 					dialog.dismiss();
 				}
@@ -148,8 +183,11 @@ public class AdaptadorListaUsuarios extends RecyclerView.Adapter<AdaptadorListaU
 			view.findViewById(R.id.btnAceptar).setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
+					Animation.colapsar (contenido);
+					msjExpandir.setVisibility (View.VISIBLE);
 					barraProgreso.setVisibility (View.VISIBLE);
 					btnInhabilitar.setVisibility (View.GONE);
+					imgHabilitado.setVisibility(View.GONE);
 					u.inhabilitar (UsuarioViewHolder.this);
 					dialog.dismiss();
 				}
