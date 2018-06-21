@@ -17,23 +17,33 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.Transformation;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
+import com.example.jorge.testgithub.BD.BDCliente;
+import com.example.jorge.testgithub.BD.BDInterface;
+import com.example.jorge.testgithub.BD.RespuestaAdministradores;
+import com.example.jorge.testgithub.Clases.Administrador;
 import com.example.jorge.testgithub.Clases.ComentarioIncidencia;
 import com.example.jorge.testgithub.Clases.Incidencia;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class AdaptadorListaIncidencias extends RecyclerView.Adapter<AdaptadorListaIncidencias.IncidenciaViewHolder> {
 
@@ -223,10 +233,27 @@ public class AdaptadorListaIncidencias extends RecyclerView.Adapter<AdaptadorLis
 
 		private void Asignar (final Incidencia i) {
 			final Dialog dialog = new Dialog(context, android.R.style.Theme_Translucent_NoTitleBar);
-			View view = LayoutInflater.from(context).inflate(R.layout.custom_dialog_alert, null);
+			final View view = LayoutInflater.from(context).inflate(R.layout.custom_dialog_alert, null);
+
+			final Spinner spinner = (Spinner) view.findViewById (R.id.spinner);
+			final LinearLayout llProgressBar = (LinearLayout) view.findViewById (R.id.llProgressBar);
+			BDInterface bd = BDCliente.getClient().create(BDInterface.class);
+			Call<RespuestaAdministradores> call = bd.obtenerAdministradores();
+			call.enqueue(new Callback<RespuestaAdministradores>() {
+				@Override
+				public void onResponse(Call<RespuestaAdministradores> call, Response<RespuestaAdministradores> response) {
+					cargarAdministradores(spinner, llProgressBar, response.body().getAdministradores());
+					view.findViewById(R.id.btnAceptar).setEnabled(true);
+				}
+
+				@Override
+				public void onFailure(Call<RespuestaAdministradores> call, Throwable t) {
+					Toast.makeText(context, "Error al cargar los administradores", Toast.LENGTH_SHORT).show();
+					Log.d("ASD", t.getMessage());
+				}
+			});
 
 			((TextView) view.findViewById (R.id.tvTitulo)).setText ("Asignar Incidencia?");
-			final EditText etNombreAsigando = ((EditText) view.findViewById (R.id.etNombreAsignado));
 
 			view.findViewById(R.id.btnCancelar).setOnClickListener(new View.OnClickListener() {
 				@Override
@@ -235,11 +262,13 @@ public class AdaptadorListaIncidencias extends RecyclerView.Adapter<AdaptadorLis
 				}
 			});
 
+			view.findViewById(R.id.btnAceptar).setEnabled(false);
 			view.findViewById(R.id.btnAceptar).setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					i.setEstado (1);
+					// TODO: i.setEstado (1);
 					// TODO: i.setAsignado (etNombreAsigando.getText ().toString ());
+					// spinner.getSelectedItem().toString()
 					cargarEstado ();
 					dialog.dismiss();
 				}
@@ -248,6 +277,20 @@ public class AdaptadorListaIncidencias extends RecyclerView.Adapter<AdaptadorLis
 			dialog.setContentView(view);
 			dialog.show();
 		}
+
+		private void cargarAdministradores (Spinner s, LinearLayout ll, List<Administrador> admins) {
+			List<String> ads = new ArrayList<>();
+			for (Administrador a : admins)
+				ads.add(a.getEmail());
+
+			ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, ads);
+			adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+			s.setAdapter(adapter);
+
+			ll.setVisibility(View.GONE);
+			s.setVisibility(View.VISIBLE);
+		}
+
 
 		private void Resolver (final Incidencia i) {
 			final Dialog dialog = new Dialog (context, android.R.style.Theme_Translucent_NoTitleBar);

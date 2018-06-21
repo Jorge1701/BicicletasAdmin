@@ -30,17 +30,40 @@
             android:background="#000"
             android:layout_margin="15dp"></LinearLayout>
 
-        <EditText
-            android:id="@+id/etNombreAsignado"
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="5dp"
-            android:layout_marginHorizontal="15dp"
-            android:textAlignment="center"
-            android:textSize="25sp"
-            android:paddingVertical="5dp"
-            android:hint="Nombre Asignado"
-            android:background="@drawable/fondo_input_incidencia"/>
+            android:layout_marginHorizontal="30dp">
+
+            <Spinner
+                android:id="@+id/spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"></Spinner>
+
+            <LinearLayout
+                android:id="@+id/llProgressBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Cargando administradores..."
+                    android:textAlignment="center"/>
+
+                <ProgressBar
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="5dp"
+                    style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                    android:indeterminate="true" />
+
+            </LinearLayout>
+
+        </FrameLayout>
 
         <LinearLayout
             android:layout_width="match_parent"

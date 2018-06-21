@@ -68,4 +68,7 @@ public interface BDInterface {
 			@Field ("incidencia") int incidencia,
 			@Field ("comentario") String comentario
 	);
+
+	@GET ("administradores")
+	Call<RespuestaAdministradores> obtenerAdministradores ();
 }
