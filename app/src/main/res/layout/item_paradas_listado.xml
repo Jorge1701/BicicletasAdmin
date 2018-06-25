@@ -30,25 +30,28 @@
         <LinearLayout
             android:layout_width="70dp"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_margin="10dp">
+            android:layout_margin="10dp"
+            android:layout_gravity="center"
+            android:orientation="vertical">
+
             <TextView
                 android:id="@+id/dia"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="2dp"
                 android:text="@string/numero"
-                android:textAlignment="center"
-                android:layout_marginBottom="2dp"/>
+                android:textAlignment="center" />
+
             <TextView
+                android:id="@+id/numeroParada"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="15dp"
+                android:background="@drawable/borde_listado"
                 android:padding="5dp"
+                android:textAlignment="center"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                android:textAlignment="center"
-                android:id="@+id/numeroParada"
-                android:background="@drawable/borde_listado"
                 tools:targetApi="o" />
         </LinearLayout>
 
@@ -62,7 +65,7 @@
                 android:id="@+id/semana"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/disponibles"
+                android:text="Bicicletas disponibles"
                 android:textAlignment="center"
                 android:layout_marginBottom="2dp"/>
             <TextView
@@ -87,7 +90,7 @@
                 android:id="@+id/mes"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/ocupadas"
+                android:text="Bicicletas ocupadas"
                 android:textAlignment="center"
                 android:layout_marginBottom="2dp"/>
             <TextView
