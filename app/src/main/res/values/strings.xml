@@ -30,4 +30,26 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="cargando_administradores">Cargando administradores...</string>
+    <string name="test">Test</string>
+    <string name="cancelar">Cancelar</string>
+    <string name="aceptar">Aceptar</string>
+    <string name="cant_bicis">Cant Bicis</string>
+    <string name="cargando_mapa">Cargando mapa...</string>
+    <string name="no_hay_bicicletas">No hay bicicletas</string>
+    <string name="cargando_bicicletas">Cargando bicicletas...</string>
+    <string name="cargando_incidencias">Cargando incidencias...</string>
+    <string name="no_hay_incidencias">No hay incidencias</string>
+    <string name="no_hay_paradas">No hay paradas</string>
+    <string name="cargando_paradas">Cargando paradas...</string>
+    <string name="cargando_usuarios">Cargando usuarios...</string>
+    <string name="actualizar">Actualizar</string>
+    <string name="no_hay_usuarios">No hay Usuarios</string>
+    <string name="admin">Admin</string>
+    <string name="noasignado">---</string>
+    <string name="comentarios">Comentarios</string>
+    <string name="comentar">Comentar...</string>
+    <string name="habilitar_usuario">Habilitar Usuario</string>
+    <string name="inhabilitar_usuario">Inhabilitar Usuario</string>
+    <string name="toque_para_expandir">Toque para expandir</string>
 </resources>

@@ -8,7 +8,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginVertical="2dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="2dp"
         android:background="@drawable/fondo_bordes_horizontales">
 
         <TextView
@@ -17,7 +18,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:layout_weight="4"
-            android:text="Admin"
+            android:text="@string/admin"
             android:textAlignment="center" />
 
         <TextView
@@ -26,7 +27,6 @@
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:layout_weight="1"
-            android:text="test"
             android:textColor="#000" />
 
     </LinearLayout>

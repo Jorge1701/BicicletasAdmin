@@ -20,7 +20,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:layout_marginHorizontal="5dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
             android:layout_marginTop="5dp"
             android:background="@drawable/fondo_blanco">
 
@@ -38,24 +39,27 @@
 
                 <LinearLayout
                     android:layout_weight="1"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_marginVertical="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
                     android:orientation="horizontal"
-                    android:layout_marginHorizontal="5dp">
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    tools:ignore="DisableBaselineAlignment">
 
                     <LinearLayout
                         android:layout_weight="1"
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        tools:ignore="NestedWeights">
 
                         <TextView
                             android:id="@+id/tvNombreUsuario"
                             android:layout_weight="1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Jorge Rosas"
                             android:textSize="18sp"
                             android:textColor="#000"
                             android:layout_gravity="center"/>
@@ -77,12 +81,13 @@
                             <TextView
                                 android:id="@+id/tvParadaIncidencia"
                                 android:layout_weight="1"
-                                android:layout_width="wrap_content"
+                                android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
                                 android:textSize="15sp"
-                                android:layout_marginHorizontal="15dp"
-                                android:text="---"/>
+                                android:layout_marginStart="15dp"
+                                android:layout_marginEnd="15dp"
+                                android:text="@string/noasignado"/>
 
                         </LinearLayout>
 
@@ -98,16 +103,14 @@
                             android:layout_weight="1"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:background="@drawable/boton_alert"
-                            android:text="Test"/>
+                            android:background="@drawable/boton_alert"/>
 
                         <TextView
                             android:id="@+id/tvNombreAsignado"
                             android:layout_weight="1"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:textAlignment="center"
-                            android:text="Asignado"/>
+                            android:textAlignment="center"/>
 
                     </LinearLayout>
 
@@ -120,13 +123,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/fondo_msj"
-                android:layout_marginHorizontal="15dp"
-                android:layout_marginVertical="1dp">
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Toque para expandir"
+                    android:text="@string/toque_para_expandir"
                     android:textColor="#FFF"
                     android:textAlignment="center"/>
 
@@ -144,16 +149,16 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:textSize="20sp"
-                    android:text="fjkhjkdfghjk dfkgh dgfj hdfgkjh dfgkjh f  kjhg dkjhdf gkj ksdg nkshdf sdkjh k afsklhdg  halkshd sdg dgjkh sfk dgkj  asf jksdgj hasfkj fh kjdg jkasf kjhkjdgd bas dsgkj fkj sdgklasklj akj bad b as  jbasdg kbasdg badg badg dg jk g djkag dng aljkag bkg lab as gklag  jkba gjkadgs djbg akjdg kjbg klas gkbg jkjkag kj g "
                     android:textColor="#000" />
 
                 <TextView
                     android:id="@+id/tvTituloComentarios"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="15dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp"
                     android:layout_marginTop="5dp"
-                    android:text="Comentarios"/>
+                    android:text="@string/comentarios"/>
 
                 <LinearLayout
                     android:id="@+id/llComentarios"
@@ -173,25 +178,30 @@
                         android:id="@+id/etComentar"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Comentar..."
-                        android:paddingVertical="5dp"
-                        android:paddingLeft="15dp"
-                        android:paddingRight="35dp"
+                        android:hint="@string/comentar"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="5dp"
+                        android:paddingStart="15dp"
+                        android:paddingEnd="35dp"
                         android:inputType="textMultiLine"
-                        android:background="@drawable/fondo_input_incidencia" />
+                        android:background="@drawable/fondo_input_incidencia"
+                        android:paddingLeft="15dp"
+                        android:paddingRight="35dp" />
 
                     <FrameLayout
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:layout_marginBottom="3dp"
-                        android:layout_marginRight="3dp"
-                        android:layout_gravity="bottom|end">
+                        android:layout_marginEnd="3dp"
+                        android:layout_gravity="bottom|end"
+                        android:layout_marginRight="3dp">
 
                         <ImageView
                             android:id="@+id/ivSendComentar"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:background="@drawable/ic_send_comentar"/>
+                            android:background="@drawable/ic_send_comentar"
+                            tools:ignore="ContentDescription" />
 
                         <ProgressBar
                             android:visibility="gone"

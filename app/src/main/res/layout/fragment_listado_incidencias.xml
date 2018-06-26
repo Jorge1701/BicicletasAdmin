@@ -18,12 +18,13 @@
             android:layout_height="wrap_content"
             android:textAlignment="center"
             android:textSize="25sp"
-            android:text="Cargando incidencias..." />
+            android:text="@string/cargando_incidencias" />
 
         <ProgressBar
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
             style="@style/Widget.AppCompat.ProgressBar.Horizontal"
             android:indeterminate="true" />
 
@@ -42,7 +43,7 @@
             android:layout_marginTop="50dp"
             android:gravity="center"
             android:paddingBottom="5dp"
-            android:text="No hay incidencias"
+            android:text="@string/no_hay_incidencias"
             android:textAlignment="center"
             android:textSize="40sp" />
     </LinearLayout>
@@ -70,12 +71,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginVertical="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
             android:background="@drawable/fondo_blanco"
             android:drawableLeft="@drawable/ic_refresh_black_24dp"
             android:paddingLeft="5dp"
             android:paddingRight="5dp"
-            android:text="Actualizar" />
+            android:text="@string/actualizar" />
     </LinearLayout>
 
 </LinearLayout>
