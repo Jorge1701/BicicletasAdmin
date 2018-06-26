@@ -64,8 +64,22 @@ public class AdaptadorListaUsuarios extends RecyclerView.Adapter<AdaptadorListaU
 	}
 
 	public class UsuarioViewHolder extends RecyclerView.ViewHolder {
-    	@BindView (R.id.tvNombre)
+		@BindView (R.id.tvNombre)
 		TextView tvNombre;
+		@BindView (R.id.tvMensajeCIPasaporte)
+		TextView tvMensajeCIPasaporte;
+		@BindView (R.id.tvCIPasaporte)
+		TextView tvCIPasaporte;
+		@BindView (R.id.tvCorreo)
+		TextView tvCorreo;
+		@BindView (R.id.tvTelefono)
+		TextView tvTelefono;
+		@BindView (R.id.tvDireccion)
+		TextView tvDireccion;
+		@BindView (R.id.tvSaldo)
+		TextView tvSaldo;
+
+
 		@BindView (R.id.btnHabilitar)
 		public Button btnHabilitar;
 		@BindView (R.id.btnInhabilitar)
@@ -98,6 +112,16 @@ public class AdaptadorListaUsuarios extends RecyclerView.Adapter<AdaptadorListaU
 
 		public void bindUsuario (final Usuario u) {
 			tvNombre.setText (u.getNombre ());
+			if (u.getCedula ().isEmpty ())
+				tvCIPasaporte.setText (u.getPasaporte ());
+			else {
+				tvMensajeCIPasaporte.setText (mContext.getString (R.string.cedula));
+				tvCIPasaporte.setText (u.getCedula ());
+			}
+			tvCorreo.setText (u.getEmail ());
+			tvTelefono.setText (u.getTelefono ());
+			tvDireccion.setText (u.getDireccion ());
+			tvSaldo.setText ("$ " + u.getSaldo ());
 			// TODO: Cargar imagen del usuario
 			boolean activo = u.isActivado() != 0;
 
