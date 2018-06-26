@@ -22,6 +22,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.example.jorge.testgithub.BD.BDCliente;
 import com.example.jorge.testgithub.BD.BDInterface;
@@ -114,12 +115,10 @@ public class UsuariosListado extends Fragment {
         });
 
 
-
         swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 bdcargarUsuarios(false);
-                swipeRefresh.setRefreshing(false);
             }
         });
 
@@ -132,7 +131,7 @@ public class UsuariosListado extends Fragment {
 
     public void bdcargarUsuarios(boolean barraCarga) {
         llNoHay.setVisibility(View.GONE);
-        if(barraCarga){
+        if (barraCarga) {
             progressBar.setVisibility(View.VISIBLE);
         }
 
@@ -149,6 +148,8 @@ public class UsuariosListado extends Fragment {
             public void onFailure(Call<RespuestaUsuarios> call, Throwable t) {
                 llNoHay.setVisibility(View.VISIBLE);
                 progressBar.setVisibility(View.GONE);
+                swipeRefresh.setRefreshing(false);
+                Toast.makeText(getActivity(), "Error de conexion con el servidor", Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -198,8 +199,6 @@ public class UsuariosListado extends Fragment {
 
     private void filtrarUsuarios(List<Usuario> usuarios) {
         if (usuarios == null) {
-            llNoHay.setVisibility(View.VISIBLE);
-            progressBar.setVisibility(View.GONE);
             usuarios = new ArrayList<>();
         }
 
@@ -217,14 +216,13 @@ public class UsuariosListado extends Fragment {
         lvLista.setLayoutManager(new LinearLayoutManager(getActivity()));
         lvLista.setHasFixedSize(true);
 
+        swipeRefresh.setRefreshing(false);
+        progressBar.setVisibility(View.GONE);
+
         if (usuarios.size() == 0) {
             llNoHay.setVisibility(View.VISIBLE);
-            progressBar.setVisibility(View.GONE);
-
         } else {
             llNoHay.setVisibility(View.GONE);
-            progressBar.setVisibility(View.GONE);
-
         }
     }
 }
