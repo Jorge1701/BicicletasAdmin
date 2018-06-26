@@ -5,7 +5,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class BDCliente {
 
-	public static final String BASE_URL = "http://192.168.1.8/BackEndMoviles/public/";
+	public static final String BASE_URL = "http://192.168.10.149/BackEndMoviles/public/";
 	private static Retrofit retrofit = null;
 
 	public static Retrofit getClient() {
