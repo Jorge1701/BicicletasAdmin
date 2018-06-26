@@ -2,31 +2,31 @@
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/item_paradas_listado_alquileres"
-    app:cardBackgroundColor="#CCC"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    app:cardBackgroundColor="#CCC">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="@color/white"
-        android:layout_margin="2dp">
+        android:layout_margin="2dp"
+        android:background="@drawable/fondo_blanco"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/nombreParada"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:textSize="20sp"
-            android:textStyle="bold"
+            android:layout_marginTop="5dp"
             android:textAlignment="center"
-            android:textColor="#000" />
+            android:textColor="#000"
+            android:textSize="25sp" />
 
         <com.jjoe64.graphview.GraphView
             android:id="@+id/graph"
             android:layout_width="match_parent"
-            android:layout_height="200dip" />
+            android:layout_height="150dp" />
 
     </LinearLayout>
 

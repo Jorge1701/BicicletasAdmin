@@ -1,110 +1,125 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/item_paradas_listado"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/item_paradas_listado"
-    app:cardBackgroundColor="#CCC"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    app:cardBackgroundColor="#CCC">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_margin="2dp"
         android:background="@drawable/fondo_blanco"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
         <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/nombre"
-            android:layout_weight="1"
             android:id="@+id/nombreParada"
-            android:layout_gravity="center"
-            android:paddingHorizontal="10dp"
-            android:textSize="25sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
+            android:layout_marginTop="5dp"
+            android:paddingHorizontal="5dp"
+            android:text="@string/nombre"
+            android:textAlignment="center"
             android:textColor="#000"
+            android:textSize="25sp"
             tools:targetApi="o" />
 
         <LinearLayout
-            android:layout_width="70dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:layout_gravity="center"
-            android:orientation="vertical">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/dia"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="2dp"
-                android:text="@string/numero"
-                android:textAlignment="center" />
+                android:layout_gravity="bottom"
+                android:layout_marginBottom="10dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/numeroParada"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="15dp"
-                android:background="@drawable/borde_listado"
-                android:padding="5dp"
-                android:textAlignment="center"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                tools:targetApi="o" />
-        </LinearLayout>
+                <TextView
+                    android:id="@+id/dia"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="2dp"
+                    android:text="@string/numero"
+                    android:textAlignment="center" />
 
-        <LinearLayout
-            android:layout_width="73dp"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginVertical="10dp"
-            tools:targetApi="o">
-            <TextView
-                android:id="@+id/semana"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Bicicletas disponibles"
-                android:textAlignment="center"
-                android:layout_marginBottom="2dp"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="15dp"
-                android:textColor="@color/green"
-                android:padding="5dp"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:textAlignment="center"
-                android:id="@+id/cantBicisLibres"
-                android:background="@drawable/borde_listado"/>
-        </LinearLayout>
+                <TextView
+                    android:id="@+id/numeroParada"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="15dp"
+                    android:background="@drawable/borde_listado"
+                    android:padding="5dp"
+                    android:textAlignment="center"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    tools:targetApi="o" />
+            </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="70dp"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_margin="10dp">
-            <TextView
-                android:id="@+id/mes"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Bicicletas ocupadas"
-                android:textAlignment="center"
-                android:layout_marginBottom="2dp"/>
-            <TextView
+                android:layout_gravity="bottom"
+                android:layout_weight="1"
+                android:layout_marginBottom="10dp"
+                android:orientation="vertical"
+                tools:targetApi="o">
+
+                <TextView
+                    android:id="@+id/semana"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="2dp"
+                    android:text="Bicicletas disponibles"
+                    android:textAlignment="center" />
+
+                <TextView
+                    android:id="@+id/cantBicisLibres"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="15dp"
+                    android:background="@drawable/borde_listado"
+                    android:padding="5dp"
+                    android:textAlignment="center"
+                    android:textColor="@color/green"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="15dp"
-                android:textColor="@color/red"
-                android:padding="5dp"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:textAlignment="center"
-                android:id="@+id/cantBicisOcupadas"
-                android:background="@drawable/borde_listado"
-                tools:targetApi="o" />
+                android:layout_gravity="bottom"
+                android:layout_marginBottom="10dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/mes"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="2dp"
+                    android:text="Bicicletas ocupadas"
+                    android:textAlignment="center" />
+
+                <TextView
+                    android:id="@+id/cantBicisOcupadas"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="15dp"
+                    android:background="@drawable/borde_listado"
+                    android:padding="5dp"
+                    android:textAlignment="center"
+                    android:textColor="@color/red"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    tools:targetApi="o" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 </android.support.v7.widget.CardView>
