@@ -15,14 +15,18 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.jorge.testgithub.BD.BDCliente;
 import com.example.jorge.testgithub.BD.BDInterface;
 import com.example.jorge.testgithub.BD.Respuesta;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -30,6 +34,9 @@ import retrofit2.Response;
 
 public class MenuAdmin extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, UsuariosListado.OnFragmentInteractionListener, ParadasListado.OnFragmentInteractionListener, BicisListado.OnFragmentInteractionListener {
+
+	@BindView (R.id.drawer_layout)
+	DrawerLayout drawer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +86,18 @@ public class MenuAdmin extends AppCompatActivity
             cerrarSesion();
         } else
             verificarUsuario(u, p);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event){
+        if ((keyCode == KeyEvent.KEYCODE_BACK)){
+        	if (drawer.isDrawerOpen(Gravity.LEFT))
+        		drawer.closeDrawer(Gravity.LEFT);
+        	else
+        		drawer.openDrawer(Gravity.LEFT);
+            return false;
+        }
+        return super.onKeyDown (keyCode, event);
     }
 
     private void verificarUsuario(final String u, String password) {
