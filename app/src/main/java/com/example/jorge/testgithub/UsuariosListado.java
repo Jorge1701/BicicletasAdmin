@@ -4,9 +4,12 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+
 import retrofit2.Call;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -38,24 +41,24 @@ import retrofit2.Response;
 
 public class UsuariosListado extends Fragment {
 
-    @BindView (R.id.search)
+    @BindView(R.id.search)
     MaterialSearchView searchView;
-    @BindView (R.id.lvLista)
-	RecyclerView lvLista;
-    @BindView (R.id.cbSinValidar)
+    @BindView(R.id.lvLista)
+    RecyclerView lvLista;
+    @BindView(R.id.cbSinValidar)
     CheckBox cbSinValidar;
-    @BindView (R.id.progressBar)
-	LinearLayout progressBar;
-    @BindView (R.id.llNoHay)
-	LinearLayout llNoHay;
-	@BindView (R.id.btnActualizar)
-	Button btnActualizar;
-	@BindView (R.id.btnActualizar2)
-	Button btnActualizar2;
-    @BindView (R.id.lista)
+    @BindView(R.id.progressBar)
+    LinearLayout progressBar;
+    @BindView(R.id.llNoHay)
+    LinearLayout llNoHay;
+    @BindView(R.id.btnActualizar)
+    Button btnActualizar;
+    @BindView(R.id.lista)
     LinearLayout lista;
+    @BindView(R.id.swiperefresh)
+    SwipeRefreshLayout swipeRefresh;
 
-	private List<Usuario> usuarios;
+    private List<Usuario> usuarios;
 
     private String filtro;
 
@@ -68,98 +71,102 @@ public class UsuariosListado extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-		setHasOptionsMenu(true);
+        setHasOptionsMenu(true);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_usuarios_listado, container, false);
-        ButterKnife.bind(this,v);
+        ButterKnife.bind(this, v);
 
-        cbSinValidar.setOnCheckedChangeListener (new CompoundButton.OnCheckedChangeListener () {
+        cbSinValidar.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged (CompoundButton buttonView, boolean isChecked) {
-                bdcargarUsuarios();
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                bdcargarUsuarios(true);
             }
         });
 
-        bdcargarUsuarios();
+        bdcargarUsuarios(true);
 
-        searchView.setOnSearchViewListener (new MaterialSearchView.SearchViewListener () {
+        searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
             @Override
-            public void onSearchViewShown () {
-            	searchView.setVisibility (View.VISIBLE);
+            public void onSearchViewShown() {
+                searchView.setVisibility(View.VISIBLE);
             }
 
             @Override
-            public void onSearchViewClosed () {
+            public void onSearchViewClosed() {
                 filtro = null;
-                bdcargarUsuarios ();
+                bdcargarUsuarios(true);
             }
         });
 
-        searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener () {
+        searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override
-            public boolean onQueryTextSubmit (String query) {
+            public boolean onQueryTextSubmit(String query) {
                 return false;
             }
 
             @Override
-            public boolean onQueryTextChange (String newText) {
+            public boolean onQueryTextChange(String newText) {
                 filtro = newText;
-                bdcargarUsuarios ();
+                bdcargarUsuarios(true);
                 return true;
             }
         });
 
-		btnActualizar.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				bdcargarUsuarios();
-			}
-		});
+        btnActualizar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bdcargarUsuarios(true);
+            }
+        });
 
-		btnActualizar2.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				bdcargarUsuarios();
-			}
-		});
+        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                bdcargarUsuarios(false);
+                swipeRefresh.setRefreshing(false);
+            }
+        });
 
-		progressBar.setVisibility (View.VISIBLE);
-		lista.setVisibility (View.GONE);
+
+        progressBar.setVisibility(View.VISIBLE);
+        lista.setVisibility(View.GONE);
 
         return v;
-	}
+    }
 
-	public void bdcargarUsuarios () {
-		llNoHay.setVisibility(View.GONE);
-		progressBar.setVisibility(View.VISIBLE);
-		lista.setVisibility(View.GONE);
+    public void bdcargarUsuarios(boolean barraCarga) {
+        llNoHay.setVisibility(View.GONE);
+        if(barraCarga){
+            progressBar.setVisibility(View.VISIBLE);
+        }
+        lista.setVisibility(View.GONE);
 
-		BDInterface bd = BDCliente.getClient().create(BDInterface.class);
-		Call<RespuestaUsuarios> call = bd.obtenerUsuarios ();
-		call.enqueue(new Callback<RespuestaUsuarios>() {
-			@Override
-			public void onResponse(Call<RespuestaUsuarios> call, Response<RespuestaUsuarios> response) {
-				filtrarUsuarios (response.body().getUsuarios());
-			}
+        BDInterface bd = BDCliente.getClient().create(BDInterface.class);
+        Call<RespuestaUsuarios> call = bd.obtenerUsuarios();
+        call.enqueue(new Callback<RespuestaUsuarios>() {
+            @Override
+            public void onResponse(Call<RespuestaUsuarios> call, Response<RespuestaUsuarios> response) {
+                filtrarUsuarios(response.body().getUsuarios());
+            }
 
-			@Override
-			public void onFailure(Call<RespuestaUsuarios> call, Throwable t) {
-				llNoHay.setVisibility(View.VISIBLE);
-				progressBar.setVisibility(View.GONE);
-				lista.setVisibility(View.GONE);
-			}
-		});
-	}
+            @Override
+            public void onFailure(Call<RespuestaUsuarios> call, Throwable t) {
+                llNoHay.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.GONE);
+                lista.setVisibility(View.GONE);
+            }
+        });
+    }
 
-	@Override
-	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-		inflater.inflate(R.menu.search_item, menu);
-		MenuItem item = menu.findItem (R.id.action_search);
-		searchView.setMenuItem (item);
-	}
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.search_item, menu);
+        MenuItem item = menu.findItem(R.id.action_search);
+        searchView.setMenuItem(item);
+    }
 
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
@@ -188,44 +195,44 @@ public class UsuariosListado extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
-    private List<Usuario> copiarUsuarios () {
-    	List<Usuario> res = new ArrayList<>();
-    	if (usuarios != null)
-			for (Usuario u : usuarios)
-				res.add(u);
-    	return res;
-	}
+    private List<Usuario> copiarUsuarios() {
+        List<Usuario> res = new ArrayList<>();
+        if (usuarios != null)
+            for (Usuario u : usuarios)
+                res.add(u);
+        return res;
+    }
 
-    private void filtrarUsuarios (List<Usuario> usuarios) {
-    	if (usuarios == null) {
-			llNoHay.setVisibility (View.VISIBLE);
-			progressBar.setVisibility (View.GONE);
-			lista.setVisibility (View.GONE);
-			return;
-		}
+    private void filtrarUsuarios(List<Usuario> usuarios) {
+        if (usuarios == null) {
+            llNoHay.setVisibility(View.VISIBLE);
+            progressBar.setVisibility(View.GONE);
+            lista.setVisibility(View.GONE);
+            return;
+        }
 
-        if (filtro != null && !filtro.isEmpty ())
+        if (filtro != null && !filtro.isEmpty())
             for (int i = usuarios.size() - 1; i >= 0; i--)
-                if (!usuarios.get (i).getNombre ().toLowerCase ().contains (filtro.toLowerCase ()))
-                    usuarios.remove (i);
+                if (!usuarios.get(i).getNombre().toLowerCase().contains(filtro.toLowerCase()))
+                    usuarios.remove(i);
 
-        if (cbSinValidar.isChecked ())
+        if (cbSinValidar.isChecked())
             for (int i = usuarios.size() - 1; i >= 0; i--)
                 if (usuarios.get(i).isActivado() == 1)
-                    usuarios.remove (i);
+                    usuarios.remove(i);
 
-        lvLista.setAdapter (new AdaptadorListaUsuarios(this.getContext(), usuarios));
-		lvLista.setLayoutManager(new LinearLayoutManager(getActivity()));
-		lvLista.setHasFixedSize(true);
+        lvLista.setAdapter(new AdaptadorListaUsuarios(this.getContext(), usuarios));
+        lvLista.setLayoutManager(new LinearLayoutManager(getActivity()));
+        lvLista.setHasFixedSize(true);
 
-		if (usuarios.size() == 0) {
-			llNoHay.setVisibility (View.VISIBLE);
-			progressBar.setVisibility (View.GONE);
-			lista.setVisibility (View.GONE);
-		} else {
-			llNoHay.setVisibility (View.GONE);
-			progressBar.setVisibility (View.GONE);
-			lista.setVisibility (View.VISIBLE);
-		}
+        if (usuarios.size() == 0) {
+            llNoHay.setVisibility(View.VISIBLE);
+            progressBar.setVisibility(View.GONE);
+            lista.setVisibility(View.GONE);
+        } else {
+            llNoHay.setVisibility(View.GONE);
+            progressBar.setVisibility(View.GONE);
+            lista.setVisibility(View.VISIBLE);
+        }
     }
 }

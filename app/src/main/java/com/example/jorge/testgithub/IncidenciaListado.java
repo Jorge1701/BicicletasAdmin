@@ -4,6 +4,7 @@ import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -37,8 +38,8 @@ public class IncidenciaListado extends Fragment {
 	LinearLayout progressBar;
 	@BindView (R.id.noHay)
 	LinearLayout noHay;
-	@BindView (R.id.btnActualizar)
-	Button btnActualizar;
+	@BindView(R.id.swiperefresh)
+	SwipeRefreshLayout swipeRefresh;
 
 	private UsuariosListado.OnFragmentInteractionListener mListener;
 
@@ -54,20 +55,23 @@ public class IncidenciaListado extends Fragment {
 		View v = inflater.inflate(R.layout.fragment_listado_incidencias, container, false);
 		ButterKnife.bind (this, v);
 
-		recargarIncidencias ();
+		recargarIncidencias (true);
 
-		btnActualizar.setOnClickListener(new View.OnClickListener() {
+
+		swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
 			@Override
-			public void onClick(View v) {
-				recargarIncidencias ();
+			public void onRefresh() {
+				recargarIncidencias(false);
+				swipeRefresh.setRefreshing(false);
 			}
 		});
-
 		return v;
 	}
 
-	private void recargarIncidencias () {
-		progressBar.setVisibility (View.VISIBLE);
+	private void recargarIncidencias (boolean barraCarga) {
+		if(barraCarga){
+			progressBar.setVisibility (View.VISIBLE);
+		}
 
 		BDInterface bd = BDCliente.getClient().create(BDInterface.class);
 		Call<RespuestaIncidencias> call = bd.obtenerIncidencias();
