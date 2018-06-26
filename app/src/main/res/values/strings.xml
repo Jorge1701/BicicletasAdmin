@@ -26,6 +26,7 @@
     <string name="numero">Número</string>
     <string name="nroParada">Nro. parada</string>
     <string name="id">Id</string>
+    <string name="cedula">Cedula</string>
     <string name="bicicletas_sin_devolver">No devueltas a tiempo</string>
 
     <!-- TODO: Remove or change this placeholder text -->
@@ -52,4 +53,9 @@
     <string name="habilitar_usuario">Habilitar Usuario</string>
     <string name="inhabilitar_usuario">Inhabilitar Usuario</string>
     <string name="toque_para_expandir">Toque para expandir</string>
+    <string name="correo">Correo</string>
+    <string name="saldo">Saldo</string>
+    <string name="direccion">Direccion</string>
+    <string name="telefono">Telefono</string>
+    <string name="pasaporte">Pasaporte</string>
 </resources>
