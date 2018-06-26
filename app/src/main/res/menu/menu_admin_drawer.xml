@@ -4,13 +4,16 @@
     tools:showIn="navigation_view">
 
     <group
-        android:id="@+id/menu"
+        android:id="@+id/group1"
         android:checkableBehavior="single">
         <item
             android:id="@+id/nav_usuarios"
             android:icon="@drawable/ic_menu_user"
             android:title="Usuarios" />
-
+    </group>
+    <group
+        android:id="@+id/group2"
+        android:checkableBehavior="single">
         <item android:title="Paradas">
             <menu>
                 <group
@@ -39,25 +42,27 @@
                 </group>
             </menu>
         </item>
+    </group>
 
-        <group
-            android:id="@+id/masOpciones"
-            android:checkableBehavior="single">
+    <group
+        android:id="@+id/group3"
+        android:checkableBehavior="single">
 
-            <item
-                android:id="@+id/nav_bicicletas"
-                android:icon="@drawable/ic_menu_bicycle"
-                android:title="Bicicletas" />
+        <item
+            android:id="@+id/nav_bicicletas"
+            android:icon="@drawable/ic_menu_bicycle"
+            android:title="Bicicletas" />
 
-            <item
-                android:id="@+id/nav_incidencias"
-                android:icon="@drawable/ic_menu_error"
-                android:title="Incidencias" />
-        </group>
+        <item
+            android:id="@+id/nav_incidencias"
+            android:icon="@drawable/ic_menu_error"
+            android:title="Incidencias" />
 
     </group>
+
+
     <group
-        android:id="@+id/menu_logout"
+        android:id="@+id/group4"
         android:checkableBehavior="none">
 
         <item

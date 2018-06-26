@@ -75,7 +75,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="2dp"
-                    android:text="Bicicletas disponibles"
+                    android:text="@string/b_disponibles"
                     android:textAlignment="center" />
 
                 <TextView
@@ -104,7 +104,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="2dp"
-                    android:text="Bicicletas ocupadas"
+                    android:text="@string/b_ocupadas"
                     android:textAlignment="center" />
 
                 <TextView

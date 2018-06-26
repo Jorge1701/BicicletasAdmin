@@ -20,6 +20,7 @@ import com.example.jorge.testgithub.BD.BDInterface;
 import com.example.jorge.testgithub.BD.RespuestaIncidencias;
 import com.example.jorge.testgithub.Clases.Incidencia;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -83,6 +84,7 @@ public class IncidenciaListado extends Fragment {
 					cargarIncidencias(response.body().getIncidencias());
 				} else {
 					Toast.makeText(IncidenciaListado.this.getActivity(), "No se pudieron cargar las incidencias", Toast.LENGTH_SHORT).show();
+					cargarIncidencias (new ArrayList<Incidencia>());
 					noHay.setVisibility (View.VISIBLE);
 				}
 				progressBar.setVisibility (View.GONE);

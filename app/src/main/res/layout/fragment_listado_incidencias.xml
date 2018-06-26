@@ -1,8 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
+
+    <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/swiperefresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/lvIncidencias"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#CCC"
+            android:divider="#CCC"
+            android:dividerHeight="0dp"
+            android:paddingBottom="5dp">
+
+        </android.support.v7.widget.RecyclerView>
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+    <LinearLayout
+        android:id="@+id/noHay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="200dp"
+            android:gravity="center"
+            android:paddingBottom="5dp"
+            android:text="@string/no_hay_incidencias"
+            android:textAlignment="center"
+            android:textSize="40sp" />
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/progressBar"
@@ -26,63 +61,6 @@
             android:layout_marginBottom="10dp"
             android:layout_marginTop="10dp"
             android:indeterminate="true" />
-
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/noHay"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="50dp"
-            android:gravity="center"
-            android:paddingBottom="5dp"
-            android:text="@string/no_hay_incidencias"
-            android:textAlignment="center"
-            android:textSize="40sp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#CCC"
-        android:orientation="vertical">
-
-        <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/swiperefresh"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/lvIncidencias"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="#CCC"
-                android:divider="#CCC"
-                android:dividerHeight="0dp"
-                android:paddingBottom="5dp">
-
-            </android.support.v7.widget.RecyclerView>
-        </android.support.v4.widget.SwipeRefreshLayout>
-
-        <!--<Button
-            android:id="@+id/btnActualizar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/fondo_blanco"
-            android:drawableLeft="@drawable/ic_refresh_black_24dp"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:text="@string/actualizar" />-->
-    </LinearLayout>
-
-</LinearLayout>
+</FrameLayout>

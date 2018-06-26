@@ -51,10 +51,8 @@ public class UsuariosListado extends Fragment {
     LinearLayout progressBar;
     @BindView(R.id.llNoHay)
     LinearLayout llNoHay;
-    @BindView(R.id.btnActualizar)
-    Button btnActualizar;
-    @BindView(R.id.lista)
-    LinearLayout lista;
+
+
     @BindView(R.id.swiperefresh)
     SwipeRefreshLayout swipeRefresh;
 
@@ -115,12 +113,7 @@ public class UsuariosListado extends Fragment {
             }
         });
 
-        btnActualizar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                bdcargarUsuarios(true);
-            }
-        });
+
 
         swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -132,7 +125,7 @@ public class UsuariosListado extends Fragment {
 
 
         progressBar.setVisibility(View.VISIBLE);
-        lista.setVisibility(View.GONE);
+
 
         return v;
     }
@@ -142,7 +135,7 @@ public class UsuariosListado extends Fragment {
         if(barraCarga){
             progressBar.setVisibility(View.VISIBLE);
         }
-        lista.setVisibility(View.GONE);
+
 
         BDInterface bd = BDCliente.getClient().create(BDInterface.class);
         Call<RespuestaUsuarios> call = bd.obtenerUsuarios();
@@ -156,7 +149,7 @@ public class UsuariosListado extends Fragment {
             public void onFailure(Call<RespuestaUsuarios> call, Throwable t) {
                 llNoHay.setVisibility(View.VISIBLE);
                 progressBar.setVisibility(View.GONE);
-                lista.setVisibility(View.GONE);
+
             }
         });
     }
@@ -207,8 +200,7 @@ public class UsuariosListado extends Fragment {
         if (usuarios == null) {
             llNoHay.setVisibility(View.VISIBLE);
             progressBar.setVisibility(View.GONE);
-            lista.setVisibility(View.GONE);
-            return;
+            usuarios = new ArrayList<>();
         }
 
         if (filtro != null && !filtro.isEmpty())
@@ -228,11 +220,11 @@ public class UsuariosListado extends Fragment {
         if (usuarios.size() == 0) {
             llNoHay.setVisibility(View.VISIBLE);
             progressBar.setVisibility(View.GONE);
-            lista.setVisibility(View.GONE);
+
         } else {
             llNoHay.setVisibility(View.GONE);
             progressBar.setVisibility(View.GONE);
-            lista.setVisibility(View.VISIBLE);
+
         }
     }
 }
