@@ -92,7 +92,8 @@ public class MenuAdmin extends AppCompatActivity
     public boolean onKeyDown(int keyCode, KeyEvent event){
         if ((keyCode == KeyEvent.KEYCODE_BACK)){
         	if (drawer.isDrawerOpen(Gravity.LEFT))
-        		drawer.closeDrawer(Gravity.LEFT);
+        		// No le den bola, anda
+				this.finishAffinity();
         	else
         		drawer.openDrawer(Gravity.LEFT);
             return false;
