@@ -10,24 +10,45 @@
         android:layout_height="match_parent"
         android:background="#CCC"
         android:orientation="vertical">
+    <com.miguelcatalan.materialsearchview.MaterialSearchView
+        android:id="@+id/search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
 
-        <com.miguelcatalan.materialsearchview.MaterialSearchView
-            android:id="@+id/search"
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white">
+
+        <CheckBox
+            android:id="@+id/cbSinValidar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone" />
+            android:text="@string/usuarios_sin_validar" />
+    </LinearLayout>
 
-        <LinearLayout
+
+
+        <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/swiperefresh"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white">
+            android:layout_height="match_parent">
 
-            <CheckBox
-                android:id="@+id/cbSinValidar"
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/lvLista"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/usuarios_sin_validar" />
-        </LinearLayout>
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="#CCC"
+                android:divider="#CCC"
+                android:paddingBottom="5dp"
+                android:visibility="visible">
+
+            </android.support.v7.widget.RecyclerView>
+        </android.support.v4.widget.SwipeRefreshLayout>
+
 
         <LinearLayout
             android:id="@+id/llNoHay"
@@ -40,87 +61,38 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="50dp"
+                android:layout_marginTop="200dp"
                 android:gravity="center"
                 android:paddingBottom="5dp"
                 android:text="@string/no_hay_usuarios"
                 android:textAlignment="center"
                 android:textSize="40sp" />
-
-            <Button
-                android:id="@+id/btnActualizar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="50dp"
-                android:background="@drawable/fondo_blanco"
-                android:drawableLeft="@drawable/ic_refresh_black_24dp"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:text="@string/actualizar" />
-
         </LinearLayout>
-
-
-        <LinearLayout
-            android:id="@+id/lista"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:visibility="gone">
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/lvLista"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="#CCC"
-                android:divider="#CCC"
-                android:paddingBottom="5dp">
-
-            </android.support.v7.widget.RecyclerView>
-
-            <Button
-                android:id="@+id/btnActualizar2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/fondo_blanco"
-                android:drawableLeft="@drawable/ic_refresh_black_24dp"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp"
-                android:text="@string/actualizar" />
-
-        </LinearLayout>
-
 
         <LinearLayout
             android:id="@+id/progressBar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center"
             android:background="#FFF"
-            android:orientation="vertical">
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="@string/cargando_usuarios"
                 android:textAlignment="center"
-                android:textSize="25sp"
-                android:text="@string/cargando_usuarios" />
+                android:textSize="25sp" />
 
             <ProgressBar
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
-                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                android:layout_marginTop="10dp"
                 android:indeterminate="true" />
-
         </LinearLayout>
-
     </LinearLayout>
 
 </FrameLayout>

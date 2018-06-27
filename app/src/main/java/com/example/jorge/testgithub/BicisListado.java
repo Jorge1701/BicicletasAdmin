@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -59,7 +60,14 @@ public class BicisListado extends Fragment {
     CheckBox noDevueltas;
     @BindView(R.id.spinnerFechas)
     Spinner fechas;
+    @BindView(R.id.noHayBicicletas)
+    LinearLayout noHayBicicletas;
+    @BindView(R.id.cargandoBicicletas)
+    LinearLayout cargandoBicicletas;
+    @BindView(R.id.swiperefresh)
+    SwipeRefreshLayout swipeRefresh;
     BicisListadoAdaptador adaptador;
+    String itemSeleccionado = "";
 
     public BicisListado() {
         // Required empty public constructor
@@ -118,37 +126,41 @@ public class BicisListado extends Fragment {
 
     }
 
-
     private void cargarBicicletas(List<Bicicleta> bicicletas) {
         adaptador = new BicisListadoAdaptador(getActivity(), bicicletas);
         mRecyclerView.setAdapter(adaptador);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setHasFixedSize(true);
-        LinearLayout noHayBicicletas = getActivity().findViewById(R.id.noHayBicicletas);
         if (bicicletas.size() == 0) {
             noHayBicicletas.setVisibility(View.VISIBLE);
         } else {
             noHayBicicletas.setVisibility(View.GONE);
         }
-        LinearLayout cargandoBicicletas = getActivity().findViewById(R.id.cargandoBicicletas);
         cargandoBicicletas.setVisibility(View.GONE);
+        swipeRefresh.setRefreshing(false);
     }
 
     private void fitrarBicicletasDia(String fecha) {
-        if (bicicletas != null) {
-            List<Bicicleta> bs = new ArrayList<>(bicicletas);
-            for (int i = bs.size() - 1; i >= 0; i--) {
-                if (bs.get(i).getParada() == "" && bs.get(i).getFechaAlquiler() != null) {
-                    if (!bs.get(i).getFechaAlquiler().equals(fecha))
-                        bs.remove(i);
-                } else {
-                    bs.remove(i);
-                }
 
-            }
-            bNoDevueltas = bs;
-            cargarBicicletas(bs);
+        if(bicicletas == null) {
+            return;
         }
+
+        List<Bicicleta> bs = new ArrayList<>(bicicletas);
+
+
+        for (int i = bs.size() - 1; i >= 0; i--) {
+            if (bs.get(i).getParada() == "" && bs.get(i).getFechaAlquiler() != null) {
+                if (!bs.get(i).getFechaAlquiler().equals(fecha))
+                    bs.remove(i);
+            } else {
+                bs.remove(i);
+            }
+
+        }
+        bNoDevueltas = bs;
+        cargarBicicletas(bs);
+
 
     }
 
@@ -190,16 +202,17 @@ public class BicisListado extends Fragment {
             fechas.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    String seleccionado = parent.getItemAtPosition(position).toString();
-                    if (seleccionado.equals("Hoy")) {
+                    itemSeleccionado = parent.getItemAtPosition(position).toString();
+
+                    if (itemSeleccionado.equals("Hoy")) {
 
                         fitrarBicicletasDia(fechaHoy);
 
-                    } else if (seleccionado.equals("Ayer")) {
+                    } else if (itemSeleccionado.equals("Ayer")) {
 
                         fitrarBicicletasDia(fechaAyer);
 
-                    } else if (seleccionado.equals("Seleccionar fecha")) {
+                    } else if (itemSeleccionado.equals("Seleccionar fecha")) {
 
                         final Calendar calendario = Calendar.getInstance();
                         int yy = calendario.get(Calendar.YEAR);
@@ -217,7 +230,7 @@ public class BicisListado extends Fragment {
                         datePicker.show();
 
                     } else {
-                        fitrarBicicletasDia(seleccionado);
+                        fitrarBicicletasDia(itemSeleccionado);
                     }
 
                 }
@@ -243,23 +256,7 @@ public class BicisListado extends Fragment {
         final View view = inflater.inflate(R.layout.fragment_bicis_listado, container, false);
         ButterKnife.bind(this, view);
 
-        BDInterface bd = BDCliente.getClient().create(BDInterface.class);
-        Call<RespuestaBicicletas> call = bd.getBicicletas();
-        call.enqueue(new Callback<RespuestaBicicletas>() {
-            @Override
-            public void onResponse(Call<RespuestaBicicletas> call, Response<RespuestaBicicletas> response) {
-                if (response.isSuccessful()) {
-                    List<Bicicleta> bs = response.body().getBicicletas();
-                    bicicletas = bs;
-                    cargarBicicletas(bs);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<RespuestaBicicletas> call, Throwable t) {
-
-            }
-        });
+        bdCargarBicicletas();
 
         noDevueltas.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -295,8 +292,40 @@ public class BicisListado extends Fragment {
             }
         });
 
+        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                bdCargarBicicletas();
+                swipeRefresh.setRefreshing(false);
+            }
+        });
+
         return view;
 
+    }
+
+    private void bdCargarBicicletas() {
+        BDInterface bd = BDCliente.getClient().create(BDInterface.class);
+        Call<RespuestaBicicletas> call = bd.getBicicletas();
+        call.enqueue(new Callback<RespuestaBicicletas>() {
+            @Override
+            public void onResponse(Call<RespuestaBicicletas> call, Response<RespuestaBicicletas> response) {
+                if (response.isSuccessful()) {
+                    bicicletas = response.body().getBicicletas();
+                    if (noDevueltas.isChecked()) {
+                        fitrarBicicletasDia(itemSeleccionado);
+                    } else {
+                        cargarBicicletas(bicicletas);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RespuestaBicicletas> call, Throwable t) {
+                noHayBicicletas.setVisibility(View.VISIBLE);
+                swipeRefresh.setRefreshing(false);
+            }
+        });
     }
 
     private boolean esNumero(String texto) {

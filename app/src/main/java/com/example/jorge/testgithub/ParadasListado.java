@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -30,6 +31,12 @@ public class ParadasListado extends Fragment {
 
     @BindView(R.id.lista_paradas)
     RecyclerView mRecyclerView;
+    @BindView(R.id.swiperefresh)
+    SwipeRefreshLayout swipeRefresh;
+    @BindView(R.id.cargandoParadas)
+    LinearLayout cargandoParadas;
+    @BindView(R.id.noHayParadas)
+    LinearLayout noHayParadas;
     ParadasListadoAdaptador adaptador;
     boolean alquileres;
 
@@ -59,23 +66,47 @@ public class ParadasListado extends Fragment {
         ButterKnife.bind(this, view);
 
 
+        bdCargarParadas();
+
+
+        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                bdCargarParadas();
+                swipeRefresh.setRefreshing(false);
+            }
+        });
+
+        return view;
+    }
+
+    private void bdCargarParadas() {
         BDInterface bd = BDCliente.getClient().create(BDInterface.class);
         Call<RespuestaParadas> call = bd.getParadas();
         call.enqueue(new Callback<RespuestaParadas>() {
             @Override
             public void onResponse(Call<RespuestaParadas> call, Response<RespuestaParadas> response) {
                 if (response.isSuccessful()) {
-                    cargarParadas(response.body().getParadas(), alquileres);
+                    List<Parada> paradas = response.body().getParadas();
+                    adaptador = new ParadasListadoAdaptador(getActivity(), paradas);
+                    adaptador.setAlquileres(alquileres);
+                    mRecyclerView.setAdapter(adaptador);
+                    mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                    mRecyclerView.setHasFixedSize(true);
+                    if (paradas.size() == 0) {
+                        noHayParadas.setVisibility(View.VISIBLE);
+                    }
+                    cargandoParadas.setVisibility(View.GONE);
+                    swipeRefresh.setRefreshing(false);
                 }
             }
 
             @Override
             public void onFailure(Call<RespuestaParadas> call, Throwable t) {
-
+                noHayParadas.setVisibility(View.VISIBLE);
+                swipeRefresh.setRefreshing(false);
             }
         });
-
-        return view;
     }
 
     @Override
@@ -99,19 +130,4 @@ public class ParadasListado extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
-    //------------------------------------------------------------------------------------------------------------------------------
-
-    public void cargarParadas(List<Parada> paradas, boolean alquileres) {
-        adaptador = new ParadasListadoAdaptador(getActivity(), paradas);
-        adaptador.setAlquileres(alquileres);
-        mRecyclerView.setAdapter(adaptador);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mRecyclerView.setHasFixedSize(true);
-        if(paradas.size() == 0){
-            LinearLayout noHayParadas = getActivity().findViewById(R.id.noHayParadas);
-            noHayParadas.setVisibility(View.VISIBLE);
-        }
-        LinearLayout cargandoParadas = getActivity().findViewById(R.id.cargandoParadas);
-        cargandoParadas.setVisibility(View.GONE);
-    }
 }
