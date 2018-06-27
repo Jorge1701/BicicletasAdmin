@@ -50,6 +50,7 @@
     <string name="habilitar_usuario">Habilitar usuario</string>
     <string name="inhabilitar_usuario">Inhabilitar usuario</string>
     <string name="toque_para_expandir">Toque para expandir</string>
+    <string name="seleccionar_parada_editar">Seleccione una parada para editarla</string>
     <string name="correo">Correo</string>
     <string name="saldo">Saldo</string>
     <string name="direccion">Dirección</string>

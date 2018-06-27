@@ -67,6 +67,8 @@ public class EditarParada extends Fragment implements OnMapReadyCallback, Parada
     TextInputLayout cantBicisError;
     @BindView(R.id.carga)
     LinearLayout carga;
+    @BindView(R.id.seleccionarParada)
+    LinearLayout seleccionarParada;
     @BindView(R.id.layout)
     LinearLayout layout;
 
@@ -197,6 +199,7 @@ public class EditarParada extends Fragment implements OnMapReadyCallback, Parada
                                                    editarParada.setVisibility(View.VISIBLE);
                                                    nombreError.setVisibility(View.VISIBLE);
                                                    cantBicisError.setVisibility(View.VISIBLE);
+                                                   seleccionarParada.setVisibility(View.GONE);
 
                                                    cantBicisError.setError(null);
                                                    nombreError.setError(null);
