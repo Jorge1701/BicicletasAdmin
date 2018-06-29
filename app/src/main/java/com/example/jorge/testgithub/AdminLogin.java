@@ -62,7 +62,7 @@ public class AdminLogin extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<Respuesta> call, Throwable t) {
-                Log.d("FALLO", t.getMessage());
+                Toast.makeText(AdminLogin.this, "Error de conexión con el servidor", Toast.LENGTH_SHORT).show();
             }
         });
 
