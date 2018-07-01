@@ -212,7 +212,7 @@ public class UsuariosListado extends Fragment {
                 if (usuarios.get(i).isActivado() == 1)
                     usuarios.remove(i);
 
-        lvLista.setAdapter(new AdaptadorListaUsuarios(this.getContext(), usuarios));
+        lvLista.setAdapter(new AdaptadorListaUsuarios(getActivity(), usuarios));
         lvLista.setLayoutManager(new LinearLayoutManager(getActivity()));
         lvLista.setHasFixedSize(true);
 

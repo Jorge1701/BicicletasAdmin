@@ -1,29 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/item_lista_usuario"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/item_lista_usuario"
-    app:cardBackgroundColor="#CCC"
     android:layout_gravity="center"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    app:cardBackgroundColor="#CCC">
 
-    <LinearLayout
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:background="#CCC"
-        xmlns:android="http://schemas.android.com/apk/res/android">
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_marginStart="5dp"
             android:layout_marginEnd="5dp"
+            android:layout_marginStart="5dp"
             android:layout_marginTop="5dp"
-            android:background="@drawable/fondo_blanco">
+            android:background="@drawable/fondo_blanco"
+            android:orientation="vertical">
 
             <LinearLayout
                 android:id="@+id/cabecera"
@@ -35,59 +34,59 @@
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_margin="5dp"
-                    android:src="@drawable/usuario_default"/>
+                    android:src="@drawable/usuario_default" />
 
                 <LinearLayout
-                    android:layout_weight="1"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="5dp"
                     android:layout_marginBottom="5dp"
-                    android:orientation="horizontal"
-                    android:layout_marginStart="5dp"
                     android:layout_marginEnd="5dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
                     tools:ignore="DisableBaselineAlignment">
 
                     <LinearLayout
-                        android:layout_weight="1"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
+                        android:layout_weight="1"
                         android:orientation="vertical"
                         tools:ignore="NestedWeights">
 
                         <TextView
                             android:id="@+id/tvNombreUsuario"
-                            android:layout_weight="1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textSize="18sp"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
                             android:textColor="#000"
-                            android:layout_gravity="center"/>
+                            android:textSize="18sp" />
 
                         <LinearLayout
-                            android:layout_weight="1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_weight="1"
                             android:orientation="horizontal">
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textSize="15sp"
-                                android:textColor="#444"
                                 android:layout_gravity="center"
-                                android:text="@string/parada"/>
+                                android:text="@string/parada"
+                                android:textColor="#444"
+                                android:textSize="15sp" />
 
                             <TextView
                                 android:id="@+id/tvParadaIncidencia"
-                                android:layout_weight="1"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
-                                android:textSize="15sp"
-                                android:layout_marginStart="15dp"
                                 android:layout_marginEnd="15dp"
-                                android:text="@string/noasignado"/>
+                                android:layout_marginStart="15dp"
+                                android:layout_weight="1"
+                                android:text="@string/noasignado"
+                                android:textSize="15sp" />
 
                         </LinearLayout>
 
@@ -100,66 +99,66 @@
 
                         <Button
                             android:id="@+id/btnEstado"
-                            android:layout_weight="1"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:background="@drawable/boton_alert"/>
+                            android:layout_weight="1"
+                            android:background="@drawable/boton_alert" />
 
                         <TextView
                             android:id="@+id/tvNombreAsignado"
-                            android:layout_weight="1"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:textAlignment="center"/>
+                            android:layout_weight="1"
+                            android:textAlignment="center" />
 
                     </LinearLayout>
 
                 </LinearLayout>
-
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/msjExpandir"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/fondo_msj"
-                android:layout_marginStart="15dp"
+                android:layout_marginBottom="5dp"
                 android:layout_marginEnd="15dp"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
-                android:layout_marginBottom="5dp">
+                android:layout_marginStart="15dp"
+                android:background="@drawable/fondo_msj">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/toque_para_expandir"
-                    android:textColor="#FFF"
-                    android:textAlignment="center"/>
+                    android:textAlignment="center"
+                    android:textColor="#FFF" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/contenido"
-                android:visibility="gone"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:orientation="vertical">
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/tvDescripcion"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
-                    android:textSize="20sp"
-                    android:textColor="#000" />
+                    android:textColor="#000"
+                    android:textSize="20sp" />
 
                 <TextView
                     android:id="@+id/tvTituloComentarios"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="15dp"
                     android:layout_marginEnd="15dp"
+                    android:layout_marginStart="15dp"
                     android:layout_marginTop="5dp"
-                    android:text="@string/comentarios"/>
+                    android:text="@string/comentarios" />
 
                 <LinearLayout
                     android:id="@+id/llComentarios"
@@ -179,22 +178,22 @@
                         android:id="@+id/etComentar"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/comentar"
-                        android:paddingTop="5dp"
-                        android:paddingBottom="5dp"
-                        android:paddingStart="15dp"
-                        android:paddingEnd="35dp"
-                        android:inputType="textMultiLine"
                         android:background="@drawable/fondo_input_incidencia"
+                        android:hint="@string/comentar"
+                        android:inputType="textMultiLine"
+                        android:paddingBottom="5dp"
+                        android:paddingEnd="35dp"
                         android:paddingLeft="15dp"
-                        android:paddingRight="35dp" />
+                        android:paddingRight="35dp"
+                        android:paddingStart="15dp"
+                        android:paddingTop="5dp" />
 
                     <FrameLayout
                         android:layout_width="30dp"
                         android:layout_height="30dp"
+                        android:layout_gravity="bottom|end"
                         android:layout_marginBottom="3dp"
                         android:layout_marginEnd="3dp"
-                        android:layout_gravity="bottom|end"
                         android:layout_marginRight="3dp">
 
                         <ImageView
@@ -205,10 +204,10 @@
                             tools:ignore="ContentDescription" />
 
                         <ProgressBar
-                            android:visibility="gone"
                             android:id="@+id/enviarProgressBar"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent" />
+                            android:layout_height="match_parent"
+                            android:visibility="gone" />
 
                     </FrameLayout>
 

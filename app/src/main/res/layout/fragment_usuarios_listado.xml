@@ -5,30 +5,31 @@
     android:layout_height="match_parent"
     tools:context=".UsuariosListado">
 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#CCC"
         android:orientation="vertical">
-    <com.miguelcatalan.materialsearchview.MaterialSearchView
-        android:id="@+id/search"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone" />
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white">
-
-        <CheckBox
-            android:id="@+id/cbSinValidar"
+        <com.miguelcatalan.materialsearchview.MaterialSearchView
+            android:id="@+id/search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/usuarios_sin_validar" />
-    </LinearLayout>
+            android:visibility="gone" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white">
+
+            <CheckBox
+                android:id="@+id/cbSinValidar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/usuarios_sin_validar" />
+        </LinearLayout>
 
 
         <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -48,51 +49,50 @@
 
             </android.support.v7.widget.RecyclerView>
         </android.support.v4.widget.SwipeRefreshLayout>
+    </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/progressBar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#FFF"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
 
-        <LinearLayout
-            android:id="@+id/llNoHay"
+        <TextView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:visibility="gone">
+            android:layout_height="wrap_content"
+            android:text="@string/cargando_usuarios"
+            android:textAlignment="center"
+            android:textSize="25sp" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="200dp"
-                android:gravity="center"
-                android:paddingBottom="5dp"
-                android:text="@string/no_hay_usuarios"
-                android:textAlignment="center"
-                android:textSize="40sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/progressBar"
+        <ProgressBar
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#FFF"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:indeterminate="true" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llNoHay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="200dp"
             android:gravity="center"
-            android:orientation="vertical"
-            android:visibility="gone">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/cargando_usuarios"
-                android:textAlignment="center"
-                android:textSize="25sp" />
-
-            <ProgressBar
-                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_marginTop="10dp"
-                android:indeterminate="true" />
-        </LinearLayout>
+            android:paddingBottom="5dp"
+            android:text="@string/no_hay_usuarios"
+            android:textAlignment="center"
+            android:textSize="40sp" />
     </LinearLayout>
 
 </FrameLayout>
