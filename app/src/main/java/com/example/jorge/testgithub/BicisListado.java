@@ -106,10 +106,10 @@ public class BicisListado extends Fragment {
             if (filtro != -1) {
                 for (int i = bs.size() - 1; i >= 0; i--) {
                     if (noDevueltas.isChecked()) {
-                        if (!bs.get(i).getId().equals(String.valueOf(filtro)))
+                        if (!bs.get(i).getId().contains(String.valueOf(filtro)))
                             bs.remove(i);
                     } else {
-                        if (!bs.get(i).getParada().equals(String.valueOf(filtro)))
+                        if (!bs.get(i).getParada().contains(String.valueOf(filtro)))
                             bs.remove(i);
                     }
 
@@ -151,7 +151,7 @@ public class BicisListado extends Fragment {
 
         for (int i = bs.size() - 1; i >= 0; i--) {
             if (bs.get(i).getParada() == "" && bs.get(i).getFechaAlquiler() != null) {
-                if (!bs.get(i).getFechaAlquiler().equals(fecha))
+                if (!bs.get(i).getFechaAlquiler().split(" ")[0].equals(fecha))
                     bs.remove(i);
             } else {
                 bs.remove(i);
@@ -168,7 +168,7 @@ public class BicisListado extends Fragment {
         if (noDevueltas.isChecked()) {
 
             final Calendar hoy = Calendar.getInstance();
-            final SimpleDateFormat formato = new SimpleDateFormat("dd-MM-yyyy");
+            final SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
             final String fechaHoy = formato.format(hoy.getTime());
             hoy.add(Calendar.DAY_OF_MONTH, -1);
             final String fechaAyer = formato.format(hoy.getTime());
