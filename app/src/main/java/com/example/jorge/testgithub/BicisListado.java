@@ -48,7 +48,7 @@ import retrofit2.Response;
 
 
 public class BicisListado extends Fragment {
-    private OnFragmentInteractionListener mListener;
+    //private OnFragmentInteractionListener mListener;
     private List<Bicicleta> bicicletas = null;
     private List<Bicicleta> bNoDevueltas = null;
 
@@ -323,7 +323,9 @@ public class BicisListado extends Fragment {
             @Override
             public void onFailure(Call<RespuestaBicicletas> call, Throwable t) {
                 noHayBicicletas.setVisibility(View.VISIBLE);
+                cargandoBicicletas.setVisibility(View.GONE);
                 swipeRefresh.setRefreshing(false);
+                Toast.makeText(getContext(), "Error de conexión con el servidor: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -345,30 +347,30 @@ public class BicisListado extends Fragment {
     }
 
     public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
+       // if (mListener != null) {
+        //    mListener.onFragmentInteraction(uri);
+       // }
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
+       /* if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
-        }
+        }*/
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
+        //mListener = null;
     }
 
-    public interface OnFragmentInteractionListener {
+   /* public interface OnFragmentInteractionListener {
         void onFragmentInteraction(Uri uri);
-    }
+    }*/
 
 }

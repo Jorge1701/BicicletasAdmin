@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.example.jorge.testgithub.BD.BDCliente;
 import com.example.jorge.testgithub.BD.BDInterface;
@@ -27,8 +28,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ParadasListado extends Fragment {
-    private OnFragmentInteractionListener mListener;
-
     @BindView(R.id.lista_paradas)
     RecyclerView mRecyclerView;
     @BindView(R.id.swiperefresh)
@@ -59,15 +58,11 @@ public class ParadasListado extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_paradas_listado, container, false);
         ButterKnife.bind(this, view);
 
-
         bdCargarParadas();
-
 
         swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -104,7 +99,10 @@ public class ParadasListado extends Fragment {
             @Override
             public void onFailure(Call<RespuestaParadas> call, Throwable t) {
                 noHayParadas.setVisibility(View.VISIBLE);
+                cargandoParadas.setVisibility(View.GONE);
                 swipeRefresh.setRefreshing(false);
+                Toast.makeText(getContext(), "Error de conexión con el servidor: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+
             }
         });
     }
@@ -112,22 +110,11 @@ public class ParadasListado extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
-    }
-
-    public interface OnFragmentInteractionListener {
-        void onFragmentInteraction(Uri uri);
     }
 
 }

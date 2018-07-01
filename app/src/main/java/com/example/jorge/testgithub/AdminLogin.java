@@ -46,11 +46,10 @@ public class AdminLogin extends AppCompatActivity {
     private void verificarUsuario(final String u, final String password) {
 
         BDInterface bd = BDCliente.getClient().create(BDInterface.class);
-        Call<Respuesta> call = bd.login("Andate a cagar", password, u);
+        Call<Respuesta> call = bd.login("Parametro no utilizado", password, u);
         call.enqueue(new Callback<Respuesta>() {
             @Override
             public void onResponse(Call<Respuesta> call, Response<Respuesta> response) {
-                Log.d("ASD", response.body().getCodigo());
                 if (response.body().getCodigo().equals("1")) {
                     if (cbRecordar.isChecked())
                         recordarUsuario(u, password);
@@ -62,7 +61,7 @@ public class AdminLogin extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<Respuesta> call, Throwable t) {
-                Toast.makeText(AdminLogin.this, "Error de conexión con el servidor", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AdminLogin.this, "Error de conexión con el servidor: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -77,7 +76,7 @@ public class AdminLogin extends AppCompatActivity {
 
         if (usuario.equals("")) {
             //Toast.makeText (this, getResources ().getString (R.string.falta_usuario_contraseña), Toast.LENGTH_LONG).show ();
-            etUsuarioError.setError("usuario incorrecto");
+            etUsuarioError.setError("Usuario incorrecto");
             return;
         } else if (password.equals("")) {
             etPasswordError.setError("Contraseña incorrecta");

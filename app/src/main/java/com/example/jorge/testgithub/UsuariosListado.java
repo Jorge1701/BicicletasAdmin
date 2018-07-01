@@ -41,7 +41,6 @@ import retrofit2.Response;
 
 
 public class UsuariosListado extends Fragment {
-
     @BindView(R.id.search)
     MaterialSearchView searchView;
     @BindView(R.id.lvLista)
@@ -52,16 +51,12 @@ public class UsuariosListado extends Fragment {
     LinearLayout progressBar;
     @BindView(R.id.llNoHay)
     LinearLayout llNoHay;
-
-
     @BindView(R.id.swiperefresh)
     SwipeRefreshLayout swipeRefresh;
 
     private List<Usuario> usuarios;
 
     private String filtro;
-
-    private OnFragmentInteractionListener mListener;
 
     public UsuariosListado() {
         // Required empty public constructor
@@ -114,7 +109,6 @@ public class UsuariosListado extends Fragment {
             }
         });
 
-
         swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -122,9 +116,7 @@ public class UsuariosListado extends Fragment {
             }
         });
 
-
         progressBar.setVisibility(View.VISIBLE);
-
 
         return v;
     }
@@ -149,7 +141,7 @@ public class UsuariosListado extends Fragment {
                 llNoHay.setVisibility(View.VISIBLE);
                 progressBar.setVisibility(View.GONE);
                 swipeRefresh.setRefreshing(false);
-                Toast.makeText(getActivity(), "Error de conexion con el servidor", Toast.LENGTH_SHORT).show();
+                Toast.makeText(UsuariosListado.this.getContext(), "Error de conexion con el servidor: "+t.getMessage(), Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -162,31 +154,14 @@ public class UsuariosListado extends Fragment {
         searchView.setMenuItem(item);
     }
 
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
-    }
-
-    public interface OnFragmentInteractionListener {
-        void onFragmentInteraction(Uri uri);
     }
 
     private List<Usuario> copiarUsuarios() {
