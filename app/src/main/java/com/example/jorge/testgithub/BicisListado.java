@@ -48,7 +48,7 @@ import retrofit2.Response;
 
 
 public class BicisListado extends Fragment {
-    private OnFragmentInteractionListener mListener;
+    //private OnFragmentInteractionListener mListener;
     private List<Bicicleta> bicicletas = null;
     private List<Bicicleta> bNoDevueltas = null;
 
@@ -70,29 +70,98 @@ public class BicisListado extends Fragment {
     String itemSeleccionado = "";
 
     public BicisListado() {
-        // Required empty public constructor
-    }
-
-    public CheckBox getNoDevueltas() {
-        return noDevueltas;
-    }
-
-    public void setNoDevueltas(CheckBox noDevueltas) {
-        this.noDevueltas = noDevueltas;
-    }
-
-    public List<Bicicleta> getBicicletas() {
-        return bicicletas;
-    }
-
-    public void setBicicletas(List<Bicicleta> bicicletas) {
-        this.bicicletas = bicicletas;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        final View view = inflater.inflate(R.layout.fragment_bicis_listado, container, false);
+        ButterKnife.bind(this, view);
+
+        bdCargarBicicletas();
+
+        noDevueltas.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                cargarBicicletasNoDevueltas("");
+            }
+        });
+
+        searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
+            @Override
+            public void onSearchViewShown() {
+                searchView.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onSearchViewClosed() {
+                filtro = -1;
+                filtrarBicis((noDevueltas.isChecked()) ? bNoDevueltas : bicicletas);
+            }
+        });
+
+        searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                filtro = (newText.equals("") || !esNumero(newText)) ? -1 : Integer.valueOf(newText);
+                filtrarBicis((noDevueltas.isChecked()) ? bNoDevueltas : bicicletas);
+                return true;
+            }
+        });
+
+        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                bdCargarBicicletas();
+                swipeRefresh.setRefreshing(false);
+            }
+        });
+
+        return view;
+
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.search_item, menu);
+        MenuItem item = menu.findItem(R.id.action_search);
+        searchView.setMenuItem(item);
+    }
+
+    private void bdCargarBicicletas() {
+        BDInterface bd = BDCliente.getClient().create(BDInterface.class);
+        Call<RespuestaBicicletas> call = bd.getBicicletas();
+        call.enqueue(new Callback<RespuestaBicicletas>() {
+            @Override
+            public void onResponse(Call<RespuestaBicicletas> call, Response<RespuestaBicicletas> response) {
+                if (response.isSuccessful()) {
+                    bicicletas = response.body().getBicicletas();
+                    if (noDevueltas.isChecked()) {
+                        fitrarBicicletasDia(itemSeleccionado);
+                    } else {
+                        cargarBicicletas(bicicletas);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RespuestaBicicletas> call, Throwable t) {
+                noHayBicicletas.setVisibility(View.VISIBLE);
+                cargandoBicicletas.setVisibility(View.GONE);
+                swipeRefresh.setRefreshing(false);
+                Toast.makeText(getContext(), "Error de conexión con el servidor: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private int filtro = -1;
@@ -106,10 +175,10 @@ public class BicisListado extends Fragment {
             if (filtro != -1) {
                 for (int i = bs.size() - 1; i >= 0; i--) {
                     if (noDevueltas.isChecked()) {
-                        if (!bs.get(i).getId().equals(String.valueOf(filtro)))
+                        if (!bs.get(i).getId().contains(String.valueOf(filtro)))
                             bs.remove(i);
                     } else {
-                        if (!bs.get(i).getParada().equals(String.valueOf(filtro)))
+                        if (!bs.get(i).getParada().contains(String.valueOf(filtro)))
                             bs.remove(i);
                     }
 
@@ -142,7 +211,7 @@ public class BicisListado extends Fragment {
 
     private void fitrarBicicletasDia(String fecha) {
 
-        if(bicicletas == null) {
+        if (bicicletas == null) {
             return;
         }
 
@@ -151,7 +220,7 @@ public class BicisListado extends Fragment {
 
         for (int i = bs.size() - 1; i >= 0; i--) {
             if (bs.get(i).getParada() == "" && bs.get(i).getFechaAlquiler() != null) {
-                if (!bs.get(i).getFechaAlquiler().equals(fecha))
+                if (!bs.get(i).getFechaAlquiler().split(" ")[0].equals(fecha))
                     bs.remove(i);
             } else {
                 bs.remove(i);
@@ -168,7 +237,7 @@ public class BicisListado extends Fragment {
         if (noDevueltas.isChecked()) {
 
             final Calendar hoy = Calendar.getInstance();
-            final SimpleDateFormat formato = new SimpleDateFormat("dd-MM-yyyy");
+            final SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
             final String fechaHoy = formato.format(hoy.getTime());
             hoy.add(Calendar.DAY_OF_MONTH, -1);
             final String fechaAyer = formato.format(hoy.getTime());
@@ -250,84 +319,6 @@ public class BicisListado extends Fragment {
 
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.fragment_bicis_listado, container, false);
-        ButterKnife.bind(this, view);
-
-        bdCargarBicicletas();
-
-        noDevueltas.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                cargarBicicletasNoDevueltas("");
-            }
-        });
-
-        searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
-            @Override
-            public void onSearchViewShown() {
-                searchView.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void onSearchViewClosed() {
-                filtro = -1;
-                filtrarBicis((noDevueltas.isChecked()) ? bNoDevueltas : bicicletas);
-            }
-        });
-
-        searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                filtro = (newText.equals("") || !esNumero(newText)) ? -1 : Integer.valueOf(newText);
-                filtrarBicis((noDevueltas.isChecked()) ? bNoDevueltas : bicicletas);
-                return true;
-            }
-        });
-
-        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                bdCargarBicicletas();
-                swipeRefresh.setRefreshing(false);
-            }
-        });
-
-        return view;
-
-    }
-
-    private void bdCargarBicicletas() {
-        BDInterface bd = BDCliente.getClient().create(BDInterface.class);
-        Call<RespuestaBicicletas> call = bd.getBicicletas();
-        call.enqueue(new Callback<RespuestaBicicletas>() {
-            @Override
-            public void onResponse(Call<RespuestaBicicletas> call, Response<RespuestaBicicletas> response) {
-                if (response.isSuccessful()) {
-                    bicicletas = response.body().getBicicletas();
-                    if (noDevueltas.isChecked()) {
-                        fitrarBicicletasDia(itemSeleccionado);
-                    } else {
-                        cargarBicicletas(bicicletas);
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<RespuestaBicicletas> call, Throwable t) {
-                noHayBicicletas.setVisibility(View.VISIBLE);
-                swipeRefresh.setRefreshing(false);
-            }
-        });
-    }
-
     private boolean esNumero(String texto) {
         try {
             Integer.valueOf(texto);
@@ -337,38 +328,30 @@ public class BicisListado extends Fragment {
         return true;
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.search_item, menu);
-        MenuItem item = menu.findItem(R.id.action_search);
-        searchView.setMenuItem(item);
-    }
-
     public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
+        // if (mListener != null) {
+        //    mListener.onFragmentInteraction(uri);
+        // }
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
+       /* if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
+            throw new RuntimeException(context.toString() + " must implement OnFragmentInteractionListener");
+        }*/
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
+        //mListener = null;
     }
 
-    public interface OnFragmentInteractionListener {
+   /* public interface OnFragmentInteractionListener {
         void onFragmentInteraction(Uri uri);
-    }
+    }*/
 
 }

@@ -6,7 +6,9 @@ import android.graphics.ColorFilter;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
@@ -32,11 +34,11 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MenuAdmin extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, UsuariosListado.OnFragmentInteractionListener, ParadasListado.OnFragmentInteractionListener, BicisListado.OnFragmentInteractionListener {
+public class MenuAdmin extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, ParadasListado.AgregarParadaInterface/*, UsuariosListado.OnFragmentInteractionListener, BicisListado.OnFragmentInteractionListener*/ {
 
-	@BindView (R.id.drawer_layout)
-	DrawerLayout drawer;
+    @BindView(R.id.drawer_layout)
+    DrawerLayout drawer;
+    String nomPSeleccionada;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +56,7 @@ public class MenuAdmin extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        onNavigationItemSelected(navigationView.getMenu().findItem(R.id.nav_usuarios));
+        //onNavigationItemSelected(navigationView.getMenu().findItem(R.id.nav_usuarios));
 
         //----------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -88,41 +90,46 @@ public class MenuAdmin extends AppCompatActivity
             verificarUsuario(u, p);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event){
-        if ((keyCode == KeyEvent.KEYCODE_BACK)){
-        	if (drawer.isDrawerOpen(Gravity.LEFT))
-        		// No le den bola, anda
-				this.finishAffinity();
-        	else
-        		drawer.openDrawer(Gravity.LEFT);
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if ((keyCode == KeyEvent.KEYCODE_BACK)) {
+            if (drawer.isDrawerOpen(Gravity.LEFT))
+                // No le den bola, anda
+                this.finishAffinity();
+            else
+                drawer.openDrawer(Gravity.LEFT);
             return false;
         }
-        return super.onKeyDown (keyCode, event);
+        return super.onKeyDown(keyCode, event);
     }
 
     private void verificarUsuario(final String u, String password) {
         BDInterface bd = BDCliente.getClient().create(BDInterface.class);
-        Call<Respuesta> call = bd.login("Andate a cagar", password, u);
+        Call<Respuesta> call = bd.login("Parametro no utilizado", password, u);
         call.enqueue(new Callback<Respuesta>() {
             @Override
             public void onResponse(Call<Respuesta> call, Response<Respuesta> response) {
-                Log.d("ASD", response.body().getCodigo());
                 if (!response.body().getCodigo().equals("1")) {
                     cerrarSesion();
                 }
                 TextView textView = findViewById(R.id.correoUsuario);
                 textView.setText(u);
 
-                SharedPreferences sp = getSharedPreferences ("usuario_logueado", MODE_PRIVATE);
-                SharedPreferences.Editor ed = sp.edit ();
-                ed.putString ("usuario", u);
-                ed.commit ();
+                SharedPreferences sp = getSharedPreferences("usuario_logueado", MODE_PRIVATE);
+                SharedPreferences.Editor ed = sp.edit();
+                ed.putString("usuario", u);
+                ed.commit();
+
+                NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+                onNavigationItemSelected(navigationView.getMenu().findItem(R.id.nav_usuarios));
+
             }
 
             @Override
             public void onFailure(Call<Respuesta> call, Throwable t) {
-                Log.d("FALLO", t.getMessage());
+                cerrarSesion();
+                Toast.makeText(getApplicationContext(), "Error de conexión con el servidor: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -191,6 +198,10 @@ public class MenuAdmin extends AppCompatActivity
                 break;
             case R.id.nav_editar_mapa:
                 fragment = new EditarParada();
+                if(nomPSeleccionada != null){
+                    ((EditarParada)fragment).setnPSLista(nomPSeleccionada);
+                    nomPSeleccionada = null;
+                }
                 fragmentTransaction = true;
                 break;
             case R.id.nav_usuarios:
@@ -240,8 +251,19 @@ public class MenuAdmin extends AppCompatActivity
         return true;
     }
 
-    @Override
-    public void onFragmentInteraction(Uri uri) {
 
+    @Override
+    public void abrirAgregarParada() {
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setCheckedItem(R.id.nav_ver_mapa);
+        onNavigationItemSelected(navigationView.getMenu().findItem(R.id.nav_ver_mapa));
+    }
+
+    @Override
+    public void abrirEditarParada(String nomParada) {
+        nomPSeleccionada = nomParada;
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setCheckedItem(R.id.nav_editar_mapa);
+        onNavigationItemSelected(navigationView.getMenu().findItem(R.id.nav_editar_mapa));
     }
 }

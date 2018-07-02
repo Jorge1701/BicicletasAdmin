@@ -3,6 +3,7 @@ package com.example.jorge.testgithub;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.example.jorge.testgithub.BD.BDCliente;
 import com.example.jorge.testgithub.BD.BDInterface;
@@ -27,7 +29,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ParadasListado extends Fragment {
-    private OnFragmentInteractionListener mListener;
+    private AgregarParadaInterface apListener;
 
     @BindView(R.id.lista_paradas)
     RecyclerView mRecyclerView;
@@ -38,15 +40,13 @@ public class ParadasListado extends Fragment {
     @BindView(R.id.noHayParadas)
     LinearLayout noHayParadas;
     ParadasListadoAdaptador adaptador;
+    @BindView(R.id.floatingButtom)
+    FloatingActionButton floatingActionButton;
     boolean alquileres;
 
 
     public ParadasListado() {
         alquileres = false;
-    }
-
-    public boolean isAlquileres() {
-        return alquileres;
     }
 
     public void setAlquileres(boolean alquileres) {
@@ -59,21 +59,23 @@ public class ParadasListado extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_paradas_listado, container, false);
         ButterKnife.bind(this, view);
 
-
         bdCargarParadas();
-
 
         swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 bdCargarParadas();
-                swipeRefresh.setRefreshing(false);
+            }
+        });
+
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                apListener.abrirAgregarParada();
             }
         });
 
@@ -88,7 +90,7 @@ public class ParadasListado extends Fragment {
             public void onResponse(Call<RespuestaParadas> call, Response<RespuestaParadas> response) {
                 if (response.isSuccessful()) {
                     List<Parada> paradas = response.body().getParadas();
-                    adaptador = new ParadasListadoAdaptador(getActivity(), paradas);
+                    adaptador = new ParadasListadoAdaptador(getActivity(), paradas,apListener);
                     adaptador.setAlquileres(alquileres);
                     mRecyclerView.setAdapter(adaptador);
                     mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -104,7 +106,10 @@ public class ParadasListado extends Fragment {
             @Override
             public void onFailure(Call<RespuestaParadas> call, Throwable t) {
                 noHayParadas.setVisibility(View.VISIBLE);
+                cargandoParadas.setVisibility(View.GONE);
                 swipeRefresh.setRefreshing(false);
+                Toast.makeText(getContext(), "Error de conexión con el servidor: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+
             }
         });
     }
@@ -112,22 +117,24 @@ public class ParadasListado extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
+        if (context instanceof AgregarParadaInterface) {
+            apListener = (AgregarParadaInterface) context;
         } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+            throw new RuntimeException(context.toString() + " must implement AgregarParadaInterface");
         }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
+        apListener = null;
     }
 
-    public interface OnFragmentInteractionListener {
-        void onFragmentInteraction(Uri uri);
+
+    public interface AgregarParadaInterface {
+        void abrirAgregarParada();
+        void abrirEditarParada(String nomParada);
     }
+
 
 }

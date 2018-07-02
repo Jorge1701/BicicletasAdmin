@@ -96,7 +96,7 @@ public class MapaCalor extends Fragment implements OnMapReadyCallback {
 
             @Override
             public void onFailure(Call<RespuestaParadas> call, Throwable t) {
-
+                Toast.makeText(getActivity(), "Error de conexión con el servidor: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
         View v = inflater.inflate(R.layout.fragment_mapa_calor, container, false);

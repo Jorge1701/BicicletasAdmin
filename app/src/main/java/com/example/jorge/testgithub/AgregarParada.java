@@ -70,16 +70,13 @@ public class AgregarParada extends Fragment implements OnMapReadyCallback, Parad
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("ASD", "onCreate: ");
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        Log.d("ASD", "onCreateView: ");
-        cargarParadas ();
         View v = inflater.inflate(R.layout.fragment_agregar_parada, container, false);
+        cargarParadas();
         mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
 
         if (mapFragment == null) {
@@ -100,10 +97,10 @@ public class AgregarParada extends Fragment implements OnMapReadyCallback, Parad
 
                 //chequeo que no deje nada vacio o incorrecto
                 if (nombre.getText().toString().trim().equals("")) {
-                    nombreError.setError("Nombre Invalido");
+                    nombreError.setError("Nombre inválido");
                     return;
                 } else if (cantBicis.getText().toString().trim().equals("") || Integer.valueOf(cantBicis.getText().toString().trim()) < 1) {
-                    cantBicisError.setError("Cantidad Invalida");
+                    cantBicisError.setError("Cantidad inválida");
                     return;
 
                 } else if (Integer.valueOf(cantBicis.getText().toString().trim()) > 20) {
@@ -119,7 +116,7 @@ public class AgregarParada extends Fragment implements OnMapReadyCallback, Parad
         return v;
     }
 
-    private void cargarParadas () {
+    private void cargarParadas() {
         BDInterface bd = BDCliente.getClient().create(BDInterface.class);
         Call<RespuestaParadas> call = bd.getParadas();
         call.enqueue(new Callback<RespuestaParadas>() {
@@ -128,7 +125,6 @@ public class AgregarParada extends Fragment implements OnMapReadyCallback, Parad
                 paradas = new ArrayList<>();
                 if (response.body().getCodigo().equals("1")) {
                     List<Parada> re = response.body().getParadas();
-                    Log.d("ASD", "onResponse(PARADAS): " + re.size());
                     for (int i = 0; i < re.size(); i++)
                         paradas.add(re.get(i));
                 }
@@ -139,10 +135,9 @@ public class AgregarParada extends Fragment implements OnMapReadyCallback, Parad
 
             @Override
             public void onFailure(Call<RespuestaParadas> call, Throwable t) {
-                Log.d("ASD", "onFailure(PARADAS): ");
+                Toast.makeText(getActivity(), "Error de conexión con el servidor: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
-        //
     }
 
     public void altaParada(String nombre, String direccion, double lat, double lng, int cantBicis) {
@@ -152,8 +147,7 @@ public class AgregarParada extends Fragment implements OnMapReadyCallback, Parad
     private List<Marker> marks;
 
     public void prepararMapa() {
-        Log.d("ASD", "prepararMapa: ");
-        if (marks == null)
+         if (marks == null)
             marks = new ArrayList<>();
 
         for (Marker m : marks)
@@ -162,7 +156,7 @@ public class AgregarParada extends Fragment implements OnMapReadyCallback, Parad
         marks.clear();
 
         for (int i = 0; i < paradas.size(); i++) {
-            marks.add (mMap.addMarker(new MarkerOptions().position(new LatLng(paradas.get(i).getLatitud(), paradas.get(i).getLongitud())).title(paradas.get(i).getNombre()).draggable(true).snippet(paradas.get(i).getDireccion())));
+            marks.add(mMap.addMarker(new MarkerOptions().position(new LatLng(paradas.get(i).getLatitud(), paradas.get(i).getLongitud())).title(paradas.get(i).getNombre()).draggable(true).snippet(paradas.get(i).getDireccion())));
         }
 
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
@@ -176,16 +170,14 @@ public class AgregarParada extends Fragment implements OnMapReadyCallback, Parad
         });
 
 
-       carga.setVisibility(View.GONE);
-       layout.setVisibility(View.VISIBLE);
+        carga.setVisibility(View.GONE);
+        layout.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         marcador = null;
-
-        Log.d("ASD", "onMapReady: ");
 
         googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
 
@@ -239,13 +231,13 @@ public class AgregarParada extends Fragment implements OnMapReadyCallback, Parad
         if (ok) {
             layout.setVisibility(View.GONE);
             carga.setVisibility(View.VISIBLE);
-            cargarParadas ();
-            Toast.makeText(getActivity(), "PARADA AGREGADA", Toast.LENGTH_LONG).show();
+            cargarParadas();
+            Toast.makeText(getActivity(), "Parada agregada con éxito.", Toast.LENGTH_LONG).show();
             nombre.setText("");
             cantBicis.setText("");
             marcador.remove();
         } else {
-            Toast.makeText(getActivity(), "ERROR AL AGREGAR", Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity(), "Hubo un error al agregar la parada, reintente.", Toast.LENGTH_LONG).show();
         }
 
         return ok;
