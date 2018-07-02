@@ -27,8 +27,9 @@ public class Incidencia {
 	private String comentario;
 	private String fecha;
 	private List<ComentarioIncidencia> comentariosIncidencia;
+	private String tipo;
 
-	public Incidencia(int id, String usuario, String parada, int estado, String admin, String comentario, String fecha, List<ComentarioIncidencia> comentarioIncidencias) {
+	public Incidencia(int id, String usuario, String parada, int estado, String admin, String comentario, String fecha, List<ComentarioIncidencia> comentariosIncidencia, String tipo) {
 		this.id = id;
 		this.usuario = usuario;
 		this.parada = parada;
@@ -36,7 +37,8 @@ public class Incidencia {
 		this.admin = admin;
 		this.comentario = comentario;
 		this.fecha = fecha;
-		this.comentariosIncidencia = comentarioIncidencias;
+		this.comentariosIncidencia = comentariosIncidencia;
+		this.tipo = tipo;
 	}
 
 	public void comentar (final AdaptadorListaIncidencias.IncidenciaViewHolder i, final String admin, final String comentario) {
@@ -154,5 +156,22 @@ public class Incidencia {
 
 	public void setComentarioIncidencias(List<ComentarioIncidencia> comentarioIncidencias) {
 		this.comentariosIncidencia = comentarioIncidencias;
+	}
+
+	public List<ComentarioIncidencia> getComentariosIncidencia() {
+		return comentariosIncidencia;
+	}
+
+	public void setComentariosIncidencia(List<ComentarioIncidencia> comentariosIncidencia) {
+		this.comentariosIncidencia = comentariosIncidencia;
+	}
+
+	public String getTipo() {
+		// TODO: quitar esto
+		return "Sugerencia";
+	}
+
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
 	}
 }

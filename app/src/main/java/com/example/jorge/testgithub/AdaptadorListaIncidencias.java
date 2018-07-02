@@ -137,8 +137,7 @@ public class AdaptadorListaIncidencias extends RecyclerView.Adapter<AdaptadorLis
 			// TODO: Cargar imagen del usuario
 			tvNombreUsuario.setText (i.getUsuario ());
 			tvAsignado.setText (i.getAdmin ());
-			// TODO: Cargar el tipo
-			// tvTipo.setTet (i.getTipo ());
+			tvTipo.setText (i.getTipo ());
 
 			cargarEstado ();
 
