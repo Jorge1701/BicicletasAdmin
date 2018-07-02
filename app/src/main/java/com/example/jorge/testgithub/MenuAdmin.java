@@ -34,11 +34,11 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MenuAdmin extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener/*, UsuariosListado.OnFragmentInteractionListener, ParadasListado.OnFragmentInteractionListener, BicisListado.OnFragmentInteractionListener*/ {
+public class MenuAdmin extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, ParadasListado.AgregarParadaInterface/*, UsuariosListado.OnFragmentInteractionListener, BicisListado.OnFragmentInteractionListener*/ {
 
     @BindView(R.id.drawer_layout)
     DrawerLayout drawer;
+    String nomPSeleccionada;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -198,6 +198,10 @@ public class MenuAdmin extends AppCompatActivity
                 break;
             case R.id.nav_editar_mapa:
                 fragment = new EditarParada();
+                if(nomPSeleccionada != null){
+                    ((EditarParada)fragment).setnPSLista(nomPSeleccionada);
+                    nomPSeleccionada = null;
+                }
                 fragmentTransaction = true;
                 break;
             case R.id.nav_usuarios:
@@ -247,8 +251,19 @@ public class MenuAdmin extends AppCompatActivity
         return true;
     }
 
-    /*@Override
-    public void onFragmentInteraction(Uri uri) {
 
-    }*/
+    @Override
+    public void abrirAgregarParada() {
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setCheckedItem(R.id.nav_ver_mapa);
+        onNavigationItemSelected(navigationView.getMenu().findItem(R.id.nav_ver_mapa));
+    }
+
+    @Override
+    public void abrirEditarParada(String nomParada) {
+        nomPSeleccionada = nomParada;
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setCheckedItem(R.id.nav_editar_mapa);
+        onNavigationItemSelected(navigationView.getMenu().findItem(R.id.nav_editar_mapa));
+    }
 }

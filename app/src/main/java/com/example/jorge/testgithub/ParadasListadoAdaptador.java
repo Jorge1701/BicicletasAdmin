@@ -33,10 +33,12 @@ public class ParadasListadoAdaptador extends RecyclerView.Adapter<ParadasListado
     private Context mContext;
     private List<Parada> mParadas;
     private boolean alquileres;
+    private ParadasListado.AgregarParadaInterface mListener;
 
-    public ParadasListadoAdaptador(Context context, List<Parada> paradas) {
+    public ParadasListadoAdaptador(Context context, List<Parada> paradas, ParadasListado.AgregarParadaInterface agregarParadaInterface) {
         mContext = context;
         mParadas = paradas;
+        mListener = agregarParadaInterface;
     }
 
     public boolean isAlquileres() {
@@ -94,7 +96,7 @@ public class ParadasListadoAdaptador extends RecyclerView.Adapter<ParadasListado
 
     }*/
 
-    public class ParadaViewHolder extends RecyclerView.ViewHolder {
+    public class ParadaViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         @BindView(R.id.nombreParada)
         TextView nombreParada;
         private Context mContext;
@@ -104,6 +106,7 @@ public class ParadasListadoAdaptador extends RecyclerView.Adapter<ParadasListado
             super(itemView);
             ButterKnife.bind(this, itemView);
             mContext = itemView.getContext();
+            itemView.setOnClickListener(this);
         }
 
         public void bindParada(Parada parada) {
@@ -161,6 +164,11 @@ public class ParadasListadoAdaptador extends RecyclerView.Adapter<ParadasListado
                 cantBicisLibres.setText("" + parada.getCantidadLibre());
                 cantBicisOcupadas.setText("" + parada.getCantidadOcupada());
             }
+        }
+
+        @Override
+        public void onClick(View v) {
+            mListener.abrirEditarParada(this.nombreParada.getText().toString());
         }
     }
 }

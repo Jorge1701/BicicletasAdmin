@@ -70,29 +70,98 @@ public class BicisListado extends Fragment {
     String itemSeleccionado = "";
 
     public BicisListado() {
-        // Required empty public constructor
-    }
-
-    public CheckBox getNoDevueltas() {
-        return noDevueltas;
-    }
-
-    public void setNoDevueltas(CheckBox noDevueltas) {
-        this.noDevueltas = noDevueltas;
-    }
-
-    public List<Bicicleta> getBicicletas() {
-        return bicicletas;
-    }
-
-    public void setBicicletas(List<Bicicleta> bicicletas) {
-        this.bicicletas = bicicletas;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        final View view = inflater.inflate(R.layout.fragment_bicis_listado, container, false);
+        ButterKnife.bind(this, view);
+
+        bdCargarBicicletas();
+
+        noDevueltas.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                cargarBicicletasNoDevueltas("");
+            }
+        });
+
+        searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
+            @Override
+            public void onSearchViewShown() {
+                searchView.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onSearchViewClosed() {
+                filtro = -1;
+                filtrarBicis((noDevueltas.isChecked()) ? bNoDevueltas : bicicletas);
+            }
+        });
+
+        searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                filtro = (newText.equals("") || !esNumero(newText)) ? -1 : Integer.valueOf(newText);
+                filtrarBicis((noDevueltas.isChecked()) ? bNoDevueltas : bicicletas);
+                return true;
+            }
+        });
+
+        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                bdCargarBicicletas();
+                swipeRefresh.setRefreshing(false);
+            }
+        });
+
+        return view;
+
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.search_item, menu);
+        MenuItem item = menu.findItem(R.id.action_search);
+        searchView.setMenuItem(item);
+    }
+
+    private void bdCargarBicicletas() {
+        BDInterface bd = BDCliente.getClient().create(BDInterface.class);
+        Call<RespuestaBicicletas> call = bd.getBicicletas();
+        call.enqueue(new Callback<RespuestaBicicletas>() {
+            @Override
+            public void onResponse(Call<RespuestaBicicletas> call, Response<RespuestaBicicletas> response) {
+                if (response.isSuccessful()) {
+                    bicicletas = response.body().getBicicletas();
+                    if (noDevueltas.isChecked()) {
+                        fitrarBicicletasDia(itemSeleccionado);
+                    } else {
+                        cargarBicicletas(bicicletas);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RespuestaBicicletas> call, Throwable t) {
+                noHayBicicletas.setVisibility(View.VISIBLE);
+                cargandoBicicletas.setVisibility(View.GONE);
+                swipeRefresh.setRefreshing(false);
+                Toast.makeText(getContext(), "Error de conexión con el servidor: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private int filtro = -1;
@@ -142,7 +211,7 @@ public class BicisListado extends Fragment {
 
     private void fitrarBicicletasDia(String fecha) {
 
-        if(bicicletas == null) {
+        if (bicicletas == null) {
             return;
         }
 
@@ -250,86 +319,6 @@ public class BicisListado extends Fragment {
 
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.fragment_bicis_listado, container, false);
-        ButterKnife.bind(this, view);
-
-        bdCargarBicicletas();
-
-        noDevueltas.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                cargarBicicletasNoDevueltas("");
-            }
-        });
-
-        searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
-            @Override
-            public void onSearchViewShown() {
-                searchView.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void onSearchViewClosed() {
-                filtro = -1;
-                filtrarBicis((noDevueltas.isChecked()) ? bNoDevueltas : bicicletas);
-            }
-        });
-
-        searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                filtro = (newText.equals("") || !esNumero(newText)) ? -1 : Integer.valueOf(newText);
-                filtrarBicis((noDevueltas.isChecked()) ? bNoDevueltas : bicicletas);
-                return true;
-            }
-        });
-
-        swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                bdCargarBicicletas();
-                swipeRefresh.setRefreshing(false);
-            }
-        });
-
-        return view;
-
-    }
-
-    private void bdCargarBicicletas() {
-        BDInterface bd = BDCliente.getClient().create(BDInterface.class);
-        Call<RespuestaBicicletas> call = bd.getBicicletas();
-        call.enqueue(new Callback<RespuestaBicicletas>() {
-            @Override
-            public void onResponse(Call<RespuestaBicicletas> call, Response<RespuestaBicicletas> response) {
-                if (response.isSuccessful()) {
-                    bicicletas = response.body().getBicicletas();
-                    if (noDevueltas.isChecked()) {
-                        fitrarBicicletasDia(itemSeleccionado);
-                    } else {
-                        cargarBicicletas(bicicletas);
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<RespuestaBicicletas> call, Throwable t) {
-                noHayBicicletas.setVisibility(View.VISIBLE);
-                cargandoBicicletas.setVisibility(View.GONE);
-                swipeRefresh.setRefreshing(false);
-                Toast.makeText(getContext(), "Error de conexión con el servidor: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
     private boolean esNumero(String texto) {
         try {
             Integer.valueOf(texto);
@@ -339,17 +328,10 @@ public class BicisListado extends Fragment {
         return true;
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.search_item, menu);
-        MenuItem item = menu.findItem(R.id.action_search);
-        searchView.setMenuItem(item);
-    }
-
     public void onButtonPressed(Uri uri) {
-       // if (mListener != null) {
+        // if (mListener != null) {
         //    mListener.onFragmentInteraction(uri);
-       // }
+        // }
     }
 
     @Override
@@ -358,8 +340,7 @@ public class BicisListado extends Fragment {
        /* if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+            throw new RuntimeException(context.toString() + " must implement OnFragmentInteractionListener");
         }*/
     }
 

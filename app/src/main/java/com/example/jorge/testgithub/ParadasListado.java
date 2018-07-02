@@ -3,6 +3,7 @@ package com.example.jorge.testgithub;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -28,6 +29,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ParadasListado extends Fragment {
+    private AgregarParadaInterface apListener;
+
     @BindView(R.id.lista_paradas)
     RecyclerView mRecyclerView;
     @BindView(R.id.swiperefresh)
@@ -37,15 +40,13 @@ public class ParadasListado extends Fragment {
     @BindView(R.id.noHayParadas)
     LinearLayout noHayParadas;
     ParadasListadoAdaptador adaptador;
+    @BindView(R.id.floatingButtom)
+    FloatingActionButton floatingActionButton;
     boolean alquileres;
 
 
     public ParadasListado() {
         alquileres = false;
-    }
-
-    public boolean isAlquileres() {
-        return alquileres;
     }
 
     public void setAlquileres(boolean alquileres) {
@@ -68,7 +69,13 @@ public class ParadasListado extends Fragment {
             @Override
             public void onRefresh() {
                 bdCargarParadas();
-                swipeRefresh.setRefreshing(false);
+            }
+        });
+
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                apListener.abrirAgregarParada();
             }
         });
 
@@ -83,7 +90,7 @@ public class ParadasListado extends Fragment {
             public void onResponse(Call<RespuestaParadas> call, Response<RespuestaParadas> response) {
                 if (response.isSuccessful()) {
                     List<Parada> paradas = response.body().getParadas();
-                    adaptador = new ParadasListadoAdaptador(getActivity(), paradas);
+                    adaptador = new ParadasListadoAdaptador(getActivity(), paradas,apListener);
                     adaptador.setAlquileres(alquileres);
                     mRecyclerView.setAdapter(adaptador);
                     mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -110,11 +117,24 @@ public class ParadasListado extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        if (context instanceof AgregarParadaInterface) {
+            apListener = (AgregarParadaInterface) context;
+        } else {
+            throw new RuntimeException(context.toString() + " must implement AgregarParadaInterface");
+        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
+        apListener = null;
     }
+
+
+    public interface AgregarParadaInterface {
+        void abrirAgregarParada();
+        void abrirEditarParada(String nomParada);
+    }
+
 
 }
