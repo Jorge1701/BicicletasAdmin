@@ -1,6 +1,7 @@
 package com.example.jorge.testgithub.Clases;
 
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import com.example.jorge.testgithub.AdaptadorListaIncidencias;
@@ -62,6 +63,31 @@ public class Incidencia {
 				Log.d ("ASD", "onFailure");
 				Log.d ("ASD", t.getMessage ());
 				i.errorAlComentar ();
+			}
+		});
+	}
+
+	public void cambiarEstado (final AdaptadorListaIncidencias.IncidenciaViewHolder i, final String admin, final int estado) {
+		BDInterface bd = BDCliente.getClient().create(BDInterface.class);
+		Call<Respuesta> call = bd.cambiarEstado (id, admin, estado);
+		call.enqueue(new Callback<Respuesta>() {
+			@Override
+			public void onResponse(Call<Respuesta> call, Response<Respuesta> response) {
+				if (response.body().getCodigo().equals("1")) {
+					if (admin != null)
+						setAdmin (admin);
+					setEstado (estado);
+					i.cargarEstado ();
+				}
+				i.llEstadoAsignado.setVisibility(View.VISIBLE);
+				i.estadoProgressBar.setVisibility(View.GONE);
+			}
+
+			@Override
+			public void onFailure(Call<Respuesta> call, Throwable t) {
+				i.llEstadoAsignado.setVisibility(View.VISIBLE);
+				i.estadoProgressBar.setVisibility(View.GONE);
+				Toast.makeText(i.context, "No se pudo cambiar el estado", Toast.LENGTH_SHORT).show();
 			}
 		});
 	}
