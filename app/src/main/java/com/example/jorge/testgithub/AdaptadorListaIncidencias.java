@@ -103,6 +103,8 @@ public class AdaptadorListaIncidencias extends RecyclerView.Adapter<AdaptadorLis
 		EditText etComentar;
 		@BindView (R.id.enviarProgressBar)
 		ProgressBar enviarProgressBar;
+		@BindView (R.id.tvTipo)
+		TextView tvTipo;
 
 		@BindView (R.id.cabecera)
 		LinearLayout cabecera;
@@ -135,6 +137,8 @@ public class AdaptadorListaIncidencias extends RecyclerView.Adapter<AdaptadorLis
 			// TODO: Cargar imagen del usuario
 			tvNombreUsuario.setText (i.getUsuario ());
 			tvAsignado.setText (i.getAdmin ());
+			// TODO: Cargar el tipo
+			// tvTipo.setTet (i.getTipo ());
 
 			cargarEstado ();
 
