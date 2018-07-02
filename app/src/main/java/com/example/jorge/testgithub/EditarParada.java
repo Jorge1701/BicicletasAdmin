@@ -30,11 +30,13 @@ import com.example.jorge.testgithub.BD.BDInterface;
 import com.example.jorge.testgithub.BD.RespuestaParadas;
 import com.example.jorge.testgithub.Clases.Parada;
 import com.example.jorge.testgithub.Util.Paradas;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -188,10 +190,17 @@ public class EditarParada extends Fragment implements OnMapReadyCallback, Parada
             for (Marker m : marks) {
                 if (m.getTitle().equals(nPSLista)) {
                     m.showInfoWindow();
+                    mMap.moveCamera(CameraUpdateFactory.newLatLng(m.getPosition()));
                     marcador = m;
                 }
             }
+        }else{
+            //obtener la posicion de todas las paradas y hacer los marcadores
+            LatLng paysandu = new LatLng(-32.316465, -58.088980);
+            //mMap.addMarker(new MarkerOptions().position(new LatLng(-32.317921, -58.089010)).title("Parada1").draggable(true));
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(paysandu));
         }
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(15.0f));
 
         carga.setVisibility(View.GONE);
         layout.setVisibility(View.VISIBLE);
@@ -243,17 +252,20 @@ public class EditarParada extends Fragment implements OnMapReadyCallback, Parada
             cantBicisError.setError(null);
             nombreError.setError(null);
 
-            for (Parada p : paradas) {
-                if (p.getNombre().equals(nPSLista)) {
-                    nombre.setText(p.getNombre());
-                    cantBicis.setText(String.valueOf(p.getCantidadLibre() + p.getCantidadOcupada()));
+            if (paradas != null) {
+                for (Parada p : paradas) {
+                    if (p.getNombre().equals(nPSLista)) {
+                        nombre.setText(p.getNombre());
+                        cantBicis.setText(String.valueOf(p.getCantidadLibre() + p.getCantidadOcupada()));
+                    }
                 }
             }
 
-
         }
 
-        googleMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
+        googleMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener()
+
+        {
             @Override
             public void onMarkerDragStart(Marker marker) {
             }
@@ -286,12 +298,6 @@ public class EditarParada extends Fragment implements OnMapReadyCallback, Parada
 
         if (paradas != null)
             prepararMapa();
-
-        //obtener la posicion de todas las paradas y hacer los marcadores
-        LatLng paysandu = new LatLng(-32.316465, -58.088980);
-        //mMap.addMarker(new MarkerOptions().position(new LatLng(-32.317921, -58.089010)).title("Parada1").draggable(true));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(paysandu));
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(15.0f));
     }
 
     public String getDireccion(LatLng posicion) {

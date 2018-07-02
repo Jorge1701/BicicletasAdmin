@@ -97,6 +97,8 @@ public class ParadasListado extends Fragment {
                     mRecyclerView.setHasFixedSize(true);
                     if (paradas.size() == 0) {
                         noHayParadas.setVisibility(View.VISIBLE);
+                    }else {
+                        noHayParadas.setVisibility(View.GONE);
                     }
                     cargandoParadas.setVisibility(View.GONE);
                     swipeRefresh.setRefreshing(false);
