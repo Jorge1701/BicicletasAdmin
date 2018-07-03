@@ -74,4 +74,13 @@ public interface BDInterface {
 
     @GET("administradores")
     Call<RespuestaAdministradores> obtenerAdministradores();
+
+    @FormUrlEncoded
+    @POST("cambiarEstadoIncidencia")
+    Call<Respuesta> cambiarEstado(
+            @Field("id") int id,
+            @Field("admin") String admin,
+            @Field("estado") int estado
+    );
+
 }
