@@ -1,7 +1,6 @@
 package com.example.jorge.testgithub;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -10,23 +9,20 @@ import android.support.v7.widget.RecyclerView;
 
 import retrofit2.Call;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.example.jorge.testgithub.Adaptadores.AdaptadorListaUsuarios;
 import com.example.jorge.testgithub.BD.BDCliente;
 import com.example.jorge.testgithub.BD.BDInterface;
-import com.example.jorge.testgithub.BD.Respuesta;
 import com.example.jorge.testgithub.BD.RespuestaUsuarios;
 import com.example.jorge.testgithub.Clases.Usuario;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;

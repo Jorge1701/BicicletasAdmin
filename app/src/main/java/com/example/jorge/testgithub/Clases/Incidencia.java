@@ -4,11 +4,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import com.example.jorge.testgithub.AdaptadorListaIncidencias;
+import com.example.jorge.testgithub.Adaptadores.AdaptadorListaIncidencias;
 import com.example.jorge.testgithub.BD.BDCliente;
 import com.example.jorge.testgithub.BD.BDInterface;
 import com.example.jorge.testgithub.BD.Respuesta;
-import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 import java.util.List;

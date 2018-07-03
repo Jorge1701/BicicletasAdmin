@@ -1,11 +1,10 @@
-package com.example.jorge.testgithub;
+package com.example.jorge.testgithub.Adaptadores;
 
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,13 +20,14 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import com.example.jorge.testgithub.Clases.Parada;
+import com.example.jorge.testgithub.ParadasListado;
+import com.example.jorge.testgithub.R;
 import com.jjoe64.graphview.DefaultLabelFormatter;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.ValueDependentColor;
 import com.jjoe64.graphview.helper.StaticLabelsFormatter;
 import com.jjoe64.graphview.series.BarGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
-import com.jjoe64.graphview.series.LineGraphSeries;
 
 public class ParadasListadoAdaptador extends RecyclerView.Adapter<ParadasListadoAdaptador.ParadaViewHolder> {
     private Context mContext;
@@ -153,7 +153,7 @@ public class ParadasListadoAdaptador extends RecyclerView.Adapter<ParadasListado
                     });
                     staticLabelsFormatter.setHorizontalLabels(new String[]{"Dia", "Semana", "Mes"});
                     graph.getGridLabelRenderer().setLabelFormatter(staticLabelsFormatter);
-
+                    graph.setOnClickListener(this);
                 }
             } else {
                 nombreParada.setText(parada.getNombre());

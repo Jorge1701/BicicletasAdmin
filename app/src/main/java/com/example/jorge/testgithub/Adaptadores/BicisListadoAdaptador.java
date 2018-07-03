@@ -1,4 +1,4 @@
-package com.example.jorge.testgithub;
+package com.example.jorge.testgithub.Adaptadores;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.example.jorge.testgithub.Clases.Bicicleta;
+import com.example.jorge.testgithub.R;
 
 import java.util.ArrayList;
 import java.util.List;

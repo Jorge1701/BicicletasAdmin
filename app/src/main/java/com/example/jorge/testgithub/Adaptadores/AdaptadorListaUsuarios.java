@@ -1,4 +1,4 @@
-package com.example.jorge.testgithub;
+package com.example.jorge.testgithub.Adaptadores;
 
 import android.annotation.TargetApi;
 import android.app.Dialog;
@@ -7,7 +7,6 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +19,7 @@ import android.widget.TextView;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.example.jorge.testgithub.Clases.Usuario;
+import com.example.jorge.testgithub.R;
 import com.example.jorge.testgithub.Util.Animation;
 
 import java.util.List;

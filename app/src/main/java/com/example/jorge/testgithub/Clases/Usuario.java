@@ -11,7 +11,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import com.example.jorge.testgithub.AdaptadorListaUsuarios.UsuarioViewHolder;
+import com.example.jorge.testgithub.Adaptadores.AdaptadorListaUsuarios.UsuarioViewHolder;
 
 public class Usuario {
 

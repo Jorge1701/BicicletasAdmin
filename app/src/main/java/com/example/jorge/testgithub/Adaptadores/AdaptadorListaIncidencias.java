@@ -1,6 +1,5 @@
-package com.example.jorge.testgithub;
+package com.example.jorge.testgithub.Adaptadores;
 
-import android.animation.Animator;
 import android.annotation.TargetApi;
 import android.app.Dialog;
 import android.content.Context;
@@ -12,11 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.view.animation.Transformation;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -35,6 +30,7 @@ import com.example.jorge.testgithub.BD.RespuestaAdministradores;
 import com.example.jorge.testgithub.Clases.Administrador;
 import com.example.jorge.testgithub.Clases.ComentarioIncidencia;
 import com.example.jorge.testgithub.Clases.Incidencia;
+import com.example.jorge.testgithub.R;
 
 import java.util.ArrayList;
 import java.util.List;
