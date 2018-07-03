@@ -110,15 +110,15 @@ public class ParadasListadoAdaptador extends RecyclerView.Adapter<ParadasListado
         }
 
         public void bindParada(Parada parada) {
-            nombreParada.setText(parada.getNombre());
             if (isAlquileres()) {
+                nombreParada.setText(parada.getNombre2());
                 //Graphica
                 final GraphView graph = (GraphView) itemView.findViewById(R.id.graph);
                 if (graph.getSeries().size() == 0) {
                     BarGraphSeries<DataPoint> series = new BarGraphSeries<>(new DataPoint[]{
-                            new DataPoint(0, parada.getCantAlquileresDia()),
-                            new DataPoint(1, parada.getCantAlquileresSemana()),
-                            new DataPoint(2, parada.getCantAlquileresMes()),
+                            new DataPoint(0, (parada.getAlquileresPorDia() != null && parada.getAlquileresPorDia() != "") ? Double.valueOf(parada.getAlquileresPorDia()) : 0),
+                            new DataPoint(1, (parada.getAlquileresPorSemana() != null && parada.getAlquileresPorSemana() != "") ? Double.valueOf(parada.getAlquileresPorSemana()) : 0),
+                            new DataPoint(2, (parada.getAlquileresPorMes() != null && parada.getAlquileresPorMes() != "") ? Double.valueOf(parada.getAlquileresPorMes()) : 0),
                     });
                     graph.addSeries(series);
 
@@ -156,6 +156,7 @@ public class ParadasListadoAdaptador extends RecyclerView.Adapter<ParadasListado
 
                 }
             } else {
+                nombreParada.setText(parada.getNombre());
                 TextView numeroParada = itemView.findViewById(R.id.numeroParada);
                 TextView cantBicisLibres = itemView.findViewById(R.id.cantBicisLibres);
                 TextView cantBicisOcupadas = itemView.findViewById(R.id.cantBicisOcupadas);
