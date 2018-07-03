@@ -1,6 +1,7 @@
 package com.example.jorge.testgithub.Clases;
 
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import com.example.jorge.testgithub.AdaptadorListaIncidencias;
@@ -26,8 +27,9 @@ public class Incidencia {
 	private String comentario;
 	private String fecha;
 	private List<ComentarioIncidencia> comentariosIncidencia;
+	private String tipo;
 
-	public Incidencia(int id, String usuario, String parada, int estado, String admin, String comentario, String fecha, List<ComentarioIncidencia> comentarioIncidencias) {
+	public Incidencia(int id, String usuario, String parada, int estado, String admin, String comentario, String fecha, List<ComentarioIncidencia> comentariosIncidencia, String tipo) {
 		this.id = id;
 		this.usuario = usuario;
 		this.parada = parada;
@@ -35,7 +37,8 @@ public class Incidencia {
 		this.admin = admin;
 		this.comentario = comentario;
 		this.fecha = fecha;
-		this.comentariosIncidencia = comentarioIncidencias;
+		this.comentariosIncidencia = comentariosIncidencia;
+		this.tipo = tipo;
 	}
 
 	public void comentar (final AdaptadorListaIncidencias.IncidenciaViewHolder i, final String admin, final String comentario) {
@@ -62,6 +65,31 @@ public class Incidencia {
 				Log.d ("ASD", "onFailure");
 				Log.d ("ASD", t.getMessage ());
 				i.errorAlComentar ();
+			}
+		});
+	}
+
+	public void cambiarEstado (final AdaptadorListaIncidencias.IncidenciaViewHolder i, final String admin, final int estado) {
+		BDInterface bd = BDCliente.getClient().create(BDInterface.class);
+		Call<Respuesta> call = bd.cambiarEstado (id, admin, estado);
+		call.enqueue(new Callback<Respuesta>() {
+			@Override
+			public void onResponse(Call<Respuesta> call, Response<Respuesta> response) {
+				if (response.body().getCodigo().equals("1")) {
+					if (admin != null)
+						setAdmin (admin);
+					setEstado (estado);
+					i.cargarEstado ();
+				}
+				i.llEstadoAsignado.setVisibility(View.VISIBLE);
+				i.estadoProgressBar.setVisibility(View.GONE);
+			}
+
+			@Override
+			public void onFailure(Call<Respuesta> call, Throwable t) {
+				i.llEstadoAsignado.setVisibility(View.VISIBLE);
+				i.estadoProgressBar.setVisibility(View.GONE);
+				Toast.makeText(i.context, "No se pudo cambiar el estado", Toast.LENGTH_SHORT).show();
 			}
 		});
 	}
@@ -128,5 +156,22 @@ public class Incidencia {
 
 	public void setComentarioIncidencias(List<ComentarioIncidencia> comentarioIncidencias) {
 		this.comentariosIncidencia = comentarioIncidencias;
+	}
+
+	public List<ComentarioIncidencia> getComentariosIncidencia() {
+		return comentariosIncidencia;
+	}
+
+	public void setComentariosIncidencia(List<ComentarioIncidencia> comentariosIncidencia) {
+		this.comentariosIncidencia = comentariosIncidencia;
+	}
+
+	public String getTipo() {
+		// TODO: quitar esto
+		return "Sugerencia";
+	}
+
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
 	}
 }

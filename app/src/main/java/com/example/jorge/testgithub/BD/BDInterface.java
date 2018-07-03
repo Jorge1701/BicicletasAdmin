@@ -8,67 +8,79 @@ import retrofit2.http.POST;
 
 public interface BDInterface {
 
-	@FormUrlEncoded
-	@POST("login")
-	Call<Respuesta> login(
-			@Field("email") String email,
-			@Field("password") String password,
-			@Field("admin") String admin
-	);
+    @FormUrlEncoded
+    @POST("login")
+    Call<Respuesta> login(
+            @Field("email") String email,
+            @Field("password") String password,
+            @Field("admin") String admin
+    );
 
-	@GET("paradas")
-	Call<RespuestaParadas> getParadas();
+    @GET("paradas")
+    Call<RespuestaParadas> getParadas();
 
-	@GET("bicicletas")
-	Call<RespuestaBicicletas> getBicicletas();
+    @GET("promedioAlquileres")
+    Call<RespuestaParadas> getPromedios();
 
-	@FormUrlEncoded
-	@POST("agregarParada")
-	Call<Respuesta> agregarParada(
-			@Field("nombre") String nombre,
-			@Field("lat") double lat,
-			@Field("lng") double lng,
-			@Field("direccion") String direccion,
-			@Field("cantBicis") int cantBicis
-	);
+    @GET("bicicletas")
+    Call<RespuestaBicicletas> getBicicletas();
 
-	@GET ("usuarios")
-	Call<RespuestaUsuarios> obtenerUsuarios ();
+    @FormUrlEncoded
+    @POST("agregarParada")
+    Call<Respuesta> agregarParada(
+            @Field("nombre") String nombre,
+            @Field("lat") double lat,
+            @Field("lng") double lng,
+            @Field("direccion") String direccion,
+            @Field("cantBicis") int cantBicis
+    );
 
-	@FormUrlEncoded
-	@POST ("habilitar")
-	Call<Respuesta> habilitar (
-			@Field ("email") String email
-	);
+    @GET("usuarios")
+    Call<RespuestaUsuarios> obtenerUsuarios();
 
-	@FormUrlEncoded
-	@POST ("inhabilitar")
-	Call<Respuesta> inhabilitar (
-			@Field ("email") String email
-	);
+    @FormUrlEncoded
+    @POST("habilitar")
+    Call<Respuesta> habilitar(
+            @Field("email") String email
+    );
 
-	@FormUrlEncoded
-	@POST ("editarParada")
-	Call<Respuesta> editarParada (
-			@Field("id") int id,
-			@Field ("nombre") String nombre,
-			@Field("lat") double lat,
-			@Field("lng") double lng,
-			@Field ("direccion") String direccion,
-			@Field ("cantBicis") int cantBicis
-	);
+    @FormUrlEncoded
+    @POST("inhabilitar")
+    Call<Respuesta> inhabilitar(
+            @Field("email") String email
+    );
 
-	@GET ("incidencias")
-	Call<RespuestaIncidencias> obtenerIncidencias ();
+    @FormUrlEncoded
+    @POST("editarParada")
+    Call<Respuesta> editarParada(
+            @Field("id") int id,
+            @Field("nombre") String nombre,
+            @Field("lat") double lat,
+            @Field("lng") double lng,
+            @Field("direccion") String direccion,
+            @Field("cantBicis") int cantBicis
+    );
 
-	@FormUrlEncoded
-	@POST ("nuevoComentario")
-	Call<Respuesta> agregarComentario (
-			@Field ("admin") String admin,
-			@Field ("incidencia") int incidencia,
-			@Field ("comentario") String comentario
-	);
+    @GET("incidencias")
+    Call<RespuestaIncidencias> obtenerIncidencias();
 
-	@GET ("administradores")
-	Call<RespuestaAdministradores> obtenerAdministradores ();
+    @FormUrlEncoded
+    @POST("nuevoComentario")
+    Call<Respuesta> agregarComentario(
+            @Field("admin") String admin,
+            @Field("incidencia") int incidencia,
+            @Field("comentario") String comentario
+    );
+
+    @GET("administradores")
+    Call<RespuestaAdministradores> obtenerAdministradores();
+
+    @FormUrlEncoded
+    @POST("cambiarEstadoIncidencia")
+    Call<Respuesta> cambiarEstado(
+            @Field("id") int id,
+            @Field("admin") String admin,
+            @Field("estado") int estado
+    );
+
 }

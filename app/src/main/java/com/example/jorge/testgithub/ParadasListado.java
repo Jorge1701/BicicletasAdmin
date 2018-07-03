@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,12 +64,20 @@ public class ParadasListado extends Fragment {
         View view = inflater.inflate(R.layout.fragment_paradas_listado, container, false);
         ButterKnife.bind(this, view);
 
-        bdCargarParadas();
+        if (alquileres) {
+            bdCargarPromedioAlquileres();
+        } else {
+            bdCargarParadas();
+        }
 
         swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                bdCargarParadas();
+                if (alquileres) {
+                    bdCargarPromedioAlquileres();
+                } else {
+                    bdCargarParadas();
+                }
             }
         });
 
@@ -90,16 +99,11 @@ public class ParadasListado extends Fragment {
             public void onResponse(Call<RespuestaParadas> call, Response<RespuestaParadas> response) {
                 if (response.isSuccessful()) {
                     List<Parada> paradas = response.body().getParadas();
-                    adaptador = new ParadasListadoAdaptador(getActivity(), paradas,apListener);
-                    adaptador.setAlquileres(alquileres);
-                    mRecyclerView.setAdapter(adaptador);
-                    mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-                    mRecyclerView.setHasFixedSize(true);
-                    if (paradas.size() == 0) {
+                    if (paradas != null) {
+                        cargarParadas(paradas);
+                    }else{
                         noHayParadas.setVisibility(View.VISIBLE);
                     }
-                    cargandoParadas.setVisibility(View.GONE);
-                    swipeRefresh.setRefreshing(false);
                 }
             }
 
@@ -113,6 +117,47 @@ public class ParadasListado extends Fragment {
             }
         });
     }
+
+    private void bdCargarPromedioAlquileres() {
+        BDInterface bd = BDCliente.getClient().create(BDInterface.class);
+        Call<RespuestaParadas> call = bd.getPromedios();
+        call.enqueue(new Callback<RespuestaParadas>() {
+            @Override
+            public void onResponse(Call<RespuestaParadas> call, Response<RespuestaParadas> response) {
+                if (response.isSuccessful()) {
+                    List<Parada> paradas = response.body().getPromedios();
+                    if (paradas != null) {
+                        cargarParadas(paradas);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RespuestaParadas> call, Throwable t) {
+                noHayParadas.setVisibility(View.VISIBLE);
+                cargandoParadas.setVisibility(View.GONE);
+                swipeRefresh.setRefreshing(false);
+                Toast.makeText(getContext(), "Error de conexión con el servidor: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+
+            }
+        });
+    }
+
+    private void cargarParadas(List<Parada> paradas) {
+        adaptador = new ParadasListadoAdaptador(getActivity(), paradas, apListener);
+        adaptador.setAlquileres(alquileres);
+        mRecyclerView.setAdapter(adaptador);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mRecyclerView.setHasFixedSize(true);
+        if (paradas.size() == 0) {
+            noHayParadas.setVisibility(View.VISIBLE);
+        } else {
+            noHayParadas.setVisibility(View.GONE);
+        }
+        cargandoParadas.setVisibility(View.GONE);
+        swipeRefresh.setRefreshing(false);
+    }
+
 
     @Override
     public void onAttach(Context context) {
@@ -133,6 +178,7 @@ public class ParadasListado extends Fragment {
 
     public interface AgregarParadaInterface {
         void abrirAgregarParada();
+
         void abrirEditarParada(String nomParada);
     }
 

@@ -103,6 +103,8 @@ public class AdaptadorListaIncidencias extends RecyclerView.Adapter<AdaptadorLis
 		EditText etComentar;
 		@BindView (R.id.enviarProgressBar)
 		ProgressBar enviarProgressBar;
+		@BindView (R.id.tvTipo)
+		TextView tvTipo;
 
 		@BindView (R.id.cabecera)
 		LinearLayout cabecera;
@@ -111,9 +113,14 @@ public class AdaptadorListaIncidencias extends RecyclerView.Adapter<AdaptadorLis
 		@BindView (R.id.contenido)
 		LinearLayout contenido;
 
+		@BindView (R.id.llEstadoAsignado)
+		public LinearLayout llEstadoAsignado;
+		@BindView (R.id.estadoProgressBar)
+		public ProgressBar estadoProgressBar;
+
 		CardView cardView;
 
-		private Context context;
+		public Context context;
 		private Incidencia i;
 
 		private boolean abierto = false;
@@ -129,6 +136,8 @@ public class AdaptadorListaIncidencias extends RecyclerView.Adapter<AdaptadorLis
 			this.i = i;
 			// TODO: Cargar imagen del usuario
 			tvNombreUsuario.setText (i.getUsuario ());
+			tvAsignado.setText (i.getAdmin ());
+			tvTipo.setText (i.getTipo ());
 
 			cargarEstado ();
 
@@ -181,7 +190,7 @@ public class AdaptadorListaIncidencias extends RecyclerView.Adapter<AdaptadorLis
 			});
 		}
 
-		private void cargarEstado () {
+		public void cargarEstado () {
 			switch (i.getEstado ()) {
 				case 0:
 					tvAsignado.setText ("");
@@ -189,12 +198,12 @@ public class AdaptadorListaIncidencias extends RecyclerView.Adapter<AdaptadorLis
 					estado.setText ("ABIERTA");
 					break;
 				case 1:
-					// TODO: tvAsignado.setText (i.getAsignado ());
+					tvAsignado.setText (i.getAdmin ());
 					estado.setTextColor (0xFFFF9D00);
 					estado.setText ("ASIGNADA");
 					break;
 				case 2:
-					// TODO: tvAsignado.setText (i.getAsignado ());
+					tvAsignado.setText (i.getAdmin ());
 					estado.setTextColor (0xFF35D002);
 					estado.setText ("RESUELTA");
 					break;
@@ -266,10 +275,9 @@ public class AdaptadorListaIncidencias extends RecyclerView.Adapter<AdaptadorLis
 			view.findViewById(R.id.btnAceptar).setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					// TODO: i.setEstado (1);
-					// TODO: i.setAsignado (etNombreAsigando.getText ().toString ());
-					// spinner.getSelectedItem().toString()
-					cargarEstado ();
+					llEstadoAsignado.setVisibility(View.GONE);
+					estadoProgressBar.setVisibility(View.VISIBLE);
+					i.cambiarEstado (IncidenciaViewHolder.this, spinner.getSelectedItem ().toString (), 1);
 					dialog.dismiss();
 				}
 			});
@@ -308,9 +316,10 @@ public class AdaptadorListaIncidencias extends RecyclerView.Adapter<AdaptadorLis
 			view.findViewById (R.id.btnAceptar).setOnClickListener (new View.OnClickListener () {
 				@Override
 				public void onClick(View v) {
-					i.setEstado (2);
-					cargarEstado ();
-					dialog.dismiss ();
+					llEstadoAsignado.setVisibility(View.GONE);
+					estadoProgressBar.setVisibility(View.VISIBLE);
+					i.cambiarEstado (IncidenciaViewHolder.this, null, 2);
+					dialog.dismiss();
 				}
 			});
 

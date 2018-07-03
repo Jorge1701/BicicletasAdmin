@@ -145,13 +145,21 @@ public class BicisListado extends Fragment {
             @Override
             public void onResponse(Call<RespuestaBicicletas> call, Response<RespuestaBicicletas> response) {
                 if (response.isSuccessful()) {
-                    bicicletas = response.body().getBicicletas();
-                    if (noDevueltas.isChecked()) {
-                        fitrarBicicletasDia(itemSeleccionado);
-                    } else {
-                        cargarBicicletas(bicicletas);
+                    if(response.body().getCodigo().trim().equals("1")) {
+                        bicicletas = response.body().getBicicletas();
+                        if (noDevueltas.isChecked()) {
+                            fitrarBicicletasDia(itemSeleccionado);
+                        } else {
+                            cargarBicicletas(bicicletas);
+                        }
                     }
+                }else{
+                    noHayBicicletas.setVisibility(View.VISIBLE);
+                    cargandoBicicletas.setVisibility(View.GONE);
+                    swipeRefresh.setRefreshing(false);
+                    Toast.makeText(getContext(), response.message(), Toast.LENGTH_SHORT).show();
                 }
+
             }
 
             @Override
@@ -212,6 +220,7 @@ public class BicisListado extends Fragment {
     private void fitrarBicicletasDia(String fecha) {
 
         if (bicicletas == null) {
+            cargarBicicletas(new ArrayList<Bicicleta>());
             return;
         }
 
