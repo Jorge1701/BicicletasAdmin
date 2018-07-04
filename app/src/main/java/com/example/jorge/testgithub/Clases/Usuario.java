@@ -24,22 +24,10 @@ public class Usuario {
 	private String Direccion;
 	private int Activado;
 	private int Saldo;
-	private int IdCelular;
+	private String IdCelular;
 	private int cantidadAlquileres;
 
-	public Usuario(String email, String cedula, String pasaporte, String pass, String nombre, String telefono, String direccion, int activado, int saldo, int idCelular, int cantidadAlquileres) {
-		Email = email;
-		Cedula = cedula;
-		Pasaporte = pasaporte;
-		Pass = pass;
-		Nombre = nombre;
-		Telefono = telefono;
-		Direccion = direccion;
-		Activado = activado;
-		Saldo = saldo;
-		IdCelular = idCelular;
-		this.cantidadAlquileres = cantidadAlquileres;
-	}
+
 
 	public String getEmail() {
 		return Email;
@@ -113,11 +101,11 @@ public class Usuario {
 		Saldo = saldo;
 	}
 
-	public int getIdCelular() {
+	public String getIdCelular() {
 		return IdCelular;
 	}
 
-	public void setIdCelular(int idCelular) {
+	public void setIdCelular(String idCelular) {
 		IdCelular = idCelular;
 	}
 

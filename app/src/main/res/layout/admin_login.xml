@@ -1,42 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@drawable/fondo_admin"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="40dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/fondo_cajas_texto_iniciar_sesion"
         android:orientation="vertical"
-        android:paddingTop="10dp"
         android:paddingBottom="10dp"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginBottom="40dp"
-        android:background="@drawable/fondo_cajas_texto_iniciar_sesion">
+        android:paddingTop="10dp">
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/etUsuarioError"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:errorEnabled="true"
             app:counterEnabled="true"
-            app:counterMaxLength="40">
+            app:counterMaxLength="40"
+            app:errorEnabled="true">
 
 
-        <EditText
-            android:id="@+id/etUsuario"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:inputType="text"
-            android:hint="@string/usuario" />
+            <EditText
+                android:id="@+id/etUsuario"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/usuario"
+                android:inputType="text"
+                android:textAlignment="center" />
 
         </android.support.design.widget.TextInputLayout>
 
@@ -47,13 +46,13 @@
             app:errorEnabled="true"
             app:passwordToggleEnabled="true">
 
-        <EditText
-            android:id="@+id/etPassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:inputType="textPassword"
-            android:hint="@string/contrase_a" />
+            <EditText
+                android:id="@+id/etPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/contrase_a"
+                android:inputType="textPassword"
+                android:textAlignment="center" />
 
         </android.support.design.widget.TextInputLayout>
 
@@ -62,17 +61,35 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:text="@string/recordarme"/>
+            android:text="@string/recordarme" />
 
     </LinearLayout>
 
-    <Button
-        android:onClick="IniciarSesion"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/iniciar_sesion"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:background="@drawable/boton_iniciar_sesion" />
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/btnIniciarSesion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:layout_marginStart="20dp"
+            android:background="@drawable/boton_iniciar_sesion"
+            android:onClick="IniciarSesion"
+            android:text="@string/iniciar_sesion"
+            android:visibility="visible"/>
+
+        <ProgressBar
+            android:id="@+id/pbISesion"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:indeterminate="true"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/boton_iniciar_sesion" />
+    </LinearLayout>
 
 </LinearLayout>

@@ -7,8 +7,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.jorge.testgithub.BD.BDCliente;
@@ -33,8 +35,11 @@ public class AdminLogin extends AppCompatActivity {
     @BindView(R.id.etUsuarioError)
     TextInputLayout etUsuarioError;
     @BindView(R.id.etPasswordError)
-
     TextInputLayout etPasswordError;
+    @BindView(R.id.pbISesion)
+    ProgressBar pbISesion;
+    @BindView(R.id.btnIniciarSesion)
+    Button btnIniciarSesion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,11 +62,17 @@ public class AdminLogin extends AppCompatActivity {
                     cargarInicioAdmin(u, password);
                 } else
                     Toast.makeText(AdminLogin.this, getString(R.string.login_incorrecto), Toast.LENGTH_SHORT).show();
+                btnIniciarSesion.setVisibility(View.VISIBLE);
+                pbISesion.setVisibility(View.GONE);
+
             }
 
             @Override
             public void onFailure(Call<Respuesta> call, Throwable t) {
                 Toast.makeText(AdminLogin.this, "Error de conexión con el servidor: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                btnIniciarSesion.setVisibility(View.VISIBLE);
+                pbISesion.setVisibility(View.GONE);
+
             }
         });
 
@@ -81,8 +92,11 @@ public class AdminLogin extends AppCompatActivity {
         } else if (password.equals("")) {
             etPasswordError.setError("Contraseña incorrecta");
             return;
-        } else
+        } else {
+            btnIniciarSesion.setVisibility(View.GONE);
+            pbISesion.setVisibility(View.VISIBLE);
             verificarUsuario(usuario, password);
+        }
     }
 
     private void recordarUsuario(String usuario, String password) {
