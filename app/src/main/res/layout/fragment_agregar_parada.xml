@@ -73,16 +73,31 @@
 
             </android.support.design.widget.TextInputLayout>
 
-            <Button
-                android:id="@+id/agregarParada"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="20dp"
-                android:layout_marginEnd="20dp"
-                android:layout_marginStart="20dp"
-                android:background="@drawable/boton_iniciar_sesion"
-                android:onClick="AgregarParada"
-                android:text="@string/title_activity_agregar_parada" />
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/agregarParada"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginStart="20dp"
+                    android:background="@drawable/boton_iniciar_sesion"
+                    android:onClick="AgregarParada"
+                    android:text="@string/title_activity_agregar_parada"
+                    android:visibility="visible" />
+
+                <ProgressBar
+                    android:id="@+id/pbAgregar"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:indeterminate="true"
+                    android:visibility="gone" />
+            </LinearLayout>
+
         </LinearLayout>
 
     </LinearLayout>

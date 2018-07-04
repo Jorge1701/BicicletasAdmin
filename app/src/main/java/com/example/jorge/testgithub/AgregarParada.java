@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.jorge.testgithub.BD.BDCliente;
@@ -62,6 +63,9 @@ public class AgregarParada extends Fragment implements OnMapReadyCallback, Parad
     LinearLayout carga;
     @BindView(R.id.layout)
     LinearLayout layout;
+    @BindView(R.id.pbAgregar)
+    ProgressBar pbAgregar;
+
 
     public AgregarParada() {
         // Required empty public constructor
@@ -95,6 +99,7 @@ public class AgregarParada extends Fragment implements OnMapReadyCallback, Parad
                 nombreError.setError(null);
                 cantBicisError.setError(null);
 
+
                 //chequeo que no deje nada vacio o incorrecto
                 if (nombre.getText().toString().trim().equals("")) {
                     nombreError.setError("Nombre inválido");
@@ -110,6 +115,9 @@ public class AgregarParada extends Fragment implements OnMapReadyCallback, Parad
                     Toast.makeText(getActivity(), "Seleccione un punto en el mapa", Toast.LENGTH_LONG).show();
                     return;
                 }
+
+                pbAgregar.setVisibility(View.VISIBLE);
+                agregarParada.setVisibility(View.GONE);
                 altaParada(nombre.getText().toString().trim(), marcador.getTitle(), marcador.getPosition().latitude, marcador.getPosition().longitude, Integer.valueOf(cantBicis.getText().toString().trim()));
             }
         });
@@ -147,7 +155,7 @@ public class AgregarParada extends Fragment implements OnMapReadyCallback, Parad
     private List<Marker> marks;
 
     public void prepararMapa() {
-         if (marks == null)
+        if (marks == null)
             marks = new ArrayList<>();
 
         for (Marker m : marks)
@@ -163,6 +171,7 @@ public class AgregarParada extends Fragment implements OnMapReadyCallback, Parad
             @Override
             public boolean onMarkerClick(Marker marker) {
                 marker.showInfoWindow();
+
                 cantBicisError.setError(null);
                 nombreError.setError(null);
                 return true;
@@ -172,6 +181,9 @@ public class AgregarParada extends Fragment implements OnMapReadyCallback, Parad
 
         carga.setVisibility(View.GONE);
         layout.setVisibility(View.VISIBLE);
+
+        pbAgregar.setVisibility(View.GONE);
+        agregarParada.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -184,6 +196,7 @@ public class AgregarParada extends Fragment implements OnMapReadyCallback, Parad
             @Override
             public void onMapClick(LatLng arg0) {
                 // TODO Auto-generated method stub
+
 
                 cantBicisError.setError(null);
                 nombreError.setError(null);
@@ -229,8 +242,6 @@ public class AgregarParada extends Fragment implements OnMapReadyCallback, Parad
     public boolean agregarParada(boolean ok) {
 
         if (ok) {
-            layout.setVisibility(View.GONE);
-            carga.setVisibility(View.VISIBLE);
             cargarParadas();
             Toast.makeText(getActivity(), "Parada agregada con éxito.", Toast.LENGTH_LONG).show();
             nombre.setText("");
@@ -238,7 +249,11 @@ public class AgregarParada extends Fragment implements OnMapReadyCallback, Parad
             marcador.remove();
         } else {
             Toast.makeText(getActivity(), "Hubo un error al agregar la parada, reintente.", Toast.LENGTH_LONG).show();
+            pbAgregar.setVisibility(View.GONE);
+            agregarParada.setVisibility(View.VISIBLE);
         }
+
+
 
         return ok;
     }

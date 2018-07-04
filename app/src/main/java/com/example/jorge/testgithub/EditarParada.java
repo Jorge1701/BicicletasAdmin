@@ -23,6 +23,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.jorge.testgithub.BD.BDCliente;
@@ -76,6 +77,8 @@ public class EditarParada extends Fragment implements OnMapReadyCallback, Parada
     @BindView(R.id.layout)
     LinearLayout layout;
     String nPSLista;
+    @BindView(R.id.pbEditar)
+    ProgressBar pbEditar;
 
 
     public EditarParada() {
@@ -135,6 +138,9 @@ public class EditarParada extends Fragment implements OnMapReadyCallback, Parada
                     if (p.getNombre().equals(marcador.getTitle()))
                         id = p.getId();
 
+                editarParada.setVisibility(View.GONE);
+                pbEditar.setVisibility(View.VISIBLE);
+
                 modificarParada(id, nombre.getText().toString().trim(), getDireccion(marcador.getPosition()), marcador.getPosition().latitude, marcador.getPosition().longitude, Integer.valueOf(cantBicis.getText().toString().trim()));
             }
         });
@@ -154,6 +160,23 @@ public class EditarParada extends Fragment implements OnMapReadyCallback, Parada
 
                     for (int i = 0; i < re.size(); i++)
                         paradas.add(re.get(i));
+
+                    if (nPSLista != null) {
+                        layoutEditar.setVisibility(View.VISIBLE);
+                        seleccionarParada.setVisibility(View.GONE);
+                        cantBicisError.setError(null);
+                        nombreError.setError(null);
+
+                        if (paradas != null) {
+                            for (Parada p : paradas) {
+                                if (p.getNombre().equals(nPSLista)) {
+                                    nombre.setText(p.getNombre());
+                                    cantBicis.setText(String.valueOf(p.getCantidadLibre() + p.getCantidadOcupada()));
+                                }
+                            }
+                        }
+                    }
+
                 }
 
                 if (mMap != null)
@@ -206,6 +229,9 @@ public class EditarParada extends Fragment implements OnMapReadyCallback, Parada
 
         carga.setVisibility(View.GONE);
         layout.setVisibility(View.VISIBLE);
+
+        editarParada.setVisibility(View.VISIBLE);
+        pbEditar.setVisibility(View.GONE);
     }
 
     @Override
@@ -238,28 +264,12 @@ public class EditarParada extends Fragment implements OnMapReadyCallback, Parada
 
         );
 
-        if (nPSLista != null) {
-            layoutEditar.setVisibility(View.VISIBLE);
-            seleccionarParada.setVisibility(View.GONE);
-            cantBicisError.setError(null);
-            nombreError.setError(null);
-
-            if (paradas != null) {
-                for (Parada p : paradas) {
-                    if (p.getNombre().equals(nPSLista)) {
-                        nombre.setText(p.getNombre());
-                        cantBicis.setText(String.valueOf(p.getCantidadLibre() + p.getCantidadOcupada()));
-                    }
-                }
-            }
-
-        }
-
         googleMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener()
 
         {
             @Override
             public void onMarkerDragStart(Marker marker) {
+
             }
 
             @Override
@@ -270,11 +280,9 @@ public class EditarParada extends Fragment implements OnMapReadyCallback, Parada
             public void onMarkerDragEnd(Marker marker) {
                 //Toast.makeText(EditarParada.this, "TERMINO DE MOVER", Toast.LENGTH_LONG).show();
                 marcador = marker;
-                nombre.setVisibility(View.VISIBLE);
-                cantBicis.setVisibility(View.VISIBLE);
-                editarParada.setVisibility(View.VISIBLE);
-                nombreError.setVisibility(View.VISIBLE);
-                cantBicisError.setVisibility(View.VISIBLE);
+
+                seleccionarParada.setVisibility(View.GONE);
+                layoutEditar.setVisibility(View.VISIBLE);
                 cantBicisError.setError(null);
                 nombreError.setError(null);
 
@@ -326,7 +334,10 @@ public class EditarParada extends Fragment implements OnMapReadyCallback, Parada
             nPSLista = null;
         } else {
             Toast.makeText(getActivity(), "Hubo un error al editar la parada, reintente.", Toast.LENGTH_LONG).show();
+            editarParada.setVisibility(View.VISIBLE);
+            pbEditar.setVisibility(View.GONE);
         }
+
 
         return ok;
     }

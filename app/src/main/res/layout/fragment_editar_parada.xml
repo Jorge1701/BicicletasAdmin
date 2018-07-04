@@ -49,8 +49,8 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="match_parent"
             android:id="@+id/layoutEditar"
+            android:layout_width="match_parent"
             android:layout_height="250dp"
             android:orientation="vertical"
             android:visibility="gone">
@@ -99,18 +99,30 @@
 
             </android.support.design.widget.TextInputLayout>
 
-            <Button
-                android:id="@+id/editarParada"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="20dp"
-                android:layout_marginEnd="20dp"
-                android:layout_marginStart="20dp"
-                android:background="@drawable/boton_iniciar_sesion"
-                android:onClick="EditarParada"
-                android:text="@string/title_activity_editar_parada"
-                android:visibility="visible" />
+                android:orientation="vertical">
 
+                <Button
+                    android:id="@+id/editarParada"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginStart="20dp"
+                    android:background="@drawable/boton_iniciar_sesion"
+                    android:onClick="EditarParada"
+                    android:text="@string/title_activity_editar_parada"
+                    android:visibility="visible" />
+
+                <ProgressBar
+                    android:id="@+id/pbEditar"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:indeterminate="true"
+                    android:visibility="gone" />
+            </LinearLayout>
         </LinearLayout>
 
     </LinearLayout>

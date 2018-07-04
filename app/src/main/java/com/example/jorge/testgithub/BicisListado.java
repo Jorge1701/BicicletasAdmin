@@ -118,7 +118,6 @@ public class BicisListado extends Fragment {
             @Override
             public void onRefresh() {
                 bdCargarBicicletas();
-                swipeRefresh.setRefreshing(false);
             }
         });
 
@@ -140,15 +139,16 @@ public class BicisListado extends Fragment {
             @Override
             public void onResponse(Call<RespuestaBicicletas> call, Response<RespuestaBicicletas> response) {
                 if (response.isSuccessful()) {
-                    if(response.body().getCodigo().trim().equals("1")) {
+                    if (response.body().getCodigo().trim().equals("1")) {
                         bicicletas = response.body().getBicicletas();
                         if (noDevueltas.isChecked()) {
                             fitrarBicicletasDia(itemSeleccionado);
                         } else {
                             cargarBicicletas(bicicletas);
                         }
+                        swipeRefresh.setRefreshing(false);
                     }
-                }else{
+                } else {
                     noHayBicicletas.setVisibility(View.VISIBLE);
                     cargandoBicicletas.setVisibility(View.GONE);
                     swipeRefresh.setRefreshing(false);
@@ -223,7 +223,7 @@ public class BicisListado extends Fragment {
 
 
         for (int i = bs.size() - 1; i >= 0; i--) {
-            if (bs.get(i).getParada() == "" && bs.get(i).getFechaAlquiler() != null) {
+            if (bs.get(i).getParada() == "" && bs.get(i).getFechaAlquiler() != null && bs.get(i).isTiempoExedidoAlq()) {
                 if (!bs.get(i).getFechaAlquiler().split(" ")[0].equals(fecha))
                     bs.remove(i);
             } else {
@@ -239,9 +239,9 @@ public class BicisListado extends Fragment {
 
     private void cargarBicicletasNoDevueltas(final String fechaSeleccionada) {
         if (noDevueltas.isChecked()) {
-
             final Calendar hoy = Calendar.getInstance();
             final SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+
             final String fechaHoy = formato.format(hoy.getTime());
             hoy.add(Calendar.DAY_OF_MONTH, -1);
             final String fechaAyer = formato.format(hoy.getTime());
@@ -278,12 +278,12 @@ public class BicisListado extends Fragment {
                     itemSeleccionado = parent.getItemAtPosition(position).toString();
 
                     if (itemSeleccionado.equals("Hoy")) {
-
-                        fitrarBicicletasDia(fechaHoy);
+                        itemSeleccionado = fechaHoy;
+                        fitrarBicicletasDia(itemSeleccionado);
 
                     } else if (itemSeleccionado.equals("Ayer")) {
-
-                        fitrarBicicletasDia(fechaAyer);
+                        itemSeleccionado = fechaAyer;
+                        fitrarBicicletasDia(itemSeleccionado);
 
                     } else if (itemSeleccionado.equals("Seleccionar fecha")) {
 

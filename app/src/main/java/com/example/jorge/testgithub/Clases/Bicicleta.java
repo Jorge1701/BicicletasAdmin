@@ -17,19 +17,14 @@ public class Bicicleta {
     private String disponible;
     private String parada;
     private String fechaAlquiler;
+    private boolean tiempoExedidoAlq;
 
     public Bicicleta() {
         id = "";
         disponible = "";
         parada = "";
         fechaAlquiler = "";
-    }
-
-    public Bicicleta(String id, String disponible, String parada, String fechaAlquiler) {
-        this.id = id;
-        this.disponible = disponible;
-        this.parada = parada;
-        this.fechaAlquiler= fechaAlquiler;
+        tiempoExedidoAlq = false;
     }
 
     public String getId() {
@@ -62,5 +57,13 @@ public class Bicicleta {
 
     public void setFechaAlquiler(String fechaAlquilada) {
         this.fechaAlquiler = fechaAlquilada;
+    }
+
+    public boolean isTiempoExedidoAlq() {
+        return tiempoExedidoAlq;
+    }
+
+    public void setTiempoExedidoAlq(boolean tiempoExedidoAlq) {
+        this.tiempoExedidoAlq = tiempoExedidoAlq;
     }
 }
