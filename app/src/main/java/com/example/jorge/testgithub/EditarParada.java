@@ -71,6 +71,8 @@ public class EditarParada extends Fragment implements OnMapReadyCallback, Parada
     LinearLayout carga;
     @BindView(R.id.seleccionarParada)
     LinearLayout seleccionarParada;
+    @BindView(R.id.layoutEditar)
+    LinearLayout layoutEditar;
     @BindView(R.id.layout)
     LinearLayout layout;
     String nPSLista;
@@ -194,7 +196,7 @@ public class EditarParada extends Fragment implements OnMapReadyCallback, Parada
                     marcador = m;
                 }
             }
-        }else{
+        } else {
             //obtener la posicion de todas las paradas y hacer los marcadores
             LatLng paysandu = new LatLng(-32.316465, -58.088980);
             //mMap.addMarker(new MarkerOptions().position(new LatLng(-32.317921, -58.089010)).title("Parada1").draggable(true));
@@ -216,13 +218,8 @@ public class EditarParada extends Fragment implements OnMapReadyCallback, Parada
                                                public boolean onMarkerClick(Marker marker) {
                                                    marcador = marker;
 
-                                                   nombre.setVisibility(View.VISIBLE);
-                                                   cantBicis.setVisibility(View.VISIBLE);
-                                                   editarParada.setVisibility(View.VISIBLE);
-                                                   nombreError.setVisibility(View.VISIBLE);
-                                                   cantBicisError.setVisibility(View.VISIBLE);
+                                                   layoutEditar.setVisibility(View.VISIBLE);
                                                    seleccionarParada.setVisibility(View.GONE);
-
                                                    cantBicisError.setError(null);
                                                    nombreError.setError(null);
 
@@ -242,13 +239,8 @@ public class EditarParada extends Fragment implements OnMapReadyCallback, Parada
         );
 
         if (nPSLista != null) {
-            nombre.setVisibility(View.VISIBLE);
-            cantBicis.setVisibility(View.VISIBLE);
-            editarParada.setVisibility(View.VISIBLE);
-            nombreError.setVisibility(View.VISIBLE);
-            cantBicisError.setVisibility(View.VISIBLE);
+            layoutEditar.setVisibility(View.VISIBLE);
             seleccionarParada.setVisibility(View.GONE);
-
             cantBicisError.setError(null);
             nombreError.setError(null);
 
@@ -326,11 +318,7 @@ public class EditarParada extends Fragment implements OnMapReadyCallback, Parada
             Toast.makeText(getActivity(), "Parada editada con éxito.", Toast.LENGTH_LONG).show();
             nombre.setText("");
             cantBicis.setText("");
-            nombre.setVisibility(View.GONE);
-            cantBicis.setVisibility(View.GONE);
-            editarParada.setVisibility(View.GONE);
-            nombreError.setVisibility(View.GONE);
-            cantBicisError.setVisibility(View.GONE);
+            layoutEditar.setVisibility(View.GONE);
             seleccionarParada.setVisibility(View.VISIBLE);
             cantBicisError.setError(null);
             nombreError.setError(null);
