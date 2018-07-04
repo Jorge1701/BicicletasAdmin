@@ -35,7 +35,7 @@
             android:layout_weight="1"
             android:paddingTop="3sp"
             android:paddingBottom="2dp"
-            android:text="Toque para editar"
+            android:text="@string/toque_para_editar"
             android:textAlignment="center"
             android:textSize="10sp" />
     </LinearLayout>

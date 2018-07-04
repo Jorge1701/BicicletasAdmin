@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Bicicletas</string>
-    <string name="iniciar_sesion">Iniciar Sesion</string>
+    <string name="iniciar_sesion">Iniciar sesión</string>
     <string name="recordarme">Recordarme</string>
     <string name="usuario">Usuario</string>
     <string name="contrase_a">Contraseña</string>
@@ -19,7 +19,7 @@
     <string name="numero">Número</string>
     <string name="nroParada">Nro. parada</string>
     <string name="id">Id</string>
-    <string name="cedula">Cedula</string>
+    <string name="cedula">Cédula</string>
     <string name="bicicletas_sin_devolver">No devueltas a tiempo</string>
     <string name="cargando_administradores">Cargando administradores...</string>
     <string name="test">Test</string>
@@ -37,12 +37,13 @@
     <string name="no_hay_usuarios">No hay usuarios</string>
     <string name="admin">Admin</string>
     <string name="noasignado">---</string>
-    <string name="comentario">Descripcion</string>
+    <string name="comentario">Descripción</string>
     <string name="comentarios">Comentarios</string>
     <string name="comentar">Comentar...</string>
     <string name="habilitar_usuario">Habilitar usuario</string>
     <string name="inhabilitar_usuario">Inhabilitar usuario</string>
     <string name="toque_para_expandir">Toque para expandir</string>
+    <string name="toque_para_editar">Toque para editar</string>
     <string name="seleccionar_parada_editar">Seleccione una parada para editarla</string>
     <string name="correo">Correo</string>
     <string name="saldo">Saldo</string>
