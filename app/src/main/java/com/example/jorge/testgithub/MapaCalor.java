@@ -189,13 +189,13 @@ public class MapaCalor extends Fragment implements OnMapReadyCallback {
             public void onResponse(Call<RespuestaParadas> call, Response<RespuestaParadas> response) {
                 paradas = new ArrayList<>();
                 if (response.body().getCodigo().equals("1")) {
-                   paradas = response.body().getParadas() != null ? response.body().getParadas() : new ArrayList<Parada>();
-                    Log.d("ASD", "onResponse: "+ response.body().getParadas().size());
+                    paradas = response.body().getParadas() != null ? response.body().getParadas() : new ArrayList<Parada>();
+                    Log.d("ASD", "onResponse: " + response.body().getParadas().size());
                 }
 
                 if (mMap != null) {
                     prepararMapa();
-                    Log.d("ASD", "onResponse: "+ paradas.size());
+                    Log.d("ASD", "onResponse: " + paradas.size());
                     cargarMapadeCalor(paradas);
                 }
             }
@@ -221,17 +221,16 @@ public class MapaCalor extends Fragment implements OnMapReadyCallback {
         for (Parada p : paradas) {
             Heatlist.add(new LatLng(p.getLatitud(), p.getLongitud()));
         }
-            if (Heatlist.size() != 0) {
-                if (mProvider != null) {
-                    mOverlay.remove();
-                    mProvider.setData(Heatlist);
-                } else {
-                    mProvider = new HeatmapTileProvider.Builder()
-                            .data(Heatlist).build();
-                    mOverlay = mMap.addTileOverlay(new TileOverlayOptions().tileProvider(mProvider));
-                }
-
+        if (Heatlist.size() != 0) {
+            if (mProvider != null) {
+                mProvider.setData(Heatlist);
+            } else {
+                mProvider = new HeatmapTileProvider.Builder()
+                        .data(Heatlist).build();
+                mOverlay = mMap.addTileOverlay(new TileOverlayOptions().tileProvider(mProvider));
             }
+
+        }
     }
 
     @Override
