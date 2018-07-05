@@ -1,27 +1,19 @@
 package com.example.jorge.testgithub;
 
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.Manifest;
-import android.content.pm.PackageManager;
-import android.location.Address;
-import android.location.Geocoder;
-import android.support.design.widget.TextInputLayout;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentActivity;
-import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -29,22 +21,21 @@ import com.example.jorge.testgithub.BD.BDCliente;
 import com.example.jorge.testgithub.BD.BDInterface;
 import com.example.jorge.testgithub.BD.RespuestaParadas;
 import com.example.jorge.testgithub.Clases.Parada;
-import com.example.jorge.testgithub.Util.Paradas;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.TileOverlay;
 import com.google.android.gms.maps.model.TileOverlayOptions;
-import com.google.android.gms.maps.model.TileProvider;
 import com.google.maps.android.heatmaps.HeatmapTileProvider;
-//heatmaps.HeatmapTileProvider;
 
-import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -65,41 +56,28 @@ public class MapaCalor extends Fragment implements OnMapReadyCallback {
     @BindView(R.id.carga)
     LinearLayout carga;
     @BindView(R.id.layout)
-    LinearLayout layout;
+    FrameLayout layout;
+    @BindView(R.id.fechaInicio)
+    EditText fechaInicio;
+    @BindView(R.id.fechaFin)
+    EditText fechaFin;
+    @BindView(R.id.btnMapaCalor)
+    Button btnMapaCalor;
 
 
     public MapaCalor() {
         // Required empty public constructor
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        //obtener paradas
-        BDInterface bd = BDCliente.getClient().create(BDInterface.class);
-        Call<RespuestaParadas> call = bd.getParadas();
-        call.enqueue(new Callback<RespuestaParadas>() {
-            @Override
-            public void onResponse(Call<RespuestaParadas> call, Response<RespuestaParadas> response) {
-                paradas = new ArrayList<>();
-                if (response.body().getCodigo().equals("1")) {
-                    List<Parada> re = response.body().getParadas();
 
-                    for (int i = 0; i < re.size(); i++)
-                        paradas.add(re.get(i));
-                }
-
-                if (mMap != null)
-                    prepararMapa();
-            }
-
-            @Override
-            public void onFailure(Call<RespuestaParadas> call, Throwable t) {
-                Toast.makeText(getActivity(), "Error de conexión con el servidor: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
         View v = inflater.inflate(R.layout.fragment_mapa_calor, container, false);
+        ButterKnife.bind(this, v);
+        Calendar c = Calendar.getInstance();
+        String hoy = new SimpleDateFormat("yyyy-MM-dd").format(c.getTime());
+        bdMapaCalor(hoy, hoy);
         mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
 
         if (mapFragment == null) {
@@ -110,23 +88,149 @@ public class MapaCalor extends Fragment implements OnMapReadyCallback {
         }
 
         mapFragment.getMapAsync(this);
-        ButterKnife.bind(this, v);
+
+        fechaInicio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Calendar calendario = Calendar.getInstance();
+                int yy = calendario.get(Calendar.YEAR);
+                int mm = calendario.get(Calendar.MONTH);
+                int dd = calendario.get(Calendar.DAY_OF_MONTH);
+
+                DatePickerDialog datePicker = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        Calendar c = Calendar.getInstance();
+                        SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+                        c.set(year, monthOfYear, dayOfMonth);
+                        fechaInicio.setText(formato.format(c.getTime()));
+                    }
+                }, yy, mm, dd);
+                datePicker.show();
+            }
+        });
+
+        fechaFin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Calendar calendario = Calendar.getInstance();
+                int yy = calendario.get(Calendar.YEAR);
+                int mm = calendario.get(Calendar.MONTH);
+                int dd = calendario.get(Calendar.DAY_OF_MONTH);
+                DatePickerDialog datePicker = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        Calendar c = Calendar.getInstance();
+                        SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+                        c.set(year, monthOfYear, dayOfMonth);
+                        fechaFin.setText(formato.format(c.getTime()));
+                    }
+                }, yy, mm, dd);
+                datePicker.show();
+            }
+        });
+
+        btnMapaCalor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (fechaInicio.getText().toString().trim().equals("") && fechaFin.getText().toString().trim().equals("")) {
+                    Toast.makeText(getContext(), "Seleccione una fecha", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                Date fechaI = null, fechaF = null;
+
+                try {
+                    fechaI = new SimpleDateFormat("yyyy-MM-dd").parse(fechaInicio.getText().toString().trim());
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    fechaF = new SimpleDateFormat("yyyy-MM-dd").parse(fechaFin.getText().toString().trim());
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                if (!fechaI.before(fechaF)) {
+                    Toast.makeText(getContext(), "La fecha de inicio no es anterior a la de fin", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                if (fechaI != null && fechaF == null) {
+                    String fecha = new SimpleDateFormat("yyyy-mm-dd").format(fechaI);
+                    carga.setVisibility(View.VISIBLE);
+                    bdMapaCalor(fecha, fecha);
+                }
+
+                if (fechaF != null && fechaI == null) {
+                    String fecha = new SimpleDateFormat("yyyy-mm-dd").format(fechaF);
+                    carga.setVisibility(View.VISIBLE);
+                    bdMapaCalor(fecha, fecha);
+                }
+
+                if (fechaI != null && fechaF != null) {
+                    String fecha = new SimpleDateFormat("yyyy-mm-dd").format(fechaI);
+                    String fecha2 = new SimpleDateFormat("yyyy-mm-dd").format(fechaF);
+                    carga.setVisibility(View.VISIBLE);
+                    bdMapaCalor(fecha, fecha2);
+                }
+            }
+        });
+
+
         return v;
+    }
+
+    public void bdMapaCalor(String fechaInicio, String fechaFin) {
+        BDInterface bd = BDCliente.getClient().create(BDInterface.class);
+        Call<RespuestaParadas> call = bd.getParadasPorFecha(fechaInicio, fechaFin);
+        call.enqueue(new Callback<RespuestaParadas>() {
+            @Override
+            public void onResponse(Call<RespuestaParadas> call, Response<RespuestaParadas> response) {
+                paradas = new ArrayList<>();
+                if (response.body().getCodigo().equals("1")) {
+                    paradas = response.body().getParadas() != null ? response.body().getParadas() : new ArrayList<Parada>();
+                    Log.d("ASD", "onResponse: " + response.body().getParadas().size());
+                }
+
+                if (mMap != null) {
+                    prepararMapa();
+                    Log.d("ASD", "onResponse: " + paradas.size());
+                    cargarMapadeCalor(paradas);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RespuestaParadas> call, Throwable t) {
+
+            }
+        });
     }
 
     public void prepararMapa() {
 
-        /*for (int i = 0; i < paradas.size(); i++) {
-            mMap.addMarker(new MarkerOptions().position(new LatLng(paradas.get(i).getLatitud(), paradas.get(i).getLongitud())).title(paradas.get(i).getNombre()).draggable(true).snippet(paradas.get(i).getDireccion()));
-        } */
-
-        //obtener la posicion de todas las paradas y hacer los marcadores
         LatLng paysandu = new LatLng(-32.316465, -58.088980);
-        //mMap.addMarker(new MarkerOptions().position(new LatLng(-32.317921, -58.089010)).title("Parada1").draggable(true));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(paysandu));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(10.0f));
         carga.setVisibility(View.GONE);
         layout.setVisibility(View.VISIBLE);
+    }
+
+    public void cargarMapadeCalor(List<Parada> paradas) {
+
+        for (Parada p : paradas) {
+            Heatlist.add(new LatLng(p.getLatitud(), p.getLongitud()));
+        }
+        if (Heatlist.size() != 0) {
+            if (mProvider != null) {
+                mProvider.setData(Heatlist);
+            } else {
+                mProvider = new HeatmapTileProvider.Builder()
+                        .data(Heatlist).build();
+                mOverlay = mMap.addTileOverlay(new TileOverlayOptions().tileProvider(mProvider));
+            }
+
+        }
     }
 
     @Override
@@ -137,17 +241,10 @@ public class MapaCalor extends Fragment implements OnMapReadyCallback {
         Heatlist = new ArrayList<>();
 
         if (paradas != null) {
-            for (Parada p : paradas) {
-                Heatlist.add(new LatLng(p.getLatitud(), p.getLongitud()));
-            }
+            prepararMapa();
+            cargarMapadeCalor(paradas);
             //mProvider.setData(data); para cambiar el list
             //mOverlay.remove(); eliminar mapa de calor
-            mProvider = new HeatmapTileProvider.Builder()
-                    .data(Heatlist).build();
-            mOverlay = mMap.addTileOverlay(new TileOverlayOptions().tileProvider(mProvider));
         }
-
-        if (paradas != null)
-            prepararMapa();
     }
 }
