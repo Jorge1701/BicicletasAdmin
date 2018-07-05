@@ -149,10 +149,11 @@ public class BicisListado extends Fragment {
                         swipeRefresh.setRefreshing(false);
                     }
                 } else {
+                    cargarBicicletas(new ArrayList<Bicicleta>());
                     noHayBicicletas.setVisibility(View.VISIBLE);
                     cargandoBicicletas.setVisibility(View.GONE);
                     swipeRefresh.setRefreshing(false);
-                    Toast.makeText(getContext(), response.message(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(),"Error interno del servidor: "+ response.code(), Toast.LENGTH_SHORT).show();
                 }
 
             }
