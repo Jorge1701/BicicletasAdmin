@@ -113,18 +113,19 @@ public class MenuAdmin extends AppCompatActivity implements NavigationView.OnNav
             public void onResponse(Call<Respuesta> call, Response<Respuesta> response) {
                 if (!response.body().getCodigo().equals("1")) {
                     cerrarSesion();
+                } else {
+                    TextView textView = findViewById(R.id.correoUsuario);
+                    textView.setText(u);
+
+                    SharedPreferences sp = getSharedPreferences("usuario_logueado", MODE_PRIVATE);
+                    SharedPreferences.Editor ed = sp.edit();
+                    ed.putString("usuario", u);
+                    ed.commit();
+
+                    drawer.findViewById(R.id.carga).setVisibility(View.GONE);
+                    NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+                    onNavigationItemSelected(navigationView.getMenu().findItem(R.id.nav_usuarios));
                 }
-                TextView textView = findViewById(R.id.correoUsuario);
-                textView.setText(u);
-
-                SharedPreferences sp = getSharedPreferences("usuario_logueado", MODE_PRIVATE);
-                SharedPreferences.Editor ed = sp.edit();
-                ed.putString("usuario", u);
-                ed.commit();
-
-                drawer.findViewById(R.id.carga).setVisibility(View.GONE);
-                NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-                onNavigationItemSelected(navigationView.getMenu().findItem(R.id.nav_usuarios));
 
             }
 
