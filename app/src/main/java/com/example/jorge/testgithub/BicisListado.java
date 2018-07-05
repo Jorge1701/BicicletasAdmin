@@ -146,23 +146,17 @@ public class BicisListado extends Fragment {
                         } else {
                             cargarBicicletas(bicicletas);
                         }
-                        swipeRefresh.setRefreshing(false);
                     }
                 } else {
                     cargarBicicletas(new ArrayList<Bicicleta>());
-                    noHayBicicletas.setVisibility(View.VISIBLE);
-                    cargandoBicicletas.setVisibility(View.GONE);
-                    swipeRefresh.setRefreshing(false);
-                    Toast.makeText(getContext(),"Error interno del servidor: "+ response.code(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Error interno del servidor: " + response.code(), Toast.LENGTH_SHORT).show();
                 }
 
             }
 
             @Override
             public void onFailure(Call<RespuestaBicicletas> call, Throwable t) {
-                noHayBicicletas.setVisibility(View.VISIBLE);
-                cargandoBicicletas.setVisibility(View.GONE);
-                swipeRefresh.setRefreshing(false);
+                cargarBicicletas(new ArrayList<Bicicleta>());
                 Toast.makeText(getContext(), "Error de conexión con el servidor: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });

@@ -21,6 +21,7 @@ import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,11 +47,10 @@ public class MenuAdmin extends AppCompatActivity implements NavigationView.OnNav
         setContentView(R.layout.menu_admin);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Menu Administrador");
+        getSupportActionBar().setTitle("Cargando...");
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
@@ -94,12 +94,13 @@ public class MenuAdmin extends AppCompatActivity implements NavigationView.OnNav
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if ((keyCode == KeyEvent.KEYCODE_BACK)) {
-            if (drawer.isDrawerOpen(Gravity.LEFT))
-                // No le den bola, anda
+            if (drawer.isDrawerOpen(Gravity.LEFT)) {
                 this.finishAffinity();
-            else
+            } else {
+                Toast.makeText(MenuAdmin.this, "Precione nuevamente para salir", Toast.LENGTH_SHORT).show();
                 drawer.openDrawer(Gravity.LEFT);
-            return false;
+                return false;
+            }
         }
         return super.onKeyDown(keyCode, event);
     }
@@ -121,6 +122,7 @@ public class MenuAdmin extends AppCompatActivity implements NavigationView.OnNav
                 ed.putString("usuario", u);
                 ed.commit();
 
+                drawer.findViewById(R.id.carga).setVisibility(View.GONE);
                 NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
                 onNavigationItemSelected(navigationView.getMenu().findItem(R.id.nav_usuarios));
 
@@ -186,6 +188,7 @@ public class MenuAdmin extends AppCompatActivity implements NavigationView.OnNav
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
+
         int id = item.getItemId();
         boolean fragmentTransaction = false;
         Fragment fragment = null;
@@ -198,8 +201,8 @@ public class MenuAdmin extends AppCompatActivity implements NavigationView.OnNav
                 break;
             case R.id.nav_editar_mapa:
                 fragment = new EditarParada();
-                if(nomPSeleccionada != null){
-                    ((EditarParada)fragment).setnPSLista(nomPSeleccionada);
+                if (nomPSeleccionada != null) {
+                    ((EditarParada) fragment).setnPSLista(nomPSeleccionada);
                     nomPSeleccionada = null;
                 }
                 fragmentTransaction = true;
@@ -235,9 +238,7 @@ public class MenuAdmin extends AppCompatActivity implements NavigationView.OnNav
         }
 
         if (fragmentTransaction) {
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.contenido_seleccionado, fragment)
-                    .commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.contenido_seleccionado, fragment).commit();
             item.setChecked(true);
             getSupportActionBar().setTitle("  " + item.getTitle());
             Drawable icon = item.getIcon();

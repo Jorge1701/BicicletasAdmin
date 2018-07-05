@@ -9,4 +9,12 @@
     tools:context=".MenuAdmin"
     tools:showIn="@layout/app_bar_menu_admin">
 
+
+    <ProgressBar
+        android:layout_width="match_parent"
+        android:id="@+id/carga"
+        android:layout_height="match_parent"
+        android:padding="100dp"
+        android:indeterminate="true"/>
+
 </android.support.constraint.ConstraintLayout>

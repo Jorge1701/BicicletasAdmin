@@ -19,6 +19,7 @@ import com.example.jorge.testgithub.BD.BDInterface;
 import com.example.jorge.testgithub.BD.RespuestaParadas;
 import com.example.jorge.testgithub.Clases.Parada;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -62,6 +63,7 @@ public class ParadasListado extends Fragment {
         View view = inflater.inflate(R.layout.fragment_paradas_listado, container, false);
         ButterKnife.bind(this, view);
 
+        cargandoParadas.setVisibility(View.VISIBLE);
         if (alquileres) {
             bdCargarPromedioAlquileres();
         } else {
@@ -97,19 +99,13 @@ public class ParadasListado extends Fragment {
             public void onResponse(Call<RespuestaParadas> call, Response<RespuestaParadas> response) {
                 if (response.isSuccessful()) {
                     List<Parada> paradas = response.body().getParadas();
-                    if (paradas != null) {
-                        cargarParadas(paradas);
-                    }else{
-                        noHayParadas.setVisibility(View.VISIBLE);
-                    }
+                    cargarParadas((paradas != null) ? paradas : new ArrayList<Parada>());
                 }
             }
 
             @Override
             public void onFailure(Call<RespuestaParadas> call, Throwable t) {
-                noHayParadas.setVisibility(View.VISIBLE);
-                cargandoParadas.setVisibility(View.GONE);
-                swipeRefresh.setRefreshing(false);
+                cargarParadas(new ArrayList<Parada>());
                 Toast.makeText(getContext(), "Error de conexión con el servidor: " + t.getMessage(), Toast.LENGTH_SHORT).show();
 
             }
@@ -124,17 +120,13 @@ public class ParadasListado extends Fragment {
             public void onResponse(Call<RespuestaParadas> call, Response<RespuestaParadas> response) {
                 if (response.isSuccessful()) {
                     List<Parada> paradas = response.body().getPromedios();
-                    if (paradas != null) {
-                        cargarParadas(paradas);
-                    }
+                    cargarParadas((paradas != null) ? paradas : new ArrayList<Parada>());
                 }
             }
 
             @Override
             public void onFailure(Call<RespuestaParadas> call, Throwable t) {
-                noHayParadas.setVisibility(View.VISIBLE);
-                cargandoParadas.setVisibility(View.GONE);
-                swipeRefresh.setRefreshing(false);
+                cargarParadas(new ArrayList<Parada>());
                 Toast.makeText(getContext(), "Error de conexión con el servidor: " + t.getMessage(), Toast.LENGTH_SHORT).show();
 
             }
