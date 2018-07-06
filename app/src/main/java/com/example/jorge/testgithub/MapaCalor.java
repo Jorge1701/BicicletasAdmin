@@ -133,50 +133,50 @@ public class MapaCalor extends Fragment implements OnMapReadyCallback {
         btnMapaCalor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Date fechaI = null, fechaF = null;
+
                 if (fechaInicio.getText().toString().trim().equals("") && fechaFin.getText().toString().trim().equals("")) {
                     Toast.makeText(getContext(), "Seleccione una fecha", Toast.LENGTH_LONG).show();
                     return;
-                }
+                } else if (!fechaInicio.getText().toString().trim().equals("") && fechaFin.getText().toString().trim().equals("")) {
+                    try {
+                        fechaI = new SimpleDateFormat("yyyy-MM-dd").parse(fechaInicio.getText().toString().trim());
+                        String fecha = new SimpleDateFormat("yyyy-MM-dd").format(fechaI);
+                        carga.setVisibility(View.VISIBLE);
+                        Log.d("ASD", "onClick: fecha: " + fecha);
+                        bdMapaCalor(fecha, fecha);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                } else if (fechaInicio.getText().toString().trim().equals("") && !fechaFin.getText().toString().trim().equals("")) {
+                    try {
+                        fechaF = new SimpleDateFormat("yyyy-MM-dd").parse(fechaFin.getText().toString().trim());
+                        String fechaf = new SimpleDateFormat("yyyy-MM-dd").format(fechaF);
+                        Log.d("ASD", "onClick: fecha: " + fechaf);
+                        carga.setVisibility(View.VISIBLE);
+                        bdMapaCalor(fechaf, fechaf);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                } else {
 
-                Date fechaI = null, fechaF = null;
-
-                try {
-                    fechaI = new SimpleDateFormat("yyyy-MM-dd").parse(fechaInicio.getText().toString().trim());
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                try {
-                    fechaF = new SimpleDateFormat("yyyy-MM-dd").parse(fechaFin.getText().toString().trim());
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-
-                if (!fechaI.before(fechaF)) {
-                    Toast.makeText(getContext(), "La fecha de inicio no es anterior a la de fin", Toast.LENGTH_LONG).show();
-                    return;
-                }
-
-                if (fechaI != null && fechaF == null) {
-                    String fecha = new SimpleDateFormat("yyyy-mm-dd").format(fechaI);
-                    carga.setVisibility(View.VISIBLE);
-                    bdMapaCalor(fecha, fecha);
-                }
-
-                if (fechaF != null && fechaI == null) {
-                    String fecha = new SimpleDateFormat("yyyy-mm-dd").format(fechaF);
-                    carga.setVisibility(View.VISIBLE);
-                    bdMapaCalor(fecha, fecha);
-                }
-
-                if (fechaI != null && fechaF != null) {
-                    String fecha = new SimpleDateFormat("yyyy-mm-dd").format(fechaI);
-                    String fecha2 = new SimpleDateFormat("yyyy-mm-dd").format(fechaF);
-                    carga.setVisibility(View.VISIBLE);
-                    bdMapaCalor(fecha, fecha2);
+                    try {
+                        fechaI = new SimpleDateFormat("yyyy-MM-dd").parse(fechaInicio.getText().toString().trim());
+                        fechaF = new SimpleDateFormat("yyyy-MM-dd").parse(fechaFin.getText().toString().trim());
+                        if (!fechaI.before(fechaF) && fechaI != fechaF) {
+                            Toast.makeText(getContext(), "La fecha de inicio no es anterior a la de fin", Toast.LENGTH_LONG).show();
+                            return;
+                        }
+                        String fechai = new SimpleDateFormat("yyyy-MM-dd").format(fechaI);
+                        String fechaf = new SimpleDateFormat("yyyy-MM-dd").format(fechaF);
+                        carga.setVisibility(View.VISIBLE);
+                        bdMapaCalor(fechai, fechaf);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         });
-
 
         return v;
     }
@@ -184,19 +184,19 @@ public class MapaCalor extends Fragment implements OnMapReadyCallback {
     public void bdMapaCalor(String fechaInicio, String fechaFin) {
         BDInterface bd = BDCliente.getClient().create(BDInterface.class);
         Call<RespuestaParadas> call = bd.getParadasPorFecha(fechaInicio, fechaFin);
+        paradas = new ArrayList<>();
+        Heatlist = new ArrayList<>();
         call.enqueue(new Callback<RespuestaParadas>() {
             @Override
             public void onResponse(Call<RespuestaParadas> call, Response<RespuestaParadas> response) {
-                paradas = new ArrayList<>();
                 if (response.body().getCodigo().equals("1")) {
-                    paradas = response.body().getParadas() != null ? response.body().getParadas() : new ArrayList<Parada>();
+                    paradas = response.body().getParadas();
                     Log.d("ASD", "onResponse: " + response.body().getParadas().size());
                 }
 
                 if (mMap != null) {
                     prepararMapa();
-                    Log.d("ASD", "onResponse: " + paradas.size());
-                    cargarMapadeCalor(paradas);
+                    cargarMapadeCalor();
                 }
             }
 
@@ -212,16 +212,39 @@ public class MapaCalor extends Fragment implements OnMapReadyCallback {
         LatLng paysandu = new LatLng(-32.316465, -58.088980);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(paysandu));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(10.0f));
-        carga.setVisibility(View.GONE);
-        layout.setVisibility(View.VISIBLE);
     }
 
-    public void cargarMapadeCalor(List<Parada> paradas) {
+    public void cargarMapadeCalor() {
+        Toast.makeText(getActivity(), "CALOR: " + paradas.size(), Toast.LENGTH_SHORT).show();
 
-        for (Parada p : paradas) {
-            Heatlist.add(new LatLng(p.getLatitud(), p.getLongitud()));
+        if (paradas != null) {
+            for (Parada p : paradas) {
+                Heatlist.add(new LatLng(p.getLatitud(), p.getLongitud()));
+            }
+            Log.d("ASD", "cargarMapadeCalor: HEAT: " + Heatlist.size());
         }
-        if (Heatlist.size() != 0) {
+
+
+        if (Heatlist.size() == 0) {
+            if (mProvider != null) {
+                Log.d("ASD", "cargarMapadeCalor: PROVIDER NO NULL");
+                mOverlay.remove();
+                mProvider = null;
+            }
+        } else {
+            if(mProvider != null){
+                //mOverlay.remove();
+                mProvider.setData(Heatlist);
+                Log.d("ASD", "cargarMapadeCalor: PROVIDER NO NULL ELSE");
+            }else{
+                Log.d("ASD", "cargarMapadeCalor: PROVIDER NULL ELSE");
+            mProvider = new HeatmapTileProvider.Builder()
+                    .data(Heatlist).build();
+            mOverlay = mMap.addTileOverlay(new TileOverlayOptions().tileProvider(mProvider));}
+        }
+
+
+        /*if (Heatlist.size() != 0) {
             if (mProvider != null) {
                 mProvider.setData(Heatlist);
             } else {
@@ -229,8 +252,10 @@ public class MapaCalor extends Fragment implements OnMapReadyCallback {
                         .data(Heatlist).build();
                 mOverlay = mMap.addTileOverlay(new TileOverlayOptions().tileProvider(mProvider));
             }
+        }*/
 
-        }
+        carga.setVisibility(View.GONE);
+        layout.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -238,11 +263,10 @@ public class MapaCalor extends Fragment implements OnMapReadyCallback {
         mMap = googleMap;
         marcador = null;
 
-        Heatlist = new ArrayList<>();
-
         if (paradas != null) {
+            Toast.makeText(getActivity(), "ONMAPREADY:" + paradas.size(), Toast.LENGTH_LONG).show();
             prepararMapa();
-            cargarMapadeCalor(paradas);
+            cargarMapadeCalor();
             //mProvider.setData(data); para cambiar el list
             //mOverlay.remove(); eliminar mapa de calor
         }
