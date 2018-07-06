@@ -143,7 +143,6 @@ public class MapaCalor extends Fragment implements OnMapReadyCallback {
                         fechaI = new SimpleDateFormat("yyyy-MM-dd").parse(fechaInicio.getText().toString().trim());
                         String fecha = new SimpleDateFormat("yyyy-MM-dd").format(fechaI);
                         carga.setVisibility(View.VISIBLE);
-                        Log.d("ASD", "onClick: fecha: " + fecha);
                         bdMapaCalor(fecha, fecha);
                     } catch (ParseException e) {
                         e.printStackTrace();
@@ -152,7 +151,6 @@ public class MapaCalor extends Fragment implements OnMapReadyCallback {
                     try {
                         fechaF = new SimpleDateFormat("yyyy-MM-dd").parse(fechaFin.getText().toString().trim());
                         String fechaf = new SimpleDateFormat("yyyy-MM-dd").format(fechaF);
-                        Log.d("ASD", "onClick: fecha: " + fechaf);
                         carga.setVisibility(View.VISIBLE);
                         bdMapaCalor(fechaf, fechaf);
                     } catch (ParseException e) {
@@ -191,7 +189,6 @@ public class MapaCalor extends Fragment implements OnMapReadyCallback {
             public void onResponse(Call<RespuestaParadas> call, Response<RespuestaParadas> response) {
                 if (response.body().getCodigo().equals("1")) {
                     paradas = response.body().getParadas();
-                    Log.d("ASD", "onResponse: " + response.body().getParadas().size());
                 }
 
                 if (mMap != null) {
@@ -202,7 +199,7 @@ public class MapaCalor extends Fragment implements OnMapReadyCallback {
 
             @Override
             public void onFailure(Call<RespuestaParadas> call, Throwable t) {
-
+                Toast.makeText(getActivity(), "Ha ocurrido un error en el servidor", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -215,19 +212,16 @@ public class MapaCalor extends Fragment implements OnMapReadyCallback {
     }
 
     public void cargarMapadeCalor() {
-        Toast.makeText(getActivity(), "CALOR: " + paradas.size(), Toast.LENGTH_SHORT).show();
 
         if (paradas != null) {
             for (Parada p : paradas) {
                 Heatlist.add(new LatLng(p.getLatitud(), p.getLongitud()));
             }
-            Log.d("ASD", "cargarMapadeCalor: HEAT: " + Heatlist.size());
         }
 
 
         if (Heatlist.size() == 0) {
             if (mProvider != null) {
-                Log.d("ASD", "cargarMapadeCalor: PROVIDER NO NULL");
                 mOverlay.remove();
                 mProvider = null;
             }
@@ -235,9 +229,7 @@ public class MapaCalor extends Fragment implements OnMapReadyCallback {
             if(mProvider != null){
                 //mOverlay.remove();
                 mProvider.setData(Heatlist);
-                Log.d("ASD", "cargarMapadeCalor: PROVIDER NO NULL ELSE");
             }else{
-                Log.d("ASD", "cargarMapadeCalor: PROVIDER NULL ELSE");
             mProvider = new HeatmapTileProvider.Builder()
                     .data(Heatlist).build();
             mOverlay = mMap.addTileOverlay(new TileOverlayOptions().tileProvider(mProvider));}
@@ -264,7 +256,6 @@ public class MapaCalor extends Fragment implements OnMapReadyCallback {
         marcador = null;
 
         if (paradas != null) {
-            Toast.makeText(getActivity(), "ONMAPREADY:" + paradas.size(), Toast.LENGTH_LONG).show();
             prepararMapa();
             cargarMapadeCalor();
             //mProvider.setData(data); para cambiar el list
